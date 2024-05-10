@@ -8,14 +8,4 @@ const pool = mysql.createPool({
     database: process.env.DB_NAME,
 });
 
-pool.connect((err) => {
-    if(err){
-        console.log(err.message);
-        return;
-    }
-    console.log("Base de Datos Conectada")
-});
-
-
-
 module.exports = pool;
