@@ -23,7 +23,7 @@ app.get('/usuarios', (req, res) => {
             return res.status(500).json({ error: 'Error interno del servidor' });
         }
 
-        connection.query('SELECT * FROM usuarios', (err, result) => {
+        connection.query('SELECT * FROM Usuarios', (err, result) => {
             connection.release(); // Importante liberar la conexión después de usarla
             if (err) {
                 console.error('Error al ejecutar consulta:', err);
