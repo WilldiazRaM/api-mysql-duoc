@@ -1,11 +1,11 @@
 const mysql = require('mysql');
 
 const db = mysql.createConnection( {
-    host: "database-prueba-integracion.c7m6qgsi4mfp.us-east-2.rds.amazonaws.com",
-    port: "3306",
-    user: "admin",
-    password: "Willdiaz123.",
-    database: "databaspruebacl",
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
 });
 
 db.connect((err) => {
