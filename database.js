@@ -15,3 +15,7 @@ db.connect((err) => {
     }
     console.log("Base de Datos Conectada")
 });
+
+
+
+module.exports = pool;
