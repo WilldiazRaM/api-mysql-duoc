@@ -1,6 +1,6 @@
 const mysql = require('mysql');
 
-const db = mysql.createConnection( {
+const pool = mysql.createPool({
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     user: process.env.DB_USER,
@@ -8,7 +8,7 @@ const db = mysql.createConnection( {
     database: process.env.DB_NAME,
 });
 
-db.connect((err) => {
+pool.connect((err) => {
     if(err){
         console.log(err.message);
         return;
