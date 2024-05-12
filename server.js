@@ -13,10 +13,22 @@ app.use(bodyParser.json());
 
 const PORT = process.env.PORT || 4000;
 
-app.use((re, res, next) => {
+app.use((res, req, next) => {
     res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubdomains');
     next();
-})
+});
+
+app.use((res, req, next) => {
+    res.setHeader('Content-Security-Policy', "script-src 'self';");
+    next();
+});
+
+app.use((res, req, next) => {
+    res.setHeader('X-Frame-Options', 'deny');
+    next();
+});
+
+
 
 
 app.get('/', (req, res, next) => {
