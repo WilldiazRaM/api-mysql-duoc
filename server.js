@@ -3,6 +3,7 @@ const pool = require('./database');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const helmet = require('helmet'); //Strict-transport-security'
+const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 
@@ -15,7 +16,18 @@ app.use(passport.session());
 // Middleware para analizar el cuerpo de las solicitudes
 app.use(bodyParser.json());
 
+
+
 const PORT = process.env.PORT || 4000;
+
+app.use(session({
+    secret: process.env.SESSION_SECRET || generateSecret(),
+    resolve: false,
+    saveUninitialized: false
+}))
+
+
+
 
 app.use((req, res, next) => {
     res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubdomains');
