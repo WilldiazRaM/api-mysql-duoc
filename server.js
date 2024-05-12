@@ -28,7 +28,10 @@ app.use((res, req, next) => {
     next();
 });
 
-
+app.use((req, res, next) => {
+    res.setHeader('Permissions-Policy', "geolocation=(self 'https://api-mysql-duoc.onrender.com')");
+    next();
+  });
 
 
 app.get('/', (req, res, next) => {
