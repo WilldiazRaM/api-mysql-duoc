@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const helmet = require('helmet'); //Strict-transport-security'
 const session = require('express-session');
 const passport = require('passport');
-const passport = require('./routes/passportConfig'); 
+const passportConfig = require('./routes/passportConfig'); 
 const store = new session.MemoryStore();
 const LocalStrategy = require('passport-local').Strategy;
 
