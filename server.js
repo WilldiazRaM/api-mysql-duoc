@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const helmet = require('helmet'); //Strict-transport-security'
 const session = require('express-session');
 const passport = require('passport');
+const store = new session.MemoryStore();
 const LocalStrategy = require('passport-local').Strategy;
 
 const app = express();
@@ -22,7 +23,8 @@ const PORT = process.env.PORT || 4000;
 app.use(session({
     secret: process.env.SESSION_SECRET || generateSecret(),
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    store
 }));
 
 app.use(passport.initialize());
