@@ -10,8 +10,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const app = express();
 app.use(helmet());
 app.use(morgan('combined'));  // Guarda log de las solicitudes
-app.use(passport.initialize());
-app.use(passport.session());
+
 
 // Middleware para analizar el cuerpo de las solicitudes
 app.use(bodyParser.json());
@@ -24,8 +23,10 @@ app.use(session({
     secret: process.env.SESSION_SECRET || generateSecret(),
     resolve: false,
     saveUninitialized: false
-}))
+}));
 
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 
