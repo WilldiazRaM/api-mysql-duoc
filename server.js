@@ -10,6 +10,7 @@ const app = express();
 app.use(helmet());
 app.use(morgan('combined'));  // Guarda log de las solicitudes
 app.use(passport.initialize());
+app.use(passport.session());
 
 // Middleware para analizar el cuerpo de las solicitudes
 app.use(bodyParser.json());
