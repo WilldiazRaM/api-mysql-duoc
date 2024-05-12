@@ -2,15 +2,22 @@ const express = require('express');
 const pool = require('./database');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const helmet = require('helmet'); //Strict-transport-security
 
 const app = express();
-
+app.use(helmet());
 app.use(morgan('combined'));  // Guarda log de las solicitudes
 
 // Middleware para analizar el cuerpo de las solicitudes
 app.use(bodyParser.json());
 
 const PORT = process.env.PORT || 4000;
+
+app.use((re, res, next) => {
+    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubdomains');
+    next();
+})
+
 
 app.get('/', (req, res, next) => {
     res.send("HelloWorld from Stgo, CL made With ❤");
