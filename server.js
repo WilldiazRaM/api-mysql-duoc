@@ -67,15 +67,13 @@ app.get('/', (req, res, next) => {
 
 
 
-app.post('/login',
-    passport.authenticate('local', {
-        failureRedirect: '/login',
-        failureFlash: true
-    }),
-    (req, res) => {
-        res.redirect('/profile'); 
-    }
+app.post("/login",
+  passport.authenticate("local", { failureRedirect : "/login"}),
+  (req, res) => {
+    res.redirect("profile");
+  }
 );
+
 
 
 app.get('/profile', (req, res) => {
