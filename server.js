@@ -5,12 +5,13 @@ const bodyParser = require('body-parser');
 const helmet = require('helmet'); //Strict-transport-security'
 const session = require('express-session');
 const passport = require('passport');
-const passportConfig = require('./routes/passportConfig'); 
+const passportConfig = require('./routesgi/passportConfig'); 
 const { createUser } = require('./utils/databaseUtils');
 const store = new session.MemoryStore();
 const LocalStrategy = require('passport-local').Strategy;
 const flash = require('express-flash');
 const app = express();
+const path = require('path'); 
 
 // Express para servir archivos estáticos desde la carpeta 'public'
 app.use(express.static('public'));
