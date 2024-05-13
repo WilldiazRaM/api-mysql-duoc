@@ -70,9 +70,32 @@ function createUser(user) {
 
 
 
+async function authenticateUser(email, password) {
+    try {
+        // Buscar el usuario por su correo electrónico
+        const user = await findByEmail(email);
+        
+        if (!user) {
+            return null; // Si no se encuentra el usuario, devolver null
+        }
+        
+        // Comparar la contraseña ingresada con la contraseña almacenada en la base de datos
+        const passwordMatch = await comparePasswords(password, user.password);
+        
+        if (!passwordMatch) {
+            return null; // Si las contraseñas no coinciden, devolver null
+        }
+        
+        // Si el usuario y la contraseña son válidos, devolver el usuario
+        return user;
+    } catch (error) {
+        console.error("Error durante la autenticación:", error);
+        throw error;
+    }
+}
 
 
 
 
 
-module.exports = { findByEmail, createUser, findUserById };
+module.exports = { findByEmail, createUser, findUserById, authenticateUser };
