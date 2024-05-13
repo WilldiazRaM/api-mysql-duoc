@@ -10,6 +10,10 @@ const store = new session.MemoryStore();
 const LocalStrategy = require('passport-local').Strategy;
 
 const app = express();
+
+// Express para servir archivos estáticos desde la carpeta 'public'
+app.use(express.static('public'));
+
 app.use(helmet());
 app.use(morgan('combined'));  // Guarda log de las solicitudes
 
@@ -57,6 +61,30 @@ app.use((req, res, next) => {
 app.get('/', (req, res, next) => {
     res.send("HelloWorld from Stgo, CL made With ❤");
 });
+
+
+
+
+app.post('/login',
+    passport.authenticate('local', {
+        failureRedirect: '/login',
+        failureFlash: true
+    }),
+    (req, res) => {
+        res.redirect('/profile'); 
+    }
+);
+
+
+app.get('/profile', (req, res) => {
+    res.render('profile', { user: req.user }); 
+});
+
+
+
+
+
+
 
 
 app.listen(PORT, () => {
