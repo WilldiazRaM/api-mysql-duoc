@@ -39,7 +39,7 @@ async function createUser(email, password) {
     return new Promise(async (resolve, reject) => {
         try {
             const hashedPassword = await hashPassword(password);
-            const role = 'cliente'; // Asignar el rol de cliente
+            const role = 'cliente'; // Asignar un rol predeterminado
             const query = 'INSERT INTO Usuarios (email, password, role, created_at) VALUES (?, ?, ?, NOW())';
             pool.query(query, [email, hashedPassword, role], (error, result) => {
                 if (error) {
@@ -56,7 +56,6 @@ async function createUser(email, password) {
         }
     });
 };
-
 
 async function authenticateUser(email, password) {
     try {
