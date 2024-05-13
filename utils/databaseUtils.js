@@ -14,9 +14,9 @@ async function findByEmail(email) {
 
 async function createUser(user) {
     try {
-        const { email, password } = user;
+        const { nombre, email, password } = user;
         const query = 'INSERT INTO Usuarios (nombre, role, created_at) VALUES (?, ?, NOW())';
-        const result = await db.query(query, [email, 'cliente']); // Establece el rol como "cliente" por defecto
+        const result = await db.query(query, [nombre, 'cliente']); // Establece el rol como "cliente" por defecto
 
         
         const newUserId = result.insertId;
