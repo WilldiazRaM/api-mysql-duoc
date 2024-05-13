@@ -47,7 +47,7 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
-    res.setHeader('Content-Security-Policy', "script-src 'self';");
+    res.setHeader('Content-Security-Policy', "script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'");
     next();
 });
 
