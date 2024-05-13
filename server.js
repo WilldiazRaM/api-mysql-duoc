@@ -90,14 +90,14 @@ app.get('/profile', (req, res) => {
 });
 
 app.post('/registrar', async (req, res) => {
-    const { email , password, nombre } = req.body;
+    const { email, password, nombre } = req.body;
 
     try {
         // Generar hash de la contraseña
         const hashedPassword = await hashPassword(password);
 
-        // Crear un nuevo usuario con la contraseña cifrada
-        const newUser = await createUser({ email, password: hashedPassword });
+        // Crear un nuevo usuario con la contraseña cifrada y el nombre
+        const newUser = await createUser({ nombre, email, password: hashedPassword });
         
         if (newUser) {
             res.status(201).json({
@@ -112,6 +112,7 @@ app.post('/registrar', async (req, res) => {
         });
     }
 });
+
 
 app.get('/logout', (req, res) => {
     req.logout();
