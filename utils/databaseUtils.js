@@ -36,13 +36,15 @@ async function findUserById(id) {
 
 function createUser(user) {
     return new Promise((resolve, reject) => {
-        const { nombre, email, password, role } = user;
-        console.log("Datos de usuario:", nombre, email, password, role);
+        const { nombre, email, password } = user;
+        console.log("Datos de usuario:", nombre, email, password);
         const query = 'INSERT INTO Usuarios (nombre, email, password, role, created_at) VALUES (?, ?, ?, ?, NOW())';
         console.log("Query SQL:", query);
         
+        // Asegúrate de que role esté definido si no se proporciona en el objeto user
+        const role = user.role || 'cliente';
         
-        pool.query(query, [nombre, email, password, role || 'cliente'], (error, result) => {
+        pool.query(query, [nombre, email, password, role], (error, result) => {
             if (error) {
                 console.error("Error en createUser:", error);
                 return reject(error);
@@ -51,10 +53,12 @@ function createUser(user) {
             console.log("ID de usuario creado:", newUserId);
 
             // Retorna el nuevo usuario con el ID asignado
-            resolve({ id: newUserId, nombre, email, password, role: role || 'cliente', created_at: new Date() });
+            resolve({ id: newUserId, nombre, email, password, role, created_at: new Date() });
         });
     });
 };
+
+
 
 
 
