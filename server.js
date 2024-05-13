@@ -11,10 +11,6 @@ const app = express();
 const path = require('path'); 
 const { hashPassword } = require('./utils/passwordUtils');
 
-
-// Express para servir archivos estáticos desde la carpeta 'public'
-app.use(express.static(path.join(__dirname, 'public', 'login')));
-
 // Configurar el motor de plantillas y la ubicación de las vistas
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -49,31 +45,12 @@ app.use(passport.session());
 
 app.use((req, res, next) => {
     res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubdomains');
-    next();
-});
-
-app.use((req, res, next) => {
     res.setHeader('Content-Security-Policy', "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; script-src 'self' https://cdn.jsdelivr.net");
-    next();
-});
-
-
-app.use((req, res, next) => {
     res.setHeader('X-Frame-Options', 'SAMEORIGIN');
-    next();
-});
-
-app.use((req, res, next) => {
     res.setHeader('Permissions-Policy', "geolocation=(self 'https://api-mysql-duoc.onrender.com')");
-    next();
-  });
-
-
-app.use((req, res, next) => {
     res.setHeader('Content-Security-Policy', "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net");
     next();
 });
-
 
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
@@ -138,8 +115,9 @@ app.post('/registrar', async (req, res) => {
     }
 });
 
+// Ruta para servir el archivo login.html
 app.get('/login', (req, res) => {
-    res.redirect('/login.html');
+    res.sendFile(path.join(__dirname, 'public', 'login', 'login.html'));
 });
 
 
