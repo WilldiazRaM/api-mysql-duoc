@@ -1,16 +1,21 @@
 const pool = require('../database');
 
 async function findByEmail(email) {
-    try {
-        const rows = await pool.query('SELECT * FROM Usuarios WHERE email = ?', [email]);
-        if (rows.length === 0) {
-            return null;
-        }
-        return rows[0];
-    } catch (err) {
-        throw err;
-    }
-};
+    return new Promise((resolve, reject) => {
+        pool.query('SELECT * FROM Usuarios WHERE email = ?', [email], (err, rows) => {
+            if (err) {
+                reject(err); // Rechazar la promesa si hay un error en la consulta
+            } else {
+                if (rows.length === 0) {
+                    resolve(null); // Resolver la promesa con null si no se encuentra ningún usuario
+                } else {
+                    resolve(rows[0]); // Resolver la promesa con el primer usuario encontrado
+                }
+            }
+        });
+    });
+}
+
 
 function createUser(user) {
     return new Promise((resolve, reject) => {
