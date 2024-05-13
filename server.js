@@ -90,26 +90,21 @@ app.get('/profile', (req, res) => {
 });
 
 app.post('/registrar', async (req, res) => {
-    const { email, password, nombre } = req.body;
-
+    const { email, password } = req.body;
     try {
         // Generar hash de la contraseña
-        const hashedPassword = await hashPassword(password);
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
 
-        // Crear un nuevo usuario con la contraseña cifrada y el nombre
-        const newUser = await createUser({ nombre, email, password: hashedPassword });
-        
-        if (newUser) {
-            res.status(201).json({
-                msg: "Usuario creado exitosamente!",
-                user: newUser
-            });
-        }
+        // Insertar usuario en la base de datos
+        const query = 'INSERT INTO Usuarios (email, password) VALUES (?, ?)';
+        await pool.query(query, [email, hashedPassword]);
+
+        // Redireccionar al usuario a la página de inicio de sesión
+        res.redirect("/login");
     } catch (error) {
-        res.status(500).json({
-            msg: "Ocurrió un error al crear un usuario",
-            error: error.message
-        });
+        console.error("Error al registrar usuario:", error);
+        res.status(500).json({ error: "Ocurrió un error al registrar el usuario" });
     }
 });
 
