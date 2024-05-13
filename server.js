@@ -138,8 +138,9 @@ app.post('/registrar', async (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-    res.render('login');
+    res.redirect('/login.html');
 });
+
 
 
 // Middleware de manejo de errores global
