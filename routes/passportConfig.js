@@ -4,6 +4,19 @@ const LocalStrategy = require('passport-local').Strategy;
 const db = require('../utils/databaseUtils');
 
 
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+    try {
+        const user = await db.findUserById(id);
+        done(null, user);
+    } catch (error) {
+        done(error, null);
+    }
+});
+
 passport.use(new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password'
@@ -26,3 +39,6 @@ passport.use(new LocalStrategy({
         return done(err);
     }
 }));
+
+
+module.exports = passport;
