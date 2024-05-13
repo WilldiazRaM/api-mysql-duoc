@@ -1,4 +1,4 @@
-const db = require('../database');
+const pool = require('../database');
 
 async function findByEmail(email) {
     try {
@@ -19,20 +19,22 @@ function createUser(user) {
         const query = 'INSERT INTO Usuarios (nombre, email, password, role, created_at) VALUES (?, ?, ?, ?, NOW())';
         console.log("Query SQL:", query);
         
-        db.query(query, [nombre, email, password, role || 'cliente'])
-            .then(result => {
-                const newUserId = result.insertId;
-                console.log("ID de usuario creado:", newUserId);
-
-                // Retorna el nuevo usuario con el ID asignado
-                return resolve({ id: newUserId, nombre, email, password, role: role || 'cliente', created_at: new Date() });
-            })
-            .catch(error => {
+        // Se asume que pool.query devuelve una promesa
+        pool.query(query, [nombre, email, password, role || 'cliente'], (error, result) => {
+            if (error) {
                 console.error("Error en createUser:", error);
-                reject(error);
-            });
+                return reject(error);
+            }
+            const newUserId = result.insertId;
+            console.log("ID de usuario creado:", newUserId);
+
+            // Retorna el nuevo usuario con el ID asignado
+            resolve({ id: newUserId, nombre, email, password, role: role || 'cliente', created_at: new Date() });
+        });
     });
 };
+
+
 
 
 
