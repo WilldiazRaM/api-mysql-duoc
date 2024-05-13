@@ -13,7 +13,7 @@ passport.use(new LocalStrategy (
             if (user.password !== password) {
                 return done(null, false, { message: 'Contraseña incorrecta' });
             }
-            return done(null, user);
+            return done(null, user); // Devolvemos todo el objeto de usuario
         } catch (error) {
             return done(error);
         }
@@ -21,14 +21,9 @@ passport.use(new LocalStrategy (
 ));
 
 passport.serializeUser((user, done) => {
-    done(null, user.id);
+    done(null, user); // Serializamos todo el objeto de usuario
 });
 
-passport.deserializeUser(async (id, done) => {
-    try {
-        const user = await db.findById(id);
-        done(null, user);
-    } catch (error) {
-        done(error);
-    }
+passport.deserializeUser((user, done) => {
+    done(null, user); // Deserializamos todo el objeto de usuario
 });
