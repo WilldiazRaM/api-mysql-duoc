@@ -16,7 +16,7 @@ const { hashPassword } = require('./utils/passwordUtils');
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Configurar el motor de plantillas y la ubicación de las vistas
-app.set('view engine', 'html'); // Establecer el motor de plantillas como HTML
+//app.set('view engine', 'html'); // Establecer el motor de plantillas como HTML
 app.set('views', path.join(__dirname, 'public', 'login')); // Establecer la ubicación de las vistas
 
 
