@@ -63,7 +63,10 @@ app.use((req, res, next) => {
   });
 
 
-
+  app.get('/style.css', (req, res) => {
+    res.setHeader('Content-Type', 'text/css'); // Establecer el tipo MIME
+    res.sendFile(path.join(__dirname, 'public', 'style.css')); // Enviar el archivo CSS
+});
 
 
 app.get('/login', (req, res) => {
