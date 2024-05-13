@@ -9,7 +9,7 @@ const passportConfig = require('./routes/passportConfig');
 const { createUser } = require('./utils/databaseUtils');
 const store = new session.MemoryStore();
 const LocalStrategy = require('passport-local').Strategy;
-
+const flash = require('express-flash');
 const app = express();
 
 // Express para servir archivos estáticos desde la carpeta 'public'
@@ -34,6 +34,7 @@ app.use(session({
     store
 }));
 
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
