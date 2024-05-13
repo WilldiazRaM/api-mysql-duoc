@@ -77,12 +77,15 @@ button[type="submit"]:hover {
                 <div class="card">
                     <div class="card-title">Registrar :</div>
                     <div class="card-body">
-                        <form action="/registrar" method="POST">
+                        <form action="/registrar" method="POST" id="registration-form">
                             <label for="email">Correo electrónico:</label>
                             <input type="email" id="email" name="email" required>
                             <br>
                             <label for="password">Contraseña:</label>
                             <input type="password" id="password" name="password" required>
+                            <br>
+                            <label for="confirm-password">Confirmar Contraseña:</label>
+                            <input type="password" id="confirm-password" name="confirm-password" required>
                             <br>
                             <button type="submit">Registrar</button>
                         </form>
@@ -92,5 +95,19 @@ button[type="submit"]:hover {
         </div>
     </div>
 </div>
+
+<script>
+    // Validar la coincidencia de las contraseñas
+    document.getElementById('registration-form').addEventListener('submit', function(event) {
+        var password = document.getElementById('password').value;
+        var confirmPassword = document.getElementById('confirm-password').value;
+
+        if (password !== confirmPassword) {
+            alert("Las contraseñas no coinciden. Por favor, inténtalo de nuevo.");
+            event.preventDefault(); // Evita que el formulario se envíe si las contraseñas no coinciden
+        }
+    });
+</script>
+
 </body>
 </html>
