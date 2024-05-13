@@ -1,34 +1,31 @@
 const db = require('../database');
 
-async function findByemail(email) {
+async function findByEmail(email) {
     try {
-        const rows = await db.query('SELECT * FROM usuarios WHERE email = ?', [email]);
-        if (rows.length === 0){
+        const rows = await db.query('SELECT * FROM Usuarios WHERE email = ?', [email]);
+        if (rows.length === 0) {
             return null;
         }
         return rows[0];
-    }catch(err){
+    } catch (err) {
         throw err;
     }
-}; 
+}
 
 async function createUser(user) {
     try {
         const { email, password } = user;
-        const query = 'INSERT INTO Login (email, password) VALUES (?, ?)';
-        const result = await db.query(query, [email, password]);
+        const query = 'INSERT INTO Usuarios (nombre, role, created_at) VALUES (?, ?, NOW())';
+        const result = await db.query(query, [email, 'cliente']); // Establece el rol como "cliente" por defecto
 
-        // Obtén el ID del usuario recién insertado (si lo necesitas)
+        
         const newUserId = result.insertId;
 
         // Retorna el nuevo usuario con el ID asignado
-        return { id: newUserId, email, password };
+        return { id: newUserId, email, role: 'cliente' }; // Retorna el rol del usuario como "cliente"
     } catch (error) {
         throw error;
     }
 }
 
-
-
-
-module.exports = { findByemail, createUser };
+module.exports = { findByEmail, createUser };

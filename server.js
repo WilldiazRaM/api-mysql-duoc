@@ -84,22 +84,23 @@ app.post('/registrar', async (req, res) => {
     const { email , password } = req.body;
 
     try {
-        const newUser = await createUser( { email, password });
+        const newUser = await createUser({ email, password });
 
-        if(newUser){
+        if (newUser) {
             res.status(201).json({
-                msg: "Usuario creado Exitosamente!",
+                msg: "Usuario creado exitosamente!",
                 user: newUser
-            })
+            });
         }
 
     } catch (error) {
         res.status(500).json({
-            msg: "Ocurrio un error al crear un usuario",
+            msg: "Ocurrió un error al crear un usuario",
             error: error.message
         });
     }
 });
+
 
 
 app.get('/logout', (req, res) => {
