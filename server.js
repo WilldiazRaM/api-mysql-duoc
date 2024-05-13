@@ -82,7 +82,7 @@ app.post("/login",
   passport.authenticate("local", { failureRedirect : "/login"}),
   (req, res) => {
     console.log("Usuario autenticado correctamente");
-    res.redirect("/login/profile.html");
+    res.redirect("/profile.html"); 
   }
 );
 
