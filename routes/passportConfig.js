@@ -1,20 +1,22 @@
 const passport = require('passport');
-const { Strategy } = require('passport-local');
 const LocalStrategy = require('passport-local').Strategy;
+const db = require('../utils/databaseUtils');
 
 passport.use(new LocalStrategy (
     { usernameField: 'email' }, // Especifica que el campo de usuario es el email
-    function(email, password, done) {
-        db.email.findByemail(email, (err, user) => {
-            if (err) { return done(err); } // Si hay un error, pasa el error a done
-            if (!user) { // Si no se encuentra el usuario
+    async function(email, password, done) {
+        try {
+            const user = await db.findByemail(email);
+            if (!user) {
                 return done(null, false, { message: 'Usuario no encontrado' });
             }
-            if (user.password !== password) { // Si las contraseñas no coinciden
+            if (user.password !== password) {
                 return done(null, false, { message: 'Contraseña incorrecta' });
             }
-            return done(null, user); // Si todo está bien, pasa el usuario a done
-        });
+            return done(null, user);
+        } catch (error) {
+            return done(error);
+        }
     }
 ));
 
@@ -22,9 +24,11 @@ passport.serializeUser((user, done) => {
     done(null, user.id);
 });
 
-passport.deserializeUser((id, done) => {
-    db.email.findByemail(id, function(err, user){
-        if(err)  return done(err);
-        done (null, user);
-    });
+passport.deserializeUser(async (id, done) => {
+    try {
+        const user = await db.findById(id);
+        done(null, user);
+    } catch (error) {
+        done(error);
+    }
 });
