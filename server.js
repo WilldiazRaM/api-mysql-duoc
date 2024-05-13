@@ -95,7 +95,7 @@ app.post('/registrar', async (req, res) => {
         }
 
     } catch (error) {
-        res.status(500).jason({
+        res.status(500).json({
             msg: "Ocurrio un error al crear un usuario",
             error: error.message
         });
