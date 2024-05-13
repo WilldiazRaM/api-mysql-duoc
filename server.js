@@ -93,7 +93,7 @@ app.get('/profile', (req, res) => {
 });
 
 app.post('/registrar', async (req, res) => {
-    const { email , password } = req.body;
+    const { email , password, nombre } = req.body;
 
     try {
         // Generar hash de la contraseña
