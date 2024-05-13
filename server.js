@@ -1,5 +1,5 @@
 const express = require('express');
-const pool = require('./database');
+const pool = require('database');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const helmet = require('helmet'); //Strict-transport-security'
