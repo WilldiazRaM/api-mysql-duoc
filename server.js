@@ -85,7 +85,7 @@ app.post('/registrar', async (req, res) => {
     const { email , password } = req.body;
 
     try {
-        const newUser = await createUser( { email, password });
+        const newUser = await pool.createUser( { email, password });
 
         if(newUser){
             res.status(201).json({
