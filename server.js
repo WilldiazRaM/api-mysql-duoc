@@ -66,10 +66,11 @@ app.use((req, res, next) => {
   });
 
 
-  app.get('/style.css', (req, res) => {
-    res.setHeader('Content-Type', 'text/css'); // Establecer el tipo MIME
-    res.sendFile(path.join(__dirname, 'public', 'style.css')); // Enviar el archivo CSS
+app.use((req, res, next) => {
+    res.setHeader('Content-Security-Policy', "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net");
+    next();
 });
+
 
 app.get('/registro.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'login', 'registro.html'));
