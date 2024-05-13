@@ -10,7 +10,7 @@ async function findByEmail(email) {
     } catch (err) {
         throw err;
     }
-}
+};
 
 async function createUser(user) {
     try {
@@ -29,7 +29,8 @@ async function createUser(user) {
         console.error("Error en createUser:", error);
         throw error;
     }
-}
+};
+
 
 
 module.exports = { findByEmail, createUser };
