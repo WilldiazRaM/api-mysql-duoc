@@ -1,8 +1,7 @@
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const pool = require('../database');
-
+const db = require('./utils/databaseUtils');
 
 
 passport.use(new LocalStrategy({
@@ -10,7 +9,7 @@ passport.use(new LocalStrategy({
     passwordField: 'password'
 }, async (email, password, done) => {
     try {
-        const user = await pool.findByEmail(email);
+        const user = await db.findByEmail(email);
         if (!user) {
             return done(null, false, { message: 'Usuario no encontrado' });
         }
