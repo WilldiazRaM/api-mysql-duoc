@@ -11,7 +11,7 @@ const app = express();
 const path = require('path'); 
 const { hashPassword } = require('./utils/passwordUtils');
 const { findByEmail , } = require('./utils/databaseUtils');
-
+ad
 
 // Configurar el motor de plantillas y la ubicación de las vistas
 app.set('view engine', 'ejs');
@@ -110,12 +110,13 @@ app.post('/registrar', async (req, res) => {
         console.log("Usuario insertado en la base de datos.");
 
         // Redireccionar al usuario a la página de inicio de sesión
-        res.redirect(307, "/login");  
-        } catch (error) {
+        res.redirect("/login");
+    } catch (error) {
         console.error("Error al registrar usuario:", error);
         res.status(500).json({ error: "Ocurrió un error al registrar el usuario" });
     }
 });
+
 
 // Ruta para servir el archivo login.html
 app.get('/login', (req, res) => {
