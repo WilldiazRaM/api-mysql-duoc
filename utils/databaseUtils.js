@@ -12,28 +12,22 @@ async function findByemail(email) {
     }
 }; 
 
-
 async function createUser(user) {
-    return new Promise((resolve, reject) => {
-        
-        const newUserId = records.length + 1;
+    try {
+        const { email, password } = user;
+        const query = 'INSERT INTO usuarios (email, password) VALUES (?, ?)';
+        const result = await db.query(query, [email, password]);
 
-        // Crea el nuevo usuario con el ID asignado
-        const newUser = {
-            id: newUserId,
-            ...user,
-        };
+        // Obtén el ID del usuario recién insertado (si lo necesitas)
+        const newUserId = result.insertId;
 
-        // Añade el nuevo usuario a la lista de registros
-        records.push(newUser);
-
-        // Muestra los registros actualizados en la consola (opcional)
-        console.log(records);
-
-        
-        resolve(newUser);
-    });
+        // Retorna el nuevo usuario con el ID asignado
+        return { id: newUserId, email, password };
+    } catch (error) {
+        throw error;
+    }
 }
+
 
 
 

@@ -6,6 +6,7 @@ const helmet = require('helmet'); //Strict-transport-security'
 const session = require('express-session');
 const passport = require('passport');
 const passportConfig = require('./routes/passportConfig'); 
+const { createUser } = require('./utils/databaseUtils');
 const store = new session.MemoryStore();
 const LocalStrategy = require('passport-local').Strategy;
 
@@ -80,7 +81,26 @@ app.get('/profile', (req, res) => {
     res.render('profile', { user: req.user }); 
 });
 
+app.post('/registrar', async (req, res) => {
+    const { email , password } = req.body;
 
+    try {
+        const newUser = await createUser( { email, password});
+
+        if(newUser){
+            res.status(201).json({
+                msg: "Usuario creado Exitosamente!",
+                user: newUser
+            })
+        }
+
+    } catch (error) {
+        res.status(500).jason({
+            msg: "Ocurrio un error al crear un usuario",
+            error: error.message
+        });
+    }
+});
 
 
 
