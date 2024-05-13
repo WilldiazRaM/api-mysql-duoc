@@ -64,7 +64,7 @@ app.use((req, res, next) => {
 
 // Ruta raíz que redirige al usuario a login.html
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'login.html'));
+    res.sendFile(path.join(__dirname, 'public', '/login/login.html'));
 });
 
 
