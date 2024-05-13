@@ -1,11 +1,6 @@
 const bcrypt = require('bcrypt');
 
 async function hashPassword(password) {
-    if (!password) {
-        console.error("La contraseña no puede estar vacía");
-        throw new Error("La contraseña no puede estar vacía");
-    }
-    
     try {
         const saltRounds = 10; // Número de rounds de hashing
         const hashedPassword = await bcrypt.hash(password, saltRounds);
