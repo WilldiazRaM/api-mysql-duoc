@@ -13,6 +13,7 @@ const flash = require('express-flash');
 const app = express();
 const path = require('path'); 
 const { hashPassword } = require('./utils/passwordUtils');
+const bcrypt = require('bcrypt');
 
 // Express para servir archivos estáticos desde la carpeta 'public'
 app.use(express.static('public'));
