@@ -69,9 +69,12 @@ app.use((req, res, next) => {
     res.sendFile(path.join(__dirname, 'public', 'style.css')); // Enviar el archivo CSS
 });
 
+app.get('/registro.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'login', 'registro.html'));
+});
 
 app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', '/login/login.html'));
+    res.sendFile(path.join(__dirname, 'public', 'login', 'login.html'));
 });
 
 
