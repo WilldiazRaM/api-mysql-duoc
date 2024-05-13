@@ -14,11 +14,10 @@ async function findByEmail(email) {
 
 async function createUser(user) {
     try {
-        const { nombre, email, password } = user;
+        const { email, password } = user;
         const query = 'INSERT INTO Usuarios (nombre, role, created_at) VALUES (?, ?, NOW())';
-        const result = await db.query(query, [nombre, 'cliente']); // Establece el rol como "cliente" por defecto
+        const result = await db.query(query, [null, 'cliente']); // Establece el nombre como null o deja fuera de la inserción
 
-        
         const newUserId = result.insertId;
 
         // Retorna el nuevo usuario con el ID asignado
@@ -27,5 +26,6 @@ async function createUser(user) {
         throw error;
     }
 }
+
 
 module.exports = { findByEmail, createUser };
