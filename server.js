@@ -11,7 +11,7 @@ const app = express();
 const path = require('path'); 
 const { hashPassword } = require('./utils/passwordUtils');
 const { findByEmail , } = require('./utils/databaseUtils');
-ad
+
 
 // Configurar el motor de plantillas y la ubicación de las vistas
 app.set('view engine', 'ejs');
