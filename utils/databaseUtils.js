@@ -16,7 +16,7 @@ async function createUser(user) {
     try {
         const { nombre, email, password, role } = user;
         const query = 'INSERT INTO Usuarios (nombre, email, password, role, created_at) VALUES (?, ?, ?, ?, NOW())';
-        const result = await db.query(query, [nombre, email, password, role]);
+        const result = await db.query(query, [nombre, email, password, role || 'cliente']); 
 
         const newUserId = result.insertId;
 
