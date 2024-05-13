@@ -10,7 +10,7 @@ const store = new session.MemoryStore();
 const app = express();
 const path = require('path'); 
 const { hashPassword } = require('./utils/passwordUtils');
-const { findByEmail } = require('./databaseUtils');
+const { findByEmail , } = require('./utils/databaseUtils');
 
 
 // Configurar el motor de plantillas y la ubicación de las vistas
