@@ -23,7 +23,7 @@ app.use(helmet());
 app.use(morgan('combined'));  // Guarda log de las solicitudes
 
 
-// Middleware para analizar el cuerpo de las solicitudes
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 
