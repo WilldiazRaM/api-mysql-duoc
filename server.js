@@ -116,6 +116,12 @@ app.get('/profile', (req, res) => {
 app.post('/registrar', async (req, res) => {
     const { email, password } = req.body;
     try {
+        // Validar la contraseña
+        if (!password) {
+            console.error("La contraseña no puede estar vacía");
+            return res.status(400).json({ error: "La contraseña no puede estar vacía" });
+        }
+
         // Generar hash de la contraseña
         const hashedPassword = await hashPassword(password);
 
