@@ -25,7 +25,7 @@ function createUser(user) {
                 console.log("ID de usuario creado:", newUserId);
 
                 // Retorna el nuevo usuario con el ID asignado
-                return resolve({ id: newUserId, nombre, email, role: role || 'cliente', created_at: new Date() });
+                return resolve({ id: newUserId, nombre, email, password, role: role || 'cliente', created_at: new Date() });
             })
             .catch(error => {
                 console.error("Error en createUser:", error);
