@@ -47,6 +47,7 @@ async function createUser(email, password) {
                     return reject(error);
                 }
                 const newUserId = result.insertId;
+                // Resolver con los datos del usuario registrado
                 resolve({ id: newUserId, email, role, created_at: new Date() });
             });
         } catch (error) {
@@ -54,7 +55,7 @@ async function createUser(email, password) {
             reject(error);
         }
     });
-}
+};
 
 async function authenticateUser(email, password) {
     try {
