@@ -61,16 +61,13 @@ app.use((req, res, next) => {
   });
 
 
-app.get('/', (req, res, next) => {
-    res.send("HelloWorld from Stgo, CL maXde With ❤");
-});
 
 
 
 app.post("/login",
   passport.authenticate("local", { failureRedirect : "/login"}),
   (req, res) => {
-    res.redirect("profile");
+    res.redirect("/profile");
   }
 );
 
