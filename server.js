@@ -117,8 +117,7 @@ app.post('/registrar', async (req, res) => {
     const { email, password } = req.body;
     try {
         // Generar hash de la contraseña
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
+        const hashedPassword = await hashPassword(password);
 
         // Insertar usuario en la base de datos
         const query = 'INSERT INTO Usuarios (email, password) VALUES (?, ?)';
@@ -131,7 +130,6 @@ app.post('/registrar', async (req, res) => {
         res.status(500).json({ error: "Ocurrió un error al registrar el usuario" });
     }
 });
-
 
 app.get('/logout', (req, res) => {
     req.logout();
