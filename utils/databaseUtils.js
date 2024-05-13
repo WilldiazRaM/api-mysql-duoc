@@ -17,6 +17,23 @@ async function findByEmail(email) {
 }
 
 
+async function findUserById(id) {
+    return new Promise((resolve, reject) => {
+        pool.query('SELECT * FROM Usuarios WHERE id = ?', [id], (err, rows) => {
+            if (err) {
+                reject(err); // Rechazar la promesa si hay un error en la consulta
+            } else {
+                if (rows.length === 0) {
+                    resolve(null); // Resolver la promesa con null si no se encuentra ningún usuario
+                } else {
+                    resolve(rows[0]); // Resolver la promesa con el primer usuario encontrado
+                }
+            }
+        });
+    });
+};
+
+
 function createUser(user) {
     return new Promise((resolve, reject) => {
         const { nombre, email, password, role } = user;
@@ -44,4 +61,4 @@ function createUser(user) {
 
 
 
-module.exports = { findByEmail, createUser };
+module.exports = { findByEmail, createUser, findUserById };
