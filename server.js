@@ -141,6 +141,13 @@ app.get('/login', (req, res) => {
 });
 
 
+// Middleware de manejo de errores global
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something went wrong!');
+});
+
+
 app.listen(PORT, () => {
     console.log(`Server is listening on ${PORT}`);
 
