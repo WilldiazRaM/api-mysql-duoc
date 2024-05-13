@@ -27,7 +27,7 @@ app.use(bodyParser.json());
 const PORT = process.env.PORT || 4001;
 
 app.use(session({
-    secret: process.env.SESSION_SECRET || generateSecret(),
+    secret: process.env.SESSION_SECRET ,
     resave: false,
     saveUninitialized: false,
     store
@@ -49,7 +49,7 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
-    res.setHeader('X-Frame-Options', 'deny');
+    res.setHeader('X-Frame-Options', 'SAMEORIGIN');
     next();
 });
 
