@@ -121,14 +121,3 @@ app.listen(PORT, () => {
 
 });
 
-// Cerrar el pool de conexiones al finalizar la aplicación
-process.on('SIGINT', () => {
-    pool.end((err) => {
-        if (err) {
-            console.error('Error al cerrar el pool de conexiones:', err);
-        } else {
-            console.log('Pool de conexiones cerrado correctamente');
-        }
-        process.exit(0);
-    });
-});
