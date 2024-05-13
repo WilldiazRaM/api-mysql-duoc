@@ -24,7 +24,7 @@ app.use(bodyParser.json());
 
 
 
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.PORT || 4001;
 
 app.use(session({
     secret: process.env.SESSION_SECRET || generateSecret(),
@@ -85,6 +85,7 @@ app.post('/registrar', async (req, res) => {
 
     try {
         const newUser = await createUser({ email, password });
+        
 
         if (newUser) {
             res.status(201).json({
