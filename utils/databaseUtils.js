@@ -2,7 +2,7 @@ const pool = require('../database');
 
 async function findByEmail(email) {
     try {
-        const rows = await db.query('SELECT * FROM Usuarios WHERE email = ?', [email]);
+        const rows = await pool.query('SELECT * FROM Usuarios WHERE email = ?', [email]);
         if (rows.length === 0) {
             return null;
         }
@@ -19,7 +19,7 @@ function createUser(user) {
         const query = 'INSERT INTO Usuarios (nombre, email, password, role, created_at) VALUES (?, ?, ?, ?, NOW())';
         console.log("Query SQL:", query);
         
-        // Se asume que pool.query devuelve una promesa
+        
         pool.query(query, [nombre, email, password, role || 'cliente'], (error, result) => {
             if (error) {
                 console.error("Error en createUser:", error);
