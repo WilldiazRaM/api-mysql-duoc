@@ -28,6 +28,7 @@ const PORT = process.env.PORT || 4001;
 
 app.use(session({
     secret: process.env.SESSION_SECRET ,
+    cookie: { maxAge: 86400000, secure: true },
     resave: false,
     saveUninitialized: false,
     store
@@ -102,7 +103,7 @@ app.post('/registrar', async (req, res) => {
 
 app.get('/logout', (req, res) => {
     req.logout();
-    res.redirect('/login');
+    res.redirect('/login');git
 })
 
 
