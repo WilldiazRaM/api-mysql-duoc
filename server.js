@@ -103,7 +103,10 @@ app.post('/registrar', async (req, res) => {
 });
 
 
-
+app.get('/logout', (req, res) => {
+    req.logout();
+    res.redirect('/login');
+})
 
 
 
