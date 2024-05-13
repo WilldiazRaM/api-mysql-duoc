@@ -108,6 +108,8 @@ app.get('/profile', (req, res) => {
 app.post('/registrar', async (req, res) => {
     const { email, password } = req.body;
     try {
+        console.log("Datos de la solicitud:", req.body);
+
         // Validar la contraseña
         if (!password) {
             console.error("La contraseña no puede estar vacía");
@@ -115,11 +117,15 @@ app.post('/registrar', async (req, res) => {
         }
 
         // Generar hash de la contraseña
+        console.log("Generando hash de la contraseña...");
         const hashedPassword = await hashPassword(password);
+        console.log("Hash de la contraseña generado:", hashedPassword);
 
         // Insertar usuario en la base de datos
+        console.log("Insertando usuario en la base de datos...");
         const query = 'INSERT INTO Usuarios (email, password) VALUES (?, ?)';
         await pool.query(query, [email, hashedPassword]);
+        console.log("Usuario insertado en la base de datos.");
 
         // Redireccionar al usuario a la página de inicio de sesión
         res.redirect("/login");
