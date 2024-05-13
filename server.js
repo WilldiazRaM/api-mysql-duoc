@@ -78,11 +78,33 @@ app.get('/login', (req, res) => {
 });
 
 
-app.post('/login', passport.authenticate('local', { failureRedirect: '/login' }), (req, res) => {
-    res.redirect('/login/profile.html');
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        // Buscar al usuario por su correo electrónico
+        const user = await findByEmail(email);
+
+        // Verificar si se encontró al usuario
+        if (!user) {
+            // Si el usuario no existe, redirigir al formulario de inicio de sesión
+            return res.redirect("/login");
+        }
+
+        // Verificar la contraseña
+        const passwordMatch = await bcrypt.compare(password, user.password);
+
+        if (!passwordMatch) {
+            // Si la contraseña no coincide, redirigir al formulario de inicio de sesión
+            return res.redirect("/login");
+        }
+
+        // Si la autenticación es exitosa, renderizar el perfil del usuario
+        res.render("profile", { user });
+    } catch (error) {
+        console.error("Error durante el inicio de sesión:", error);
+        res.status(500).json({ error: "Ocurrió un error durante el inicio de sesión" });
+    }
 });
-
-
 
 
 app.get('/profile', (req, res) => {
