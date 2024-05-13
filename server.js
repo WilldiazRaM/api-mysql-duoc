@@ -1,4 +1,5 @@
 const express = require('express');
+const bcrypt = require('bcrypt');
 const pool = require('./database');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
@@ -13,7 +14,7 @@ const flash = require('express-flash');
 const app = express();
 const path = require('path'); 
 const { hashPassword } = require('./utils/passwordUtils');
-const bcrypt = require('bcrypt');
+
 
 // Express para servir archivos estáticos desde la carpeta 'public'
 app.use(express.static('public'));
