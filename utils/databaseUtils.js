@@ -1,5 +1,5 @@
 const pool = require('../database');
-const { hashPassword, comparePasswords } = require('passwordUtils');
+const { hashPassword, comparePasswords } = require('./passwordUtils'); 
 
 async function findByEmail(email) {
     return new Promise((resolve, reject) => {
