@@ -15,7 +15,7 @@ async function findByemail(email) {
 async function createUser(user) {
     try {
         const { email, password } = user;
-        const query = 'INSERT INTO usuarios (email, password) VALUES (?, ?)';
+        const query = 'INSERT INTO Login (email, password) VALUES (?, ?)';
         const result = await db.query(query, [email, password]);
 
         // Obtén el ID del usuario recién insertado (si lo necesitas)
