@@ -24,7 +24,7 @@ app.use(bodyParser.json());
 
 
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 10000;
 
 app.use(session({
     secret: process.env.SESSION_SECRET || generateSecret(),
@@ -85,7 +85,7 @@ app.post('/registrar', async (req, res) => {
     const { email , password } = req.body;
 
     try {
-        const newUser = await createUser( { email, password});
+        const newUser = await createUser( { email, password });
 
         if(newUser){
             res.status(201).json({
@@ -110,8 +110,25 @@ app.get('/logout', (req, res) => {
 
 
 
+
+
+
+
+
+
 app.listen(PORT, () => {
     console.log(`Server is listening on ${PORT}`);
 
 });
 
+// Cerrar el pool de conexiones al finalizar la aplicación
+process.on('SIGINT', () => {
+    pool.end((err) => {
+        if (err) {
+            console.error('Error al cerrar el pool de conexiones:', err);
+        } else {
+            console.log('Pool de conexiones cerrado correctamente');
+        }
+        process.exit(0);
+    });
+});
