@@ -109,13 +109,14 @@ app.post('/registrar', async (req, res) => {
         await pool.query(query, [email, hashedPassword]);
         console.log("Usuario insertado en la base de datos.");
 
-        // Redireccionar al usuario a la página de inicio de sesión
-        res.redirect("/login");
+        // Devolver un mensaje JSON de éxito
+        res.status(201).json({ message: "Usuario registrado exitosamente" });
     } catch (error) {
         console.error("Error al registrar usuario:", error);
         res.status(500).json({ error: "Ocurrió un error al registrar el usuario" });
     }
 });
+
 
 
 // Ruta para servir el archivo login.html
