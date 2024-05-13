@@ -86,14 +86,12 @@ app.post('/registrar', async (req, res) => {
     try {
         const newUser = await createUser({ email, password });
         
-
         if (newUser) {
             res.status(201).json({
                 msg: "Usuario creado exitosamente!",
                 user: newUser
             });
         }
-
     } catch (error) {
         res.status(500).json({
             msg: "Ocurrió un error al crear un usuario",
@@ -101,8 +99,6 @@ app.post('/registrar', async (req, res) => {
         });
     }
 });
-
-
 
 app.get('/logout', (req, res) => {
     req.logout();
