@@ -71,11 +71,6 @@ app.use((req, res, next) => {
     next();
 });
 
-
-app.get('/registro.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'login', 'registro.html'));
-});
-
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'login', 'login.html'));
 });
