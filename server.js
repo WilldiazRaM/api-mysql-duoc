@@ -13,7 +13,12 @@ const { hashPassword } = require('./utils/passwordUtils');
 
 
 // Express para servir archivos estáticos desde la carpeta 'public'
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Configurar el motor de plantillas y la ubicación de las vistas
+app.set('view engine', 'html'); // Establecer el motor de plantillas como HTML
+app.set('views', path.join(__dirname, 'public', 'login')); // Establecer la ubicación de las vistas
+
 
 app.use(helmet());
 app.use(morgan('combined'));  // Guarda log de las solicitudes
