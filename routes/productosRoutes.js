@@ -1,7 +1,7 @@
 const pool = require('../database');
 const express = require('express');
 const router = express.Router();
-const { createProducto } = require('../utils/productoUtils');
+const { createProducto, obtenerProductos, obtenerProductoPorId } = require('../utils/productoUtils');
 
 
 //Crear un producto
