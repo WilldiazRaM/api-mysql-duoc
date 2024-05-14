@@ -56,6 +56,11 @@ La aplicación utiliza varios middleware de seguridad para protegerse contra ame
 
 ![Pantallazo de la seguridad de la API en Security Headers](images/imagen_seguridad_api_headers.jpeg)
 
+## Contraseñas Cifradas
+
+Las contraseñas de los usuarios se guardan cifradas utilizando el algoritmo bcrypt. (SHA-256)
+
+
 ## Despliegue
 
 La aplicación está alojada en Render.com, un servicio de alojamiento en la nube. 
