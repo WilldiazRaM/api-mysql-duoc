@@ -8,7 +8,7 @@ const passport = require('passport');
 const path = require('path');
 const authRoutes = require('./routes/authRoutes');
 const store = new session.MemoryStore();
-const productosRoutes = require('./utils/productoUtils');
+const productosRoutes = require('./utils/productosRoutes');
 
 
 
