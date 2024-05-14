@@ -68,3 +68,5 @@ router.delete('/carrito/:id_detalle', async (req, res) => {
         res.status(500).json({ error: "Ocurrió un error al eliminar el producto del carrito" });
     }
 });
+
+module.exports = router;
