@@ -9,7 +9,7 @@ const passport = require('passport');
 const store = new session.MemoryStore();
 const app = express();
 const path = require('path'); 
-const { hashPassword, requireAuth } = require('./utils/passwordUtils');
+const { hashPassword } = require('./utils/passwordUtils');
 const { findByEmail , authenticateUser } = require('./utils/databaseUtils');
 
 
@@ -79,7 +79,7 @@ app.post('/login', async (req, res) => {
 
 
 
-app.get('/profile', requireAuth ,(req, res) => {
+app.get('/profile', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'login', 'profile.html')); 
 });
 
