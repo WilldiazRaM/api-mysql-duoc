@@ -9,8 +9,8 @@ const path = require('path');
 const authRoutes = require('./routes/authRoutes');
 const store = new session.MemoryStore();
 const productosRoutes = require('./routes/productosRoutes');
-
-
+const pagosRouter = require('./routes/pagosRoutes');
+const historialesRoutes = require('./routes/historialRoutes');
 
 // Configurar el motor de plantillas y la ubicación de las vistas
 app.set('view engine', 'ejs');
@@ -63,6 +63,8 @@ app.use('/', authRoutes);
 app.use('/productos', productosRoutes);
 // Rutas de pagos
 app.use('/', pagosRouter); 
+// Rutas Historiales
+app.use('/historial-compras', historialesRoutes);
 
 
 
