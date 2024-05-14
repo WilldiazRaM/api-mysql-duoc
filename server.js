@@ -61,7 +61,8 @@ app.get('/login', (req, res) => {
 app.use('/', authRoutes);
 //Rutas Producto
 app.use('/productos', productosRoutes);
-
+// Rutas de pagos
+app.use('/', pagosRouter); 
 
 
 
