@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const { authenticateUser } = require('../utils/databaseUtils');
-const { hashPassword, requireAuth } = require('./utils/passwordUtils');
+const { hashPassword, requireAuth } = require('../utils/passwordUtils');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secretoSuperSeguro';
 
