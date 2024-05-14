@@ -38,19 +38,19 @@ router.get('/:id', async (req, res) => {
 
     try {
         const productoResult = await pool.query('SELECT * FROM Productos WHERE id = ?', [id]);
-        const producto = productoResult.rows; // Accede a los resultados reales
+        const producto = productoResult.rows[0]; // Accede al primer resultado (si existe)
 
-        if (!producto || producto.length === 0) {
+        if (!producto) {
             return res.status(404).json({ error: "Producto no encontrado" });
         }
 
-        // Como solo se espera un producto, no es necesario acceder a producto[0]
-        res.json(producto); // Aquí retornamos todo el producto encontrado
+        res.json(producto);
     } catch (error) {
         console.error("Error al obtener producto por ID:", error);
         res.status(500).json({ error: "Ocurrió un error al obtener el producto" });
     }
 });
+
 
 
 
