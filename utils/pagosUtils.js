@@ -35,5 +35,24 @@ function obtenerPagos() {
     });
 }
 
+// Función para obtener un pago por su ID
+async function getPagoById(id) {
+    try {
+        // Consultar la base de datos para obtener el pago con el ID especificado
+        const pago = await pool.query('SELECT * FROM Ventas WHERE id = ?', [id]);
+        
+        // Verificar si se encontró algún pago con el ID proporcionado
+        if (pago.length === 0) {
+            throw new Error("Pago no encontrado");
+        }
+        
+        // Devolver el pago encontrado
+        return pago[0];
+    } catch (error) {
+        // Si hay algún error, rechazar la promesa con el mensaje de error
+        throw new Error("Ocurrió un error al obtener el pago: " + error.message);
+    }
+}
 
-module.exports = { generateBuyOrder, generateSessionId, obtenerPagos};
+
+module.exports = { generateBuyOrder, generateSessionId, obtenerPagos, getPagoById};

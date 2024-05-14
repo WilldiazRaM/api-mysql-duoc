@@ -2,7 +2,7 @@ const pool = require('../database');
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
-const { generateBuyOrder, generateSessionId, obtenerPagos } = require('../utils/pagosUtils');
+const { generateBuyOrder, generateSessionId, obtenerPagos, getPagoById } = require('../utils/pagosUtils');
 
 //Crear un pago TRANSBANk
 router.post('/pagos', async (req, res) => {
@@ -54,18 +54,20 @@ router.get('/pagos', async (req, res) => {
 
 
 
+// Ruta para obtener un pago por su ID
 router.get('/pagos/:id', async (req, res) => {
     const { id } = req.params;
 
     try {
-        const pago = await pool.query('SELECT * FROM Ventas WHERE id = ?', [id]);
-        if (pago.length === 0) {
-            return res.status(404).json({ error: "Pago no encontrado" });
-        }
-        res.status(200).json(pago[0]);
+        // Llamar a la función para obtener el pago por su ID
+        const pago = await getPagoById(id);
+        
+        // Si se encontró el pago, devolverlo como respuesta
+        res.status(200).json(pago);
     } catch (error) {
         console.error("Error al obtener el pago:", error);
-        res.status(500).json({ error: "Ocurrió un error al obtener el pago" });
+        // Si ocurre algún error, devolver un estado 500 con el mensaje de error
+        res.status(500).json({ error: error.message });
     }
 });
 
