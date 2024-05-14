@@ -1,7 +1,6 @@
 const pool = require('../database');
 const express = require('express');
 const router = express.Router();
-const { requireAuth } = require('../utils/passwordUtils');
 const { createProducto } = require('../utils/productoUtils');
 
 
