@@ -9,8 +9,8 @@ const passport = require('passport');
 const store = new session.MemoryStore();
 const app = express();
 const path = require('path'); 
-const { hashPassword } = require('./utils/passwordUtils');
-const { findByEmail , } = require('./utils/databaseUtils');
+const { hashPassword, requireAuth } = require('./utils/passwordUtils');
+const { findByEmail , authenticateUser } = require('./utils/databaseUtils');
 
 
 // Configurar el motor de plantillas y la ubicación de las vistas
@@ -57,25 +57,19 @@ app.use((req, res, next) => {
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
     try {
-        // Buscar al usuario por su correo electrónico
-        const user = await findByEmail(email);
+        // Autenticar al usuario
+        const user = await authenticateUser(email, password);
 
-        // Verificar si se encontró al usuario
+        // Verificar si se encontró al usuario y las contraseñas coinciden
         if (!user) {
-            // Si el usuario no existe, redirigir al formulario de inicio de sesión
-            return res.redirect("/login");
+            return res.status(401).json({ error: "Credenciales incorrectas" });
         }
 
-        // Verificar la contraseña
-        const passwordMatch = await bcrypt.compare(password, user.password);
+        // Almacenar información de la sesión
+        req.session.userId = user.id;
 
-        if (!passwordMatch) {
-            // Si la contraseña no coincide, redirigir al formulario de inicio de sesión
-            return res.redirect("/login");
-        }
-
-        // Si la autenticación es exitosa, renderizar el perfil del usuario
-        res.render("profile", { user });
+        // Redirigir al usuario a su perfil
+        res.redirect('/profile');
     } catch (error) {
         console.error("Error durante el inicio de sesión:", error);
         res.status(500).json({ error: "Ocurrió un error durante el inicio de sesión" });
@@ -83,7 +77,8 @@ app.post('/login', async (req, res) => {
 });
 
 
-app.get('/profile', (req, res) => {
+
+app.get('/profile', requireAuth ,(req, res) => {
     res.render('profile', { user: req.user }); 
 });
 
@@ -123,6 +118,7 @@ app.post('/registrar', async (req, res) => {
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'login', 'login.html'));
 });
+
 
 
 
