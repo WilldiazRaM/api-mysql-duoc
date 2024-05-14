@@ -2,7 +2,7 @@ const pool = require('../database');
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
-const { generateBuyOrder, generateSessionId } = require('../utils/pagosUtils');
+const { generateBuyOrder, generateSessionId, obtenerPagos } = require('../utils/pagosUtils');
 
 //Crear un pago TRANSBANk
 router.post('/pagos', async (req, res) => {
@@ -44,16 +44,10 @@ router.post('/pagos', async (req, res) => {
 //Obtener todo los pagos:
 router.get('/pagos', async (req, res) => {
     try {
-        const pagos = await pool.query('SELECT * FROM Ventas');
-        const pagosData = pagos.map(pago => ({
-            id: pago.id,
-            id_usuario: pago.id_usuario,
-            monto: pago.monto,
-            // Agrega más campos según sea necesario
-        }));
-        res.status(200).json(pagosData);
+        const pagos = await obtenerPagos();
+        res.status(200).json(pagos);
     } catch (error) {
-        console.error("Error al obtener los pagos:", error); 
+        console.error("Error al obtener los pagos:", error);
         res.status(500).json({ error: "Ocurrió un error al obtener los pagos" });
     }
 });

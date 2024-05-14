@@ -17,4 +17,23 @@ function generateSessionId() {
 }
 
 
-module.exports = { generateBuyOrder, generateSessionId};
+function obtenerPagos() {
+    return new Promise((resolve, reject) => {
+        pool.query('SELECT * FROM Ventas', (error, pagos) => {
+            if (error) {
+                console.error("Error al obtener los pagos:", error);
+                return reject(error);
+            }
+            const pagosData = pagos.map(pago => ({
+                id: pago.id,
+                id_usuario: pago.id_usuario,
+                monto: pago.monto,
+                // Agrega más campos según sea necesario
+            }));
+            resolve(pagosData);
+        });
+    });
+}
+
+
+module.exports = { generateBuyOrder, generateSessionId, obtenerPagos};
