@@ -2,7 +2,7 @@ const pool = require('../database');
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
-const {  generateBuyOrder, generateSessionId } = require('../utils/pagosUtils');
+const { generateBuyOrder, generateSessionId } = require('../utils/pagosUtils');
 
 //Crear un pago TRANSBANk
 router.post('/pagos', async (req, res) => {
