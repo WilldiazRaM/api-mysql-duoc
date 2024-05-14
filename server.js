@@ -11,7 +11,7 @@ const store = new session.MemoryStore();
 const productosRoutes = require('./routes/productosRoutes');
 const pagosRouter = require('./routes/pagosRoutes');
 const historialesRoutes = require('./routes/historialRoutes');
-const carritoRouter = require('./routes/carritoRouter');
+const carritoRouter = require('./routes/carritoRouters');
 const cors = require('cors');
 
 
