@@ -9,7 +9,7 @@ const passport = require('passport');
 const store = new session.MemoryStore();
 const app = express();
 const path = require('path'); 
-const { hashPassword } = require('./utils/passwordUtils');
+const { hashPassword, requireAuth } = require('./utils/passwordUtils');
 const { authenticateUser } = require('./utils/databaseUtils');
 const jwt = require('jsonwebtoken');
 
