@@ -21,7 +21,7 @@ router.post('/', async (req, res) => {
 
 router.get('/', async (req, res) => {
     try {
-        const productosResult = await pool.query('SELECT Productos.id, Productos.nombre, Productos.precio, Productos.descripcion, Productos.stock, CategoriasProductos.nombre AS nombre_categoria FROM Productos INNER JOIN CategoriasProductos ON Productos.categoria_id = CategoriasProductos.id');
+        const productosResult = await pool.query('SELECT * FROM Productos;');
         const productos = productosResult.rows; // Accede a los resultados reales
         
         res.status(200).json(productos);
