@@ -22,7 +22,15 @@ router.post('/', async (req, res) => {
 // Obtener todos los productos
 router.get('/', async (req, res) => {
     try {
-        const productos = await pool.query('SELECT id, nombre, precio, descripcion, stock, categoria_id FROM Productos');
+        const productosResult = await pool.query('SELECT id, nombre, precio, descripcion, stock, categoria_id FROM Productos');
+        const productos = productosResult.map(producto => ({
+            id: producto.id,
+            nombre: producto.nombre,
+            precio: producto.precio,
+            descripcion: producto.descripcion,
+            stock: producto.stock,
+            categoria_id: producto.categoria_id
+        }));
         res.json(productos);
     } catch (error) {
         console.error("Error al obtener productos:", error);
