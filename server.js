@@ -85,7 +85,7 @@ app.post('/login', async (req, res) => {
 
 // Ruta protegida que requiere autenticación mediante token JWT
 app.get('/profile', requireAuth, (req, res) => {
-    // El usuario está autenticado, puedes acceder a req.user para obtener información del usuario
+    
     res.json({ message: "Perfil protegido", user: req.user });
 });
 
