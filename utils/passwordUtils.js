@@ -23,4 +23,22 @@ async function comparePasswords(plainPassword, hashedPassword) {
 };
 
 
-module.exports = { hashPassword, comparePasswords };
+// Middleware para verificar el token JWT en rutas protegidas
+function requireAuth(req, res, next) {
+    const token = req.headers.authorization;
+
+    if (!token) {
+        return res.status(401).json({ message: "Token de autorización no proporcionado" });
+    }
+
+    jwt.verify(token, JWT_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(403).json({ message: "Token inválido" });
+        }
+
+        // Agrega el usuario decodificado al objeto de solicitud para que pueda ser utilizado por otras rutas
+        req.user = decoded;
+        next();
+    });
+}
+module.exports = { hashPassword, comparePasswords, requireAuth };

@@ -11,8 +11,9 @@ const app = express();
 const path = require('path'); 
 const { hashPassword } = require('./utils/passwordUtils');
 const { findByEmail , authenticateUser } = require('./utils/databaseUtils');
+const jwt = require('jsonwebtoken');
 
-
+const JWT_SECRET = process.env.JWT_SECRET || 'secretoSuperSeguro';
 // Configurar el motor de plantillas y la ubicación de las vistas
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -54,7 +55,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// Ruta para el inicio de sesión
+
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -63,8 +64,11 @@ app.post('/login', async (req, res) => {
 
         // Verificar si la autenticación fue exitosa
         if (user) {
-            // Si la autenticación es exitosa, enviar un mensaje JSON con un mensaje de éxito y el correo electrónico del usuario
-            res.status(200).json({ message: "Autenticación exitosa", email: user.email });
+            // Generar un token JWT
+            const token = jwt.sign({ email: user.email }, JWT_SECRET, { expiresIn: '1h' });
+
+            // Devolver el token como parte de la respuesta de inicio de sesión
+            res.status(200).json({ message: "Autenticación exitosa", token });
         } else {
             // Si la autenticación falla, enviar un mensaje JSON con un mensaje de error
             res.status(401).json({ message: "Credenciales incorrectas" });
@@ -79,8 +83,10 @@ app.post('/login', async (req, res) => {
 
 
 
-app.get('/profile', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'login', 'profile.html')); 
+// Ruta protegida que requiere autenticación mediante token JWT
+app.get('/profile', requireAuth, (req, res) => {
+    // El usuario está autenticado, puedes acceder a req.user para obtener información del usuario
+    res.json({ message: "Perfil protegido", user: req.user });
 });
 
 app.post('/registrar', async (req, res) => {
