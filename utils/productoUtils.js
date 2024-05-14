@@ -52,7 +52,21 @@ async function obtenerProductos() {
 }
 
 
+// Función para obtener un producto por su ID
+async function obtenerProductoPorId(id) {
+    return new Promise((resolve, reject) => {
+        pool.query('SELECT * FROM Productos WHERE id = ?', [id], (error, result) => {
+            if (error) {
+                console.error("Error al obtener producto por ID:", error);
+                return reject(error);
+            }
+            const producto = result.rows[0]; // Accede al primer resultado (si existe)
+            resolve(producto);
+        });
+    });
+}
+
 
 module.exports = {
-    createProducto, obtenerProductos
+    createProducto, obtenerProductos, obtenerProductoPorId
 };

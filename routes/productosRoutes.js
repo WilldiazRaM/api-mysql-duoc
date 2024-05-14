@@ -30,18 +30,15 @@ router.get('/', async (req, res) => {
 });
 
 
-// Obtener un producto por su ID
+// Ruta para obtener un producto por su ID
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
 
     try {
-        const productoResult = await pool.query('SELECT * FROM Productos WHERE id = ?', [id]);
-        const producto = productoResult.rows[0]; // Accede al primer resultado (si existe)
-
+        const producto = await obtenerProductoPorId(id);
         if (!producto) {
             return res.status(404).json({ error: "Producto no encontrado" });
         }
-
         res.json(producto);
     } catch (error) {
         console.error("Error al obtener producto por ID:", error);
