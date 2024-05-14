@@ -54,27 +54,28 @@ app.use((req, res, next) => {
     next();
 });
 
+// Ruta para el inicio de sesión
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
     try {
         // Autenticar al usuario
         const user = await authenticateUser(email, password);
 
-        // Verificar si se encontró al usuario y las contraseñas coinciden
-        if (!user) {
-            return res.status(401).json({ error: "Credenciales incorrectas" });
+        // Verificar si la autenticación fue exitosa
+        if (user) {
+            // Si la autenticación es exitosa, enviar un mensaje JSON con un mensaje de éxito y el correo electrónico del usuario
+            res.status(200).json({ message: "Autenticación exitosa", email: user.email });
+        } else {
+            // Si la autenticación falla, enviar un mensaje JSON con un mensaje de error
+            res.status(401).json({ message: "Credenciales incorrectas" });
         }
-
-        // Almacenar información de la sesión
-        req.session.userId = user.id;
-
-        // Redirigir al usuario a su perfil
-        res.redirect('/profile');
     } catch (error) {
+        // Manejar errores
         console.error("Error durante el inicio de sesión:", error);
         res.status(500).json({ error: "Ocurrió un error durante el inicio de sesión" });
     }
 });
+
 
 
 
