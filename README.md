@@ -2,13 +2,9 @@
 
 Este repositorio contiene una aplicación web desarrollada con Node.js y Express, utilizando una base de datos MySQL alojada en AWS. La aplicación proporciona servicios para gestionar usuarios, productos, ventas, pagos, historial de compras y carrito de compras.
 
-### Proyecto Duoc-Uc:
-### Integrantes del Grupo:
+### Proyecto Duoc-Uc
 
-- Rodrigo Muñoz
-- Cristhoper Sanchez
-- Williams Diaz
-- Profesora: Ana Karina Villagran
+Este proyecto es parte del curso de Desarrollo de Aplicaciones Web en la Universidad Duoc-UC.
 
 ## Configuración de la Base de Datos
 
@@ -23,7 +19,6 @@ La base de datos utilizada en esta aplicación cuenta con las siguientes tablas:
 - **Logs**: Contiene registros de eventos y acciones importantes dentro de la aplicación.
 
 ![Modelo de Base de Datos:](images/basedatos1.svg)
-
 
 ## Ejecución del Servidor
 
@@ -54,21 +49,29 @@ La aplicación utiliza varios middleware de seguridad para protegerse contra ame
 - `express-session`: Gestiona las sesiones de usuario.
 - `passport`: Middleware de autenticación para Node.js.
 
-![Pantallazo de la seguridad de la API en Security Headers](images/imagen_seguridad_api_headers.jpeg)
+![Pantallazo de la seguridad de la API en Security Headers](images/imagen_seguridad_api_headers.jpg)
+
+## Integración con Transbank
+
+Los pagos en esta aplicación están integrados con la API de Transbank para procesar transacciones de manera segura y eficiente en modo integracion.
 
 ## Contraseñas Cifradas
 
-Las contraseñas de los usuarios se guardan cifradas utilizando el algoritmo bcrypt. (SHA-256)
-
+Las contraseñas de los usuarios se guardan cifradas utilizando el algoritmo bcrypt.
 
 ## Despliegue
 
-La aplicación está alojada en Render.com, un servicio de alojamiento en la nube. 
+La aplicación está alojada en Render.com, un servicio de alojamiento en la nube. Para desplegar la aplicación en tu propio entorno de Render.com, sigue las instrucciones de Render.com para desplegar una aplicación de Node.js.
 
 ## Contribución
 
 Si deseas contribuir a este proyecto, siéntete libre de hacer un fork del repositorio y enviar un pull request con tus mejoras.
 
-## Licencia
 
-Este proyecto está licenciado bajo la [Licencia MIT](LICENSE).
+
+### Integrantes del Grupo:
+
+- Rodrigo Muñoz
+- Cristhoper Sanchez
+- Williams Diaz
+- Profesora: Ana Karina Villagran
