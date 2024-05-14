@@ -22,13 +22,13 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const productosResult = await pool.query('SELECT Productos.id, Productos.nombre, Productos.precio, Productos.descripcion, Productos.stock, CategoriasProductos.nombre AS nombre_categoria FROM Productos INNER JOIN CategoriasProductos ON Productos.categoria_id = CategoriasProductos.id');
-        res.status(200).json(productosResult);
+        const productos = productosResult.rows; // Accede a los resultados reales
+        res.status(200).json(productos);
     } catch (error) {
         console.error("Error al obtener productos:", error);
         res.status(500).json({ error: "Ocurrió un error al obtener los productos" });
     }
 });
-
 
 
 
