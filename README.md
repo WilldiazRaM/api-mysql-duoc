@@ -2,6 +2,14 @@
 
 Este repositorio contiene una aplicación web desarrollada con Node.js y Express, utilizando una base de datos MySQL alojada en AWS. La aplicación proporciona servicios para gestionar usuarios, productos, ventas, pagos, historial de compras y carrito de compras.
 
+### Proyecto Duoc-Uc:
+### Integrantes del Grupo:
+
+- Rodrigo Muñoz
+- Cristhoper Sanchez
+- Williams Diaz
+- Profesora: Ana Karina Villagran
+
 ## Configuración de la Base de Datos
 
 La base de datos utilizada en esta aplicación cuenta con las siguientes tablas:
@@ -46,11 +54,11 @@ La aplicación utiliza varios middleware de seguridad para protegerse contra ame
 - `express-session`: Gestiona las sesiones de usuario.
 - `passport`: Middleware de autenticación para Node.js.
 
-![Pantallazo de la seguridad de la API en Security Headers](images/imagen_seguridad_api_headers.jpg)
+![Pantallazo de la seguridad de la API en Security Headers](images/imagen_seguridad_api_headers.jpeg)
 
 ## Despliegue
 
-La aplicación está alojada en Render.com, un servicio de alojamiento en la nube. Para desplegar la aplicación en tu propio entorno de Render.com, sigue las instrucciones de Render.com para desplegar una aplicación de Node.js.
+La aplicación está alojada en Render.com, un servicio de alojamiento en la nube. 
 
 ## Contribución
 
