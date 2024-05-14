@@ -4,7 +4,7 @@ const router = express.Router();
 const { requireAuth } = require('../utils/passwordUtils');
 const { createProducto } = require('../utils/productoUtils');
 
-router.post('/', requireAuth, async (req, res) => {
+router.post('/', async (req, res) => {
     const { nombre, precio, descripcion, stock, categoria_nombre } = req.body;
 
     try {
