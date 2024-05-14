@@ -80,7 +80,7 @@ app.post('/login', async (req, res) => {
 
 
 app.get('/profile', requireAuth ,(req, res) => {
-    res.render('profile', { user: req.user }); 
+    res.sendFile(path.join(__dirname, 'public', 'login', 'profile.html')); 
 });
 
 app.post('/registrar', async (req, res) => {
