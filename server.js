@@ -8,7 +8,7 @@ const session = require('express-session');
 const passport = require('passport');
 const store = new session.MemoryStore();
 const app = express();
-const path = require('path'); 
+const path = require('path'); gi
 const { hashPassword, requireAuth } = require('./utils/passwordUtils');
 const { authenticateUser } = require('./utils/databaseUtils');
 const jwt = require('jsonwebtoken');
@@ -135,6 +135,11 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something went wrong!');
 });
 
+
+app.get('/logout', requireAuth, (req, res) => {
+    req.logout(); 
+    res.redirect("/");
+});
 
 app.listen(PORT, () => {
     console.log(`Server is listening on ${PORT}`);
