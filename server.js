@@ -12,6 +12,7 @@ const productosRouter = require('./utils/productoUtils');
 
 
 
+
 // Configurar el motor de plantillas y la ubicación de las vistas
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
