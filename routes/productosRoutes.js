@@ -64,7 +64,7 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-// Eliminar un producto por su ID
+// Eliminar un producto por su ID (FUNCIONANDO)
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
 
