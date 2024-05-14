@@ -8,7 +8,7 @@ const passport = require('passport');
 const path = require('path');
 const authRoutes = require('./routes/authRoutes');
 const store = new session.MemoryStore();
-const productosRouter = require('./utils/productoUtils');
+const productosRoutes = require('./utils/productoUtils');
 
 
 
@@ -61,7 +61,7 @@ app.get('/login', (req, res) => {
 //Rutas LOGIN
 app.use('/', authRoutes);
 //Rutas Producto
-app.use('/productos', productosRouter);
+app.use('/productos', productosRoutes);
 
 
 
