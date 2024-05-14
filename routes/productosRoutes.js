@@ -23,6 +23,8 @@ router.get('/', async (req, res) => {
     try {
         const productosResult = await pool.query('SELECT Productos.id, Productos.nombre, Productos.precio, Productos.descripcion, Productos.stock, CategoriasProductos.nombre AS nombre_categoria FROM Productos INNER JOIN CategoriasProductos ON Productos.categoria_id = CategoriasProductos.id');
         const productos = productosResult.rows; // Accede a los resultados reales
+        console.log(`Resultado de la query: ${productosResult}`);
+        console.log(`productos: ${productos}`);
         res.status(200).json(productos);
     } catch (error) {
         console.error("Error al obtener productos:", error);
