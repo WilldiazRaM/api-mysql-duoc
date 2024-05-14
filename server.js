@@ -10,7 +10,7 @@ const store = new session.MemoryStore();
 const app = express();
 const path = require('path'); 
 const { hashPassword } = require('./utils/passwordUtils');
-const { findByEmail , authenticateUser } = require('./utils/databaseUtils');
+const { authenticateUser } = require('./utils/databaseUtils');
 const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secretoSuperSeguro';
