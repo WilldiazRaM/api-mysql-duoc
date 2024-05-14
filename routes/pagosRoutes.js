@@ -72,6 +72,34 @@ router.get('/pagos/:id', async (req, res) => {
 });
 
 
+// Actualizar un pago por su ID
+router.put('/pagos/:id', async (req, res) => {
+    const { id } = req.params;
+    const { id_usuario, monto } = req.body;
+
+    try {
+        // Verificar si el pago existe antes de intentar actualizarlo
+        const pagoExistente = await getPagoById(id);
+        if (!pagoExistente) {
+            return res.status(404).json({ error: "Pago no encontrado" });
+        }
+
+        // Actualizar el pago en la base de datos
+        await pool.query('UPDATE Ventas SET id_usuario = ?, monto = ? WHERE id = ?', [id_usuario, monto, id]);
+        
+        // Obtener el pago actualizado
+        const pagoActualizado = await getPagoById(id);
+        
+        // Devolver el pago actualizado como respuesta
+        res.status(200).json(pagoActualizado);
+    } catch (error) {
+        console.error("Error al actualizar el pago:", error);
+        res.status(500).json({ error: "Ocurrió un error al actualizar el pago" });
+    }
+});
+
+
+
 // Eliminar pagos por id
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
