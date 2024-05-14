@@ -64,11 +64,6 @@ app.use('/', authRoutes);
 
 
 
-
-
-
-
-
 // Middleware de manejo de errores global
 app.use((err, req, res, next) => {
     console.error(err.stack);
