@@ -37,10 +37,22 @@ async function createProducto(nombre, precio, descripcion, stock, categoria_nomb
     });
 }
 
-
+// Función para obtener todos los productos
+async function obtenerProductos() {
+    return new Promise((resolve, reject) => {
+        pool.query('SELECT * FROM Productos;', (error, result) => {
+            if (error) {
+                console.error("Error al obtener productos:", error);
+                return reject(error);
+            }
+            const productos = result.rows; // Accede a los resultados reales
+            resolve(productos);
+        });
+    });
+}
 
 
 
 module.exports = {
-    createProducto
+    createProducto, obtenerProductos
 };
