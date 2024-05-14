@@ -19,6 +19,7 @@ router.post('/', async (req, res) => {
 });
 
 
+// Obtener todos los productos
 router.get('/', async (req, res) => {
     try {
         const productosResult = await pool.query('SELECT * FROM Productos;');
@@ -31,14 +32,14 @@ router.get('/', async (req, res) => {
     }
 });
 
-
-
 // Obtener un producto por su ID
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
 
     try {
-        const producto = await pool.query('SELECT * FROM Productos WHERE id = ?', [id]);
+        const productoResult = await pool.query('SELECT * FROM Productos WHERE id = ?', [id]);
+        const producto = productoResult.rows; // Accede a los resultados reales
+
         if (producto.length === 0) {
             return res.status(404).json({ error: "Producto no encontrado" });
         }
@@ -48,6 +49,7 @@ router.get('/:id', async (req, res) => {
         res.status(500).json({ error: "Ocurrió un error al obtener el producto" });
     }
 });
+
 
 // Actualizar un producto por su ID
 router.put('/:id', async (req, res) => {
