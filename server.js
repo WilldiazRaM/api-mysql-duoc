@@ -12,6 +12,7 @@ const productosRoutes = require('./routes/productosRoutes');
 const pagosRouter = require('./routes/pagosRoutes');
 const historialesRoutes = require('./routes/historialRoutes');
 const carritoRouter = require('./carritoRouter');
+const cors = require('cors');
 
 
 // Configurar el motor de plantillas y la ubicación de las vistas
