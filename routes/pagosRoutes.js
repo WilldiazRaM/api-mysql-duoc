@@ -45,12 +45,19 @@ router.post('/pagos', async (req, res) => {
 router.get('/pagos', async (req, res) => {
     try {
         const pagos = await pool.query('SELECT * FROM Ventas');
-        res.status(200).json(pagos);
+        const pagosData = pagos.map(pago => ({
+            id: pago.id,
+            id_usuario: pago.id_usuario,
+            monto: pago.monto,
+            // Agrega más campos según sea necesario
+        }));
+        res.status(200).json(pagosData);
     } catch (error) {
-        console.error("Error al obtener los pagos:", error);
+        console.error("Error al obtener los pagos:", error); 
         res.status(500).json({ error: "Ocurrió un error al obtener los pagos" });
     }
 });
+
 
 
 router.get('/pagos/:id', async (req, res) => {
