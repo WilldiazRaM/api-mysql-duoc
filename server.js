@@ -1,4 +1,5 @@
 const express = require('express');
+const app = express();
 const helmet = require('helmet');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
@@ -6,7 +7,7 @@ const session = require('express-session');
 const passport = require('passport');
 const path = require('path');
 const authRoutes = require('./routes/authRoutes');
-const JWT_SECRET = process.env.JWT_SECRET || 'secretoSuperSeguro';
+
 
 
 
