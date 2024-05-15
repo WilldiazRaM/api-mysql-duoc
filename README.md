@@ -39,7 +39,7 @@ La base de datos utilizada en esta aplicación cuenta con las siguientes tablas:
 
 Puedes encontrar el script de la base de datos en el siguiente archivo:
 
-[Descargar Script SQL](images/db/api-duoc-db.sql)
+[Descargar Script SQL](images/db/api-duoc-db.sql) -Click derecho guardar como...
 
 
 
