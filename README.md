@@ -57,7 +57,7 @@ La aplicación utiliza varios middleware de seguridad para protegerse contra ame
 - `express-session`: Gestiona las sesiones de usuario.
 - `passport`: Middleware de autenticación para Node.js.
 
-![Pantallazo de la seguridad de la API en Security Headers](images/imagen_seguridad_api_headers.jpg)
+![Pantallazo de la seguridad de la API en Security Headers](images/imagen_seguridad_api_headers.jpeg)
 
 ## Integración con Transbank
 
