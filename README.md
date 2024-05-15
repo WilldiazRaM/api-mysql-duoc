@@ -35,6 +35,17 @@ La base de datos utilizada en esta aplicación cuenta con las siguientes tablas:
 
 ![Modelo de Base de Datos:](images/basedatos1.svg)
 
+## Script de la Base de Datos
+
+Puedes encontrar el script de la base de datos en el siguiente archivo:
+
+[Descargar Script SQL](images/db/api-duoc-db.sql)
+
+
+
+
+
+
 ## Ejecución del Servidor
 
 Para ejecutar el servidor de la aplicación, sigue estos pasos:
