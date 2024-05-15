@@ -4,7 +4,7 @@ Este repositorio contiene una aplicación web desarrollada con Node.js y Express
 
 ### Proyecto Duoc-Uc
 
-Este proyecto es parte del curso de Desarrollo de Aplicaciones Web en la Universidad Duoc-UC.
+Este proyecto es parte del curso de Integracion de Plataformas, Duoc-UC.
 
 ## Configuración de la Base de Datos
 
@@ -61,7 +61,7 @@ Las contraseñas de los usuarios se guardan cifradas utilizando el algoritmo bcr
 
 ## Despliegue
 
-La aplicación está alojada en Render.com, un servicio de alojamiento en la nube. Para desplegar la aplicación en tu propio entorno de Render.com, sigue las instrucciones de Render.com para desplegar una aplicación de Node.js.
+La aplicación está alojada en Render.com, un servicio de alojamiento en la nube.
 
 ## Contribución
 
