@@ -3,6 +3,14 @@
 Este repositorio contiene una aplicación web desarrollada con Node.js y Express, utilizando una base de datos MySQL alojada en AWS. La aplicación proporciona servicios para gestionar usuarios, productos, ventas, pagos, historial de compras y carrito de compras.
 
 ### Proyecto Duoc-Uc
+**URL**
+```
+https://api-mysql-duoc.onrender.com
+```
+Nota: Por estar utilizando la capa gratuita en Render, el tiempo de carga puede ser de hasta 60 segundos después de un período de inactividad.
+
+
+
 
 Este proyecto es parte del curso de Integracion de Plataformas, Duoc-UC.
 
