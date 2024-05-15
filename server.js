@@ -13,11 +13,12 @@ const pagosRouter = require('./routes/pagosRoutes');
 const historialesRoutes = require('./routes/historialRoutes');
 const carritoRouter = require('./routes/carritoRouters');
 const cors = require('cors');
-
+const { requireAuth } = require('../utils/passwordUtils');
 
 // Configurar el motor de plantillas y la ubicación de las vistas
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+
 
 
 
@@ -61,7 +62,7 @@ app.get('/login', (req, res) => {
 
 
 //Rutas LOGIN
-app.use('/', authRoutes);
+app.use('/' , authRoutes);
 //Rutas Producto
 app.use('/productos', productosRoutes);
 // Rutas de pagos

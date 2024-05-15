@@ -8,7 +8,7 @@ const { hashPassword, requireAuth } = require('../utils/passwordUtils');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secretoSuperSeguro';
 
-router.post('/login', async (req, res) => {
+router.post('/login', requireAuth(JWT_SECRET) ,async (req, res) => {
     const { email, password } = req.body;
     try {
         // Autenticar al usuario
@@ -72,7 +72,7 @@ router.post('/registrar', async (req, res) => {
 });
 
 
-router.get('/logout', requireAuth, (req, res) => {
+router.get('/logout', requireAuth(JWT_SECRET), (req, res) => {
     req.logout(); 
     res.redirect("/");
 });
