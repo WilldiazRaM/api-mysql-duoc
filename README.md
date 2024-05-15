@@ -93,6 +93,9 @@ La aplicación está alojada en Render.com, un servicio de alojamiento en la nub
 
 Si deseas contribuir a este proyecto, siéntete libre de hacer un fork del repositorio y enviar un pull request con tus mejoras.
 
+## Estado del Proyecto
+
+Este proyecto se encuentra en constante desarrollo. Siempre estamos buscando formas de mejorar.
 
 ### Integrantes del Grupo:
 
