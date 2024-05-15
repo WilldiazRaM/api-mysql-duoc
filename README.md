@@ -83,10 +83,14 @@ La aplicación está alojada en Render.com, un servicio de alojamiento en la nub
 Si deseas contribuir a este proyecto, siéntete libre de hacer un fork del repositorio y enviar un pull request con tus mejoras.
 
 
-
-### Integrantes del Grupo:
+<div style="background-color: black; color: white; padding: 20px;">
+    ### Integrantes del Grupo:
 
 - Rodrigo Muñoz
 - Cristhoper Sanchez
 - Williams Diaz
-- Profesora: Ana Karina Villagran
+- Prof
+    
+</div>
+
+esora: Ana Karina Villagran
