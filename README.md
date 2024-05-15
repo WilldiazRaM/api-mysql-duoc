@@ -3,6 +3,13 @@
 Este repositorio contiene una aplicación web desarrollada con Node.js y Express, utilizando una base de datos MySQL alojada en AWS. La aplicación proporciona servicios para gestionar usuarios, productos, ventas, pagos, historial de compras y carrito de compras.
 
 ### Proyecto Duoc-Uc
+
+![logoDuocUC :  Sede Puente Alto](images/duocJpeg.jpeg)
+
+
+
+
+
 **URL**
 ```
 https://api-mysql-duoc.onrender.com
