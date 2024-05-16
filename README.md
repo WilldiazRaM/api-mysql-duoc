@@ -42,19 +42,6 @@ Puedes encontrar el script de la base de datos en el siguiente archivo:
 [Descargar Script SQL](images/db/api-duoc-db.sql) -Click derecho guardar como...
 
 
-
-
-
-
-## Ejecución del Servidor
-
-Para ejecutar el servidor de la aplicación, sigue estos pasos:
-
-1. Clona este repositorio en tu máquina local.
-2. Instala las dependencias utilizando el comando `npm install`.
-3. Configura las variables de entorno necesarias, como el puerto y las credenciales de la base de datos.
-4. Ejecuta el servidor con el comando `npm start`.
-
 ## Endpoints Disponibles
 
 La aplicación proporciona los siguientes endpoints para interactuar con la API:
