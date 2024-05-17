@@ -78,7 +78,6 @@ router.get('/logout', requireAuth(JWT_SECRET), (req, res) => {
 });
 
 
-module.exports = {
+module.exports = 
     router,
-    JWT_SECRET
-};
+    JWT_SECRET;
