@@ -13,6 +13,7 @@ const pagosRouter = require('./routes/pagosRoutes');
 const historialesRoutes = require('./routes/historialRoutes');
 const carritoRouter = require('./routes/carritoRouters');
 const cors = require('cors');
+const { requireAuth } = require('./utils/passwordUtils');
 
 
 // Configurar el motor de plantillas y la ubicación de las vistas
@@ -63,15 +64,15 @@ app.get('/login', (req, res) => {
 
 
 //Rutas LOGIN
-app.use('/' , authRoutes);
+app.use('/' , requireAuth, authRoutes);
 //Rutas Producto
-app.use('/productos', productosRoutes);
+app.use('/productos',requireAuth , productosRoutes);
 // Rutas de pagos
-app.use('/', pagosRouter); 
+app.use('/',requireAuth , pagosRouter); 
 // Rutas Historiales
-app.use('/historial-compras', historialesRoutes);
+app.use('/historial-compras',requireAuth , historialesRoutes);
 // Rutas carrito
-app.use('/carrito', carritoRouter);
+app.use('/carrito',requireAuth , carritoRouter);
 
 
 
