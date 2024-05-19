@@ -14,7 +14,7 @@ const historialesRoutes = require('./routes/historialRoutes');
 const carritoRouter = require('./routes/carritoRouters');
 const cors = require('cors');
 const { requireAuth } = require('./utils/passwordUtils');
-
+const { JWT_SECRET } =require('./routes/authRoutes');
 
 // Configurar el motor de plantillas y la ubicación de las vistas
 app.set('view engine', 'ejs');
