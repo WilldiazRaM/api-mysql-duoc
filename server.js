@@ -64,7 +64,7 @@ app.get('/login', (req, res) => {
 
 
 //Rutas LOGIN
-app.use('/' ,requireAuth(JWT_SECRET) , authRoutes);
+app.use('/' , authRoutes);
 //Rutas Producto
 app.use('/productos',requireAuth(JWT_SECRET) , productosRoutes);
 // Rutas de pagos
