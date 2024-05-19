@@ -64,15 +64,15 @@ app.get('/login', (req, res) => {
 
 
 //Rutas LOGIN
-app.use('/' , requireAuth, authRoutes);
+app.use('/' ,requireAuth(JWT_SECRET) , authRoutes);
 //Rutas Producto
-app.use('/productos',requireAuth , productosRoutes);
+app.use('/productos',requireAuth(JWT_SECRET) , productosRoutes);
 // Rutas de pagos
-app.use('/',requireAuth , pagosRouter); 
+app.use('/',requireAuth(JWT_SECRET), pagosRouter); 
 // Rutas Historiales
-app.use('/historial-compras',requireAuth , historialesRoutes);
+app.use('/historial-compras', requireAuth(JWT_SECRET), historialesRoutes);
 // Rutas carrito
-app.use('/carrito',requireAuth , carritoRouter);
+app.use('/carrito',requireAuth(JWT_SECRET), carritoRouter);
 
 
 
