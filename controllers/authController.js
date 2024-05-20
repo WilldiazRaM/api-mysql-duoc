@@ -6,7 +6,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'secretoSuperSeguro';
 async function login(req, res) {
     const email = req.headers['x-email'];
     const password = req.headers['x-password'];
-    
+
     if (!email || !password) {
         return res.status(400).json({ message: "Email y contraseña son requeridos" });
     }
