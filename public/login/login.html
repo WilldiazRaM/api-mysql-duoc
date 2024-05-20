@@ -32,7 +32,7 @@
                 <!-- Mensaje de error -->
                 <div id="error-message" class="mt-3 text-danger"></div>
                 <!-- Botón para redirigir a la página de registro -->
-                <a href="/registro.html" class="btn btn-secondary mt-3">Registrarse</a>
+                <a href="./login/registro.html" class="btn btn-secondary mt-3">Registrarse</a>
             </div>
         </div>
     </div>
@@ -64,7 +64,7 @@
                 // Verificar el estado de la respuesta
                 if (response.ok) {
                     // Redireccionar al usuario a la página de inicio o hacer alguna otra acción
-                    window.location.href = '/profile.html'; 
+                    window.location.href = './login/profile.html'; 
                                 } else {
                     // Mostrar un mensaje de error si las credenciales son incorrectas
                     document.getElementById('error-message').innerText = 'Credenciales incorrectas. Por favor, inténtalo de nuevo.';
