@@ -59,15 +59,24 @@ async function createUser(email, password) {
 
 async function authenticateUser(email, password) {
     const query = 'SELECT * FROM Usuarios WHERE email = ?';
-    const [rows] = await pool.query(query, [email]);
+    const [rows] = await pool.query(query, [email]);  // Asegúrate de que pool.query devuelve un array
+
+    if (rows.length === 0) {
+        // Si no se encuentra el usuario, devolver null
+        return null;
+    }
+
     const user = rows[0];
 
-    if (user && await bcrypt.compare(password, user.password)) {
+    // Compara la contraseña proporcionada con la contraseña almacenada
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (isMatch) {
         return user;
     } else {
         return null;
     }
-};
+}
 
 
 
