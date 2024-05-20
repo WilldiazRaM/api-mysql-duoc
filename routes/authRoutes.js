@@ -27,3 +27,8 @@ module.exports = router;
 router.get('/profile', requireAuth(JWT_SECRET), (req, res) => {
     // Código para manejar la solicitud de la vista de perfil
 });
+
+// Middleware de autorización para GitHub
+router.get('/profile/github', passport.authenticate('github', { session: false }), (req, res) => {
+    // Código para manejar la solicitud de la vista de perfil después de la autenticación con GitHub
+});
