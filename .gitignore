@@ -4,3 +4,6 @@ node_modules/
 
 ##Carpeta images (se se subio al repo)
 images/
+
+# Ignorar la clave privada
+proyecto-oauth-duocuc.2024-05-20.private-key.pem
