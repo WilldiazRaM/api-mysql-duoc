@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 const { authenticateUser } = require('../utils/databaseUtils');
-const { hashPassword } = require('../utils/passwordUtils');
 const JWT_SECRET = process.env.JWT_SECRET || 'secretoSuperSeguro';
 
 async function login(req, res) {
@@ -25,21 +24,17 @@ async function login(req, res) {
     }
 }
 
-module.exports = {
-    login,
-    register,
-    logout
-};
-
 async function register(req, res) {
     const { email, password } = req.body;
     try {
         if (!password) {
             return res.status(400).json({ error: "La contraseña no puede estar vacía" });
         }
+
         const hashedPassword = await hashPassword(password);
         const query = 'INSERT INTO Usuarios (email, password) VALUES (?, ?)';
         await pool.query(query, [email, hashedPassword]);
+
         res.status(201).json({ message: "Usuario registrado exitosamente" });
     } catch (error) {
         console.error("Error al registrar usuario:", error);
@@ -47,7 +42,7 @@ async function register(req, res) {
     }
 }
 
-function logout(req, res) {
+async function logout(req, res) {
     req.logout();
     res.redirect("/");
 }
