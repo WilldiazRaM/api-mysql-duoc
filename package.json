@@ -28,7 +28,7 @@
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
-    "mysql": "^2.18.1",
+    "mysql2": "^3.9.7",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7"
