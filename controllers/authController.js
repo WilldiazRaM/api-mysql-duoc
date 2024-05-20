@@ -4,7 +4,13 @@ const { hashPassword } = require('../utils/passwordUtils');
 const JWT_SECRET = process.env.JWT_SECRET || 'secretoSuperSeguro';
 
 async function login(req, res) {
-    const { email, password } = req.body;
+    const email = req.headers['x-email'];
+    const password = req.headers['x-password'];
+    
+    if (!email || !password) {
+        return res.status(400).json({ message: "Email y contraseña son requeridos" });
+    }
+
     try {
         const user = await authenticateUser(email, password);
         if (user) {
@@ -18,6 +24,12 @@ async function login(req, res) {
         res.status(500).json({ error: "Ocurrió un error durante el inicio de sesión" });
     }
 }
+
+module.exports = {
+    login,
+    register,
+    logout
+};
 
 async function register(req, res) {
     const { email, password } = req.body;
