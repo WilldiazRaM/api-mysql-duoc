@@ -57,6 +57,10 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(express.static(path.join(__dirname, 'public')));
+
+
+
 // Ruta para servir el archivo login.html
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'login', 'login.html'));
