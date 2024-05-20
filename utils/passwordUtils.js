@@ -14,7 +14,7 @@ function requireAuth(JWT_SECRET) {
     return function(req, res, next) {
         const token = req.headers.authorization;
         if (!token) {
-            return res.status(401).json({ message: "Token de autorización no proporcionado" });
+            return res.status(401).json({ message: "Token de autorización no proporcionado. Acceso Dennegado" });
         }
 
         jwt.verify(token, JWT_SECRET, (err, decoded) => {
