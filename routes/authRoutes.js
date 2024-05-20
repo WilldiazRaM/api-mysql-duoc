@@ -21,14 +21,26 @@ router.get('/github/callback', passport.authenticate('github', { failureRedirect
     res.redirect('/login/profile.html');
 });
 
+// Middleware para verificar si el usuario está autenticado
+function isAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/login');
+}
 
 
-module.exports = router;
-router.get('/profile', requireAuth(JWT_SECRET), (req, res) => {
+
+
+
+
+router.get('/profile', requireAuth, isAuthenticated,(JWT_SECRET), (req, res) => {
     // Código para manejar la solicitud de la vista de perfil
 });
 
 // Middleware de autorización para GitHub
 router.get('/profile/github', passport.authenticate('github', { session: false }), (req, res) => {
-    // Código para manejar la solicitud de la vista de perfil después de la autenticación con GitHub
+    res.redirect('/profile');
 });
+
+module.exports = router;
