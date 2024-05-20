@@ -25,7 +25,9 @@ async function login(req, res) {
 }
 
 async function register(req, res) {
-    const { email, password } = req.body;
+    const email = req.headers['x-email'];
+    const password = req.headers['x-password'];
+
     try {
         if (!password) {
             return res.status(400).json({ error: "La contraseña no puede estar vacía" });
