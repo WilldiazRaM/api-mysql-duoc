@@ -14,7 +14,7 @@ const historialesRoutes = require('./routes/historialRoutes');
 const carritoRouter = require('./routes/carritoRouters');
 const cors = require('cors');
 const { requireAuth } = require('./utils/passwordUtils');
-
+const { JWT_SECRET } =require('./routes/authRoutes');
 
 // Configurar el motor de plantillas y la ubicación de las vistas
 app.set('view engine', 'ejs');
@@ -64,15 +64,19 @@ app.get('/login', (req, res) => {
 
 
 //Rutas LOGIN
+<<<<<<< HEAD
 app.use('/' ,  authRoutes);
+=======
+app.use('/' ,requireAuth(JWT_SECRET), authRoutes);
+>>>>>>> b031aaae43445bc1eaae1e34851361ee998c5d52
 //Rutas Producto
-app.use('/productos',requireAuth , productosRoutes);
+app.use('/productos',requireAuth(JWT_SECRET) , productosRoutes);
 // Rutas de pagos
-app.use('/',requireAuth , pagosRouter); 
+app.use('/',requireAuth(JWT_SECRET), pagosRouter); 
 // Rutas Historiales
-app.use('/historial-compras',requireAuth , historialesRoutes);
+app.use('/historial-compras', requireAuth(JWT_SECRET), historialesRoutes);
 // Rutas carrito
-app.use('/carrito',requireAuth , carritoRouter);
+app.use('/carrito',requireAuth(JWT_SECRET), carritoRouter);
 
 
 
