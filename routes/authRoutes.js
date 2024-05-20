@@ -8,4 +8,16 @@ router.post('/login', login);
 router.post('/registrar',requireAuth(JWT_SECRET), register); //SE AGREGA REQUIRE AUTH VER FUNCS
 router.get('/logout', requireAuth(JWT_SECRET), logout);
 
+
+
+// Ruta para iniciar sesión con GitHub
+router.get('/github', passport.authenticate('github'));
+
+// Ruta de callback después de la autenticación con GitHub
+router.get('/github/callback', passport.authenticate('github', { failureRedirect: '/login' }), (req, res) => {
+    // Redirige al usuario a la página principal o a donde quieras después de la autenticación exitosa
+    res.redirect('profile');
+});
+
+
 module.exports = router;
