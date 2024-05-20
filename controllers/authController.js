@@ -46,9 +46,16 @@ async function register(req, res) {
 }
 
 async function logout(req, res) {
-    req.logout();
-    res.redirect("/");
+    req.logout((err) => {
+        if (err) {
+            console.error('Error al cerrar sesión:', err);
+            return res.status(500).json({ error: 'Ocurrió un error al cerrar sesión' });
+        }
+        // Si la sesión se cerró correctamente, redirige al usuario a: ...
+        res.redirect('/');
+    });
 }
+
 
 module.exports = {
     login,
