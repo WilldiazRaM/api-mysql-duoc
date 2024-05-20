@@ -8,7 +8,7 @@ const passport = require('./passportConfig');
 
 router.post('/login', login);
 router.post('/registrar',requireAuth(JWT_SECRET), register); //SE AGREGA REQUIRE AUTH VER FUNCS
-router.get('/logout', requireAuth(JWT_SECRET), logout);
+router.get('/logout', logout);
 
 
 
