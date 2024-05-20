@@ -18,7 +18,7 @@ router.get('/github', passport.authenticate('github'));
 // Ruta de callback después de la autenticación con GitHub
 router.get('/github/callback', passport.authenticate('github', { failureRedirect: '/login' }), (req, res) => {
     // Redirige al usuario a la página principal o a donde quieras después de la autenticación exitosa
-    res.redirect('profile');
+    res.redirect('/login/profile.html');
 });
 
 
