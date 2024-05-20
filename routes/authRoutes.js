@@ -34,7 +34,7 @@ function isAuthenticated(req, res, next) {
 
 
 
-router.get('/profile', requireAuth, isAuthenticated,(JWT_SECRET), (req, res) => {
+router.get('/profile', requireAuth(JWT_SECRET), isAuthenticated, (req, res) => {
     // Código para manejar la solicitud de la vista de perfil
 });
 
