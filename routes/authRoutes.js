@@ -22,4 +22,8 @@ router.get('/github/callback', passport.authenticate('github', { failureRedirect
 });
 
 
+
 module.exports = router;
+router.get('/profile', requireAuth(JWT_SECRET), (req, res) => {
+    // Código para manejar la solicitud de la vista de perfil
+});
