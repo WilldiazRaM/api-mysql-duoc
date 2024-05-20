@@ -51,4 +51,4 @@ module.exports = {
     login,
     register,
     logout
-};
+}, JWT_SECRET ;
