@@ -18,14 +18,17 @@ router.get('/login', (req, res) => {
 
 
 //GOOGLE
-router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-router.get('/google/callback', passport.authenticate('google', {
-    failureRedirect: '/auth/login'
+// Ruta para iniciar el proceso de autenticación con Google
+router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+// Ruta para manejar la respuesta de Google después de la autenticación
+router.get('/auth/google/callback', passport.authenticate('google', {
+    failureRedirect: '/auth/login' // Redirigir en caso de fallo
 }), (req, res) => {
-    // Esta función se llama después de una autenticación exitosa con Google
-    const token = jwt.sign({ id: req.user.id, provider: 'google' }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.redirect(`/profile?token=${token}`);
+    // Redirigir al usuario a la pantalla de perfil
+    res.redirect('/profile');
 });
+
 
 //GITHUB
 router.get('/github', passport.authenticate('github', { scope: ['user:email'] }));
