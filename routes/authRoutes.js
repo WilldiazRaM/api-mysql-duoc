@@ -26,8 +26,12 @@ router.get('/github/callback', passport.authenticate('github', { failureRedirect
 });
 
 // Ruta para la vista de perfil
-router.get('/profile', isAuthenticated, (req, res) => {
-    res.render('profile', { user: req.user });
+router.get('/profile', (req, res) => {
+    if (req.isAuthenticated()) {
+        res.render('profile', { user: req.user });
+    } else {
+        res.redirect('/login');
+    }
 });
 
 module.exports = router;

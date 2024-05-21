@@ -76,7 +76,19 @@ app.use('/historial-compras', historialesRoutes);
 app.use('/carrito', carritoRouter);
 
 
+// Ruta para servir el archivo login.html
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'login', 'login.html'));
+});
 
+// Ruta para la vista de perfil
+app.get('/profile', (req, res) => {
+    if (req.isAuthenticated()) {
+        res.render('profile', { user: req.user });
+    } else {
+        res.redirect('/auth/login');
+    }
+});
 
 
 
