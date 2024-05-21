@@ -5,10 +5,6 @@ const { login, register, logout } = require('../controllers/authController');
 const passport = require('./passportConfig');
 const { isAuthenticated } = require('../utils/passwordUtils')
 
-// Ruta para la vista de perfil
-router.get('/profile', isAuthenticated, (req, res) => {
-    res.render('profile', { user: req.user });
-});
 
 
 // Ruta para iniciar sesión local
