@@ -8,7 +8,7 @@ async function login(req, res) {
     const password = req.headers['x-password'];
 
     if (!email || !password) {
-        return res.status(400).json({ message: "Email y contraseña son requeridos" });
+        return res.status(400).json({ error: "Email y contraseña son requeridos" });
     }
 
     try {
@@ -17,13 +17,14 @@ async function login(req, res) {
             const token = jwt.sign({ email: user.email }, JWT_SECRET, { expiresIn: '1h' });
             res.status(200).json({ message: "Autenticación exitosa", token });
         } else {
-            res.status(401).json({ message: "Credenciales incorrectas" });
+            res.status(401).json({ error: "Credenciales incorrectas" });
         }
     } catch (error) {
         console.error("Error durante el inicio de sesión:", error);
         res.status(500).json({ error: "Ocurrió un error durante el inicio de sesión" });
     }
-};
+}
+
 
 
 async function register(req, res) {
@@ -31,20 +32,22 @@ async function register(req, res) {
     const password = req.headers['x-password'];
 
     if (!email || !password) {
-        return res.status(400).json({ message: "Email y contraseña son requeridos" });
+        return res.status(400).json({ error: "Email y contraseña son requeridos" });
     }
 
     try {
         const hashedPassword = await hashPassword(password);
-        const query = 'INSERT INTO Usuarios (email, password) VALUES (?, ?)';
-        await pool.query(query, [email, hashedPassword]);
-
+        await createUser(email, hashedPassword);
         res.status(201).json({ message: "Usuario registrado exitosamente" });
     } catch (error) {
         console.error("Error al registrar usuario:", error);
+        if (error.code === 'ER_DUP_ENTRY') {
+            return res.status(409).json({ error: "El correo electrónico ya está en uso" });
+        }
         res.status(500).json({ error: "Ocurrió un error al registrar el usuario" });
     }
 }
+
 
 async function logout(req, res) {
     req.logout((err) => {
@@ -56,6 +59,7 @@ async function logout(req, res) {
         res.redirect('/login');
     });
 }
+
 
 
 module.exports = {
