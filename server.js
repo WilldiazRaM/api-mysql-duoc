@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const helmet = require('helmet');
+const MySQLStore = require('express-mysql-session')(session);
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const session = require('express-session');
