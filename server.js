@@ -48,9 +48,7 @@ app.use((req, res, next) => {
     res.setHeader('X-Frame-Options', 'SAMEORIGIN');
     res.setHeader('Permissions-Policy', "geolocation=(self 'https://api-mysql-duoc.onrender.com')");
     // Configuración de CORS para permitir solicitudes desde dominios externos (por ejemplo, GitHub y Google)
-    res.setHeader('Access-Control-Allow-Origin', '*'); // Permitir acceso desde cualquier origen (debes restringir esto según tus necesidades de seguridad)
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS'); // Métodos HTTP permitidos
-    res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type'); // Encabezados permitidos en las solicitudes
+    
 
     next();
 });
