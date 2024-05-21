@@ -75,8 +75,8 @@ app.use('/historial-compras', historialesRoutes);
 app.use('/carrito', carritoRouter);
 
 // Ruta para la vista de perfil
-app.get('/profile',  (req, res) => {
-    res.sendFile('profile.html', { root: './public/login' }); // Enviar el archivo profile.html
+app.get('/profile', isAuthenticated, (req, res) => {
+    res.sendFile('profile.html', { root: './login' }); // Enviar el archivo profile.html
 });
 
 
