@@ -22,20 +22,19 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
 router.get('/google/callback', passport.authenticate('google', {
     failureRedirect: '/auth/login'
 }), (req, res) => {
-    // Generar JWT después de la autenticación exitosa
+    // Esta función se llama después de una autenticación exitosa con Google
     const token = jwt.sign({ id: req.user.id, provider: 'google' }, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.redirect(`/profile?token=${token}`);
 });
 
 //GITHUB
-// Ruta para iniciar sesión con GitHub
 router.get('/github', passport.authenticate('github', { scope: ['user:email'] }));
-
-// Ruta de callback para GitHub
 router.get('/github/callback', passport.authenticate('github', { failureRedirect: '/auth/login' }), (req, res) => {
+    // Esta función se llama después de una autenticación exitosa con GitHub
     const token = jwt.sign({ id: req.user.id, provider: 'github' }, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.redirect(`/profile?token=${token}`);
 });
+
 
 
 
