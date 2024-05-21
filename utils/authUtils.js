@@ -10,8 +10,8 @@ const isAuthenticated = (req, res, next) => {
         return next();
     }
 
-    // Si no está autenticado a través de Google, verificar si hay un token JWT en el encabezado
-    const token = req.headers['authorization'] && req.headers['authorization'].split(' ')[1];
+    // Si no está autenticado a través de Google, verificar si hay un token JWT en el encabezado o en la consulta
+    const token = req.headers['authorization'] && req.headers['authorization'].split(' ')[1] || req.query.token;
     console.log('Token:', token);
 
     if (token) {

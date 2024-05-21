@@ -16,23 +16,20 @@ router.get('/login', (req, res) => {
 
 // GOOGLE
 // Ruta para iniciar el proceso de autenticación con Google
-router.get('/google', (req, res, next) => {
-    console.log('Iniciando autenticación con Google');
-    passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
-});
+router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 // Ruta para manejar la respuesta de Google después de la autenticación
-router.get('/google/callback', (req, res, next) => {
-    console.log('Callback de Google recibido');
-    passport.authenticate('google', {
-        failureRedirect: '/auth/login' // Redirigir en caso de fallo
-    })(req, res, next);
-}, (req, res) => {
+router.get('/google/callback', passport.authenticate('google', {
+    failureRedirect: '/auth/login' // Redirigir en caso de fallo
+}), (req, res) => {
     console.log('Autenticación con Google exitosa');
-    // Redirigir al usuario a la pantalla de perfil
-    res.redirect('/profile');
-});
 
+    // Generar un token JWT
+    const token = jwt.sign({ id: req.user.id, provider: 'google' }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+    // Redirigir al usuario a la pantalla de perfil con el token JWT
+    res.redirect(`/profile?token=${token}`);
+});
 
 // GITHUB
 router.get('/github', passport.authenticate('github', { scope: ['user:email'] }));
@@ -41,5 +38,6 @@ router.get('/github/callback', passport.authenticate('github', { failureRedirect
     const token = jwt.sign({ id: req.user.id, provider: 'github' }, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.redirect(`/profile?token=${token}`);
 });
+
 
 module.exports = router;
