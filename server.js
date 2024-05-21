@@ -1,15 +1,14 @@
 const express = require('express');
 const app = express();
 const helmet = require('helmet');
-const pool = require('./database');
+
 const session = require('express-session');
-const MySQLStore = require('express-mysql-session')(session);
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const path = require('path');
 const authRoutes = require('./routes/authRoutes');
-const store = new session.MemoryStore();
+
 const productosRoutes = require('./routes/productosRoutes');
 const pagosRouter = require('./routes/pagosRoutes');
 const historialesRoutes = require('./routes/historialRoutes');
@@ -18,7 +17,6 @@ const { isAuthenticated } = require('./utils/passwordUtils');
 
 
 
-const sessionStore = new MySQLStore({}, pool);
 
 // Servir archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
