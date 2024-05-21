@@ -57,7 +57,7 @@ passport.use(new LocalStrategy({
 passport.use(new GitHubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: "/auth/github/callback"
+    callbackURL: 'https://api-mysql-duoc.onrender.com/auth/github/callback'
 }, async (accessToken, refreshToken, profile, done) => {
     try {
         const [results] = await pool.query('SELECT * FROM Usuarios WHERE email = ?', [profile.emails[0].value]);
