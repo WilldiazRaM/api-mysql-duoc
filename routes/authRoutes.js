@@ -42,9 +42,9 @@ router.get('/profile', (req, res) => {
     }
 });
 
-// Ruta para la vista de login
-router.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/login/login.html'));
+// Ruta para la vista de perfil
+app.get('/profile', isAuthenticated, (req, res) => {
+    res.render('profile', { user: req.user });
 });
 
 module.exports = router;

@@ -76,15 +76,6 @@ app.use('/historial-compras', historialesRoutes);
 app.use('/carrito', carritoRouter);
 
 
-// Ruta para la vista de perfil
-app.get('/profile', isAuthenticated, (req, res) => {
-    res.render('profile', { user: req.user });
-});
-
-// Ruta para la vista de login
-app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'login', 'login.html'));
-});
 
 
 // Middleware de manejo de errores global
