@@ -5,7 +5,7 @@ const db = require('../utils/databaseUtils');
 const GitHubStrategy = require('passport-github2').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const pool = require('../database');
-const User = require('../models/User');
+const User = require('../models/userModels');
 
 
 const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
