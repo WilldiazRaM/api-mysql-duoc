@@ -20,7 +20,6 @@ router.get('/google/callback', passport.authenticate('google', { failureRedirect
     res.redirect('/profile'); // Redirige al usuario a la página de perfil después de la autenticación exitosa
 });
 
-
 // Ruta para iniciar sesión con GitHub
 router.get('/github', passport.authenticate('github'));
 

@@ -20,11 +20,10 @@ require('dotenv').config();
 
 // Configurar el motor de vistas
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'public/login')); 
 
 // Servir archivos estáticos
-app.use(express.static('public'));
-
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use(helmet());
@@ -75,8 +74,9 @@ app.use('/pagos', pagosRouter);
 app.use('/historial-compras', historialesRoutes);
 app.use('/carrito', carritoRouter);
 
+// Ruta para la vista de perfil
 app.get('/profile', isAuthenticated, (req, res) => {
-    res.render('profile', { user: req.user });
+    res.sendFile('profile.html', { root: './public/login' }); // Enviar el archivo profile.html
 });
 
 
