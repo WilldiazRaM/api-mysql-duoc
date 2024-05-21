@@ -31,31 +31,27 @@ function requireAuth(JWT_SECRET) {
 
 // Middleware para verificar si el usuario está autenticado
 function isAuthenticated(req, res, next) {
-    // Verificar si está autenticado por Passport
-    if (req.isAuthenticated()) {
+    if (req.isAuthenticated() || (req.user && (req.user.provider === 'google' || req.user.provider === 'github'))) {
         return next();
     }
 
-    // Verificar si el usuario está autenticado a través de Google o GitHub
-    if (req.user && (req.user.provider === 'google' || req.user.provider === 'github')) {
-        return next();
-    }
+    // Verificar el token JWT si está presente
+    const token = req.headers['authorization'] && req.headers['authorization'].split(' ')[1];
 
-    // Verificar autenticación JWT
-    const token = req.headers['x-access-token'] || req.query.token || req.cookies.token;
     if (token) {
         jwt.verify(token, JWT_SECRET, (err, decoded) => {
             if (err) {
+                console.error('Error verificando token JWT:', err);
                 return res.redirect('/auth/login');
-            } else {
-                req.user = decoded;
-                return next();
             }
+
+            // Token válido, seguir al siguiente middleware
+            req.user = decoded; // Opcional: puedes establecer req.user con la información decodificada del token
+            return next();
         });
     } else {
-        // Si no hay ningún token, redirigir a la página de inicio de sesión
-        console.log("no hay ningún token");
-        res.redirect('/auth/login');
+        // Ni autenticado ni token presente, redirigir a login
+        return res.redirect('/auth/login');
     }
 }
 
