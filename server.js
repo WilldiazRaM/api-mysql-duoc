@@ -34,7 +34,7 @@ app.use(session({
     cookie: { maxAge: 86400000, secure: true },
     resave: false,
     saveUninitialized: false,
-    store,
+    store: store,
     secure: true
 }));
 
@@ -68,9 +68,8 @@ app.use('/pagos', pagosRouter);
 app.use('/historial-compras', historialesRoutes);
 app.use('/carrito', carritoRouter);
 
-// Ruta para la vista de perfil
 app.get('/profile', isAuthenticated, (req, res) => {
-    res.sendFile('profile.html', { root: './login' }); // Enviar el archivo profile.html
+    res.sendFile('profile.html', { root: './public/login' });
 });
 
 

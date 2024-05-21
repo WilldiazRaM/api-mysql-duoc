@@ -29,12 +29,16 @@ function requireAuth(JWT_SECRET) {
 
 // Middleware para verificar si el usuario está autenticado
 function isAuthenticated(req, res, next) {
-    // Verifica si el usuario está autenticado con Google o GitHub
+    if (req.isAuthenticated()) {
+        return next();
+    }
+
     if (req.user && (req.user.provider === 'google' || req.user.provider === 'github')) {
         return next();
     }
-    // Si el usuario no está autenticado, redirige al login
+
     res.redirect('/auth/login');
 }
+
 
 module.exports = { hashPassword, comparePasswords, requireAuth, isAuthenticated };
