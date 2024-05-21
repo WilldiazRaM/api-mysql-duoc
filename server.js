@@ -65,7 +65,7 @@ app.get('/profile', isAuthenticated, (req, res) => {
     const token = req.query.token;
     if (token) {
         // Si hay un token, el usuario está autenticado, puedes enviar la página de perfil
-        res.sendFile('profile.html', { root: './public/login' });
+        res.sendFile('profile.html', { root: './public/login/' });
     } else {
         // Si no hay un token, redirige al usuario a la página de inicio de sesión
         res.redirect('/auth/login');
