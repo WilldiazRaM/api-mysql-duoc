@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
-const helmet = require('helmet');
-const store = new session.MemoryStore();
 const session = require('express-session');
+const store = new session.MemoryStore();
+const helmet = require('helmet');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const passport = require('passport');
