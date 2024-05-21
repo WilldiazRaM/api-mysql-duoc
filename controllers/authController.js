@@ -23,7 +23,8 @@ async function login(req, res) {
         console.error("Error durante el inicio de sesión:", error);
         res.status(500).json({ error: "Ocurrió un error durante el inicio de sesión" });
     }
-}
+};
+
 
 async function register(req, res) {
     const email = req.headers['x-email'];
