@@ -13,6 +13,43 @@ const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const GOOGLE_CALLBACK_URL = 'https://api-mysql-duoc.onrender.com/auth/google/callback';
 
+// Configuración de GitHub Strategy
+passport.use(new GitHubStrategy({
+    clientID: GITHUB_CLIENT_ID,
+    clientSecret: GITHUB_CLIENT_SECRET,
+    callbackURL: GITHUB_CALLBACK_URL,
+    scope: ['user:email'] // Solicitar acceso al correo electrónico del usuario
+}, async (accessToken, refreshToken, profile, done) => {
+    try {
+        if (!profile.emails || profile.emails.length === 0) {
+            // Si no hay correos electrónicos en el perfil, devolver un error
+            return done(new Error('No se encontraron correos electrónicos en el perfil de GitHub'), null);
+        }
+
+        let user = await db.findByEmail(profile.emails[0].value);
+        if (!user) {
+            // Crear usuario si no existe
+            user = await db.createUser(profile.emails[0].value, ''); // O pasar un valor por defecto para la contraseña
+        }
+        return done(null, user);
+    } catch (error) {
+        return done(error, null);
+    }
+}));
+
+
+// Configuración de Google Strategy
+passport.use(new GoogleStrategy({
+    clientID: GOOGLE_CLIENT_ID,
+    clientSecret: GOOGLE_CLIENT_SECRET,
+    callbackURL: GOOGLE_CALLBACK_URL
+}, (accessToken, refreshToken, profile, done) => {
+    // Aquí puedes buscar o crear un usuario en tu base de datos
+    // En este ejemplo, simplemente devolvemos el perfil de Google
+    return done(null, profile);
+}));
+
+
 passport.serializeUser((user, done) => {
     done(null, user.id);
 });
@@ -48,40 +85,8 @@ passport.use(new LocalStrategy({
     }
 }));
 
-// Configuración de Google Strategy
-passport.use(new GoogleStrategy({
-    clientID: GOOGLE_CLIENT_ID,
-    clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: GOOGLE_CALLBACK_URL
-}, (accessToken, refreshToken, profile, done) => {
-    // Aquí puedes buscar o crear un usuario en tu base de datos
-    // En este ejemplo, simplemente devolvemos el perfil de Google
-    return done(null, profile);
-}));
 
-// Configuración de GitHub Strategy
-passport.use(new GitHubStrategy({
-    clientID: GITHUB_CLIENT_ID,
-    clientSecret: GITHUB_CLIENT_SECRET,
-    callbackURL: GITHUB_CALLBACK_URL,
-    scope: ['user:email'] // Solicitar acceso al correo electrónico del usuario
-}, async (accessToken, refreshToken, profile, done) => {
-    try {
-        if (!profile.emails || profile.emails.length === 0) {
-            // Si no hay correos electrónicos en el perfil, devolver un error
-            return done(new Error('No se encontraron correos electrónicos en el perfil de GitHub'), null);
-        }
 
-        let user = await db.findByEmail(profile.emails[0].value);
-        if (!user) {
-            // Crear usuario si no existe
-            user = await db.createUser(profile.emails[0].value, ''); // O pasar un valor por defecto para la contraseña
-        }
-        return done(null, user);
-    } catch (error) {
-        return done(error, null);
-    }
-}));
 
 
 
