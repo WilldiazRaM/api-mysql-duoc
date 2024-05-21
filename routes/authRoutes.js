@@ -7,7 +7,7 @@ const { isAuthenticated } = require('../utils/passwordUtils')
 
 // Ruta para la vista de perfil
 router.get('/profile', isAuthenticated, (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/login/profile.html')); 
+    res.render('profile', { user: req.user });
 });
 
 
@@ -33,9 +33,6 @@ router.get('/github/callback', passport.authenticate('github', { failureRedirect
     res.redirect('/profile'); // Redirige al usuario a la página de perfil después de la autenticación exitosa
 });
 
-// Ruta para la vista de perfil
-app.get('/profile', isAuthenticated, (req, res) => {
-    res.render('profile', { user: req.user });
-});
+
 
 module.exports = router;
