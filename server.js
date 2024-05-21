@@ -14,7 +14,7 @@ const historialesRoutes = require('./routes/historialRoutes');
 const carritoRouter = require('./routes/carritoRouters');
 const { isAuthenticated } = require('./utils/passwordUtils');
 
-
+const sessionStore = new MySQLStore({}, pool);
 
 // Servir archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
@@ -31,10 +31,10 @@ const PORT = process.env.PORT || 4001;
 
 app.use(session({
     secret: process.env.SESSION_SECRET,
-    cookie: { maxAge: 86400000, secure: process.env.NODE_ENV === 'production' },
     resave: false,
     saveUninitialized: false,
-    store: store
+    store: sessionStore,
+    cookie: { maxAge: 86400000, secure: process.env.NODE_ENV === 'production' }
 }));
 
 
