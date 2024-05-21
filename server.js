@@ -37,6 +37,10 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Configuración de EJS como motor de plantillas
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
 // Middleware de seguridad
 app.use((req, res, next) => {
     res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubdomains');
@@ -61,13 +65,15 @@ app.use('/carrito', carritoRouter);
 
 // Ruta protegida para el perfil del usuario
 app.get('/profile', isAuthenticated, (req, res) => {
-    // Verificar si hay un token en la solicitud
     const token = req.query.token;
     if (token) {
-        // Si hay un token, el usuario está autenticado, puedes enviar la página de perfil
-        res.sendFile('profile.html', { root: './public/login/' });
+        jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+            if (err) {
+                return res.redirect('/auth/login');
+            }
+            res.render('profile', { user: decoded });
+        });
     } else {
-        // Si no hay un token, redirige al usuario a la página de inicio de sesión
         res.redirect('/auth/login');
     }
 });

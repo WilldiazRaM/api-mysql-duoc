@@ -15,28 +15,32 @@ const GOOGLE_CALLBACK_URL = 'https://api-mysql-duoc.onrender.com/auth/google/cal
 
 // Configuración de GitHub Strategy
 passport.use(new GitHubStrategy({
-    clientID: GITHUB_CLIENT_ID,
-    clientSecret: GITHUB_CLIENT_SECRET,
-    callbackURL: GITHUB_CALLBACK_URL,
-    scope: ['user:email'] // Solicitar acceso al correo electrónico del usuario
+    clientID: process.env.GITHUB_CLIENT_ID,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    callbackURL: 'https://api-mysql-duoc.onrender.com/auth/github/callback'
 }, async (accessToken, refreshToken, profile, done) => {
+    // Lógica para manejar el perfil del usuario
+    const { id, displayName, emails } = profile;
+    const email = emails && emails.length ? emails[0].value : null;
+
+    // Lógica para buscar o crear el usuario en tu base de datos
     try {
-        if (!profile.emails || profile.emails.length === 0) {
-            // Si no hay correos electrónicos en el perfil, devolver un error
-            return done(new Error('No se encontraron correos electrónicos en el perfil de GitHub'), null);
+        let user = await User.findOne({ githubId: id });
+
+        if (!user) {
+            user = await User.create({
+                githubId: id,
+                displayName: displayName,
+                email: email
+            });
         }
 
-        let user = await db.findByEmail(profile.emails[0].value);
-        if (!user) {
-            // Crear usuario si no existe
-            user = await db.createUser(profile.emails[0].value, ''); // O pasar un valor por defecto para la contraseña
-        }
-        return done(null, user);
-    } catch (error) {
-        return done(error, null);
+        const token = jwt.sign({ id: user.id, provider: 'github' }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        done(null, { ...user.toObject(), token });
+    } catch (err) {
+        done(err, null);
     }
 }));
-
 
 
 // Configuración de Google Strategy
