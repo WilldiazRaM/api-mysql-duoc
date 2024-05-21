@@ -31,10 +31,10 @@ router.get('/github', passport.authenticate('github', { scope: ['user:email'] })
 
 // Ruta de callback para GitHub
 router.get('/github/callback', passport.authenticate('github', { failureRedirect: '/auth/login' }), (req, res) => {
-    // Aquí podrías generar un token si es necesario
     const token = jwt.sign({ id: req.user.id, provider: 'github' }, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.redirect(`/profile?token=${token}`);
 });
+
 
 
 

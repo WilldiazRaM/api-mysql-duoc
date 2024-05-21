@@ -26,6 +26,7 @@ passport.deserializeUser(async (id, done) => {
     }
 });
 
+
 passport.use(new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password'
@@ -63,10 +64,17 @@ passport.use(new GitHubStrategy({
     clientID: GITHUB_CLIENT_ID,
     clientSecret: GITHUB_CLIENT_SECRET,
     callbackURL: GITHUB_CALLBACK_URL
-}, (accessToken, refreshToken, profile, done) => {
-    // Aquí puedes buscar o crear un usuario en tu base de datos
-    // En este ejemplo, simplemente devolvemos el perfil de GitHub
-    return done(null, profile);
+}, async (accessToken, refreshToken, profile, done) => {
+    try {
+        let user = await db.findByEmail(profile.emails[0].value);
+        if (!user) {
+            // Crear usuario si no existe
+            user = await db.createUser(profile.emails[0].value, ''); // O pasar un valor por defecto para la contraseña
+        }
+        return done(null, user);
+    } catch (error) {
+        return done(error, null);
+    }
 }));
 
 

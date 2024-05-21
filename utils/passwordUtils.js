@@ -29,38 +29,7 @@ function requireAuth(JWT_SECRET) {
     };
 }
 
-function isAuthenticated(req, res, next) {
-    console.log('Verificando autenticación');
-    console.log('Usuario autenticado:', req.isAuthenticated());
-    console.log('req.user:', req.user);
-
-    if (req.isAuthenticated()) {
-        // Si el usuario está autenticado mediante Passport
-        console.log('Autenticado por Passport');
-        return next();
-    }
-
-    const token = req.headers['authorization'] && req.headers['authorization'].split(' ')[1];
-    console.log('Token:', token);
-
-    if (token) {
-        // Verificar el token JWT
-        jwt.verify(token, JWT_SECRET, (err, decoded) => {
-            if (err) {
-                console.error('Error verificando token JWT:', err);
-                return res.redirect('/auth/login');
-            }
-
-            console.log('Token decodificado:', decoded);
-            req.user = decoded; // Establecer el usuario decodificado en la solicitud
-            return next();
-        });
-    } else {
-        // Redirigir al usuario al inicio de sesión si no está autenticado
-        console.log('No autenticado y no se encontró token');
-        return res.redirect('/auth/login');
-    }
-}
 
 
-module.exports = { hashPassword, comparePasswords, requireAuth, isAuthenticated };
+
+module.exports = { hashPassword, comparePasswords, requireAuth };
