@@ -3,14 +3,6 @@ const JWT_SECRET = process.env.JWT_SECRET || 'secretoSuperSeguro';
 
 function isAuthenticated(req, res, next) {
     console.log('Verificando autenticación');
-    console.log('Usuario autenticado:', req.isAuthenticated());
-    console.log('req.user:', req.user);
-
-    if (req.isAuthenticated()) {
-        // Si el usuario está autenticado mediante Passport
-        console.log('Autenticado por Passport');
-        return next();
-    }
 
     const token = req.headers['authorization'] && req.headers['authorization'].split(' ')[1];
     console.log('Token:', token);
@@ -33,5 +25,6 @@ function isAuthenticated(req, res, next) {
         return res.redirect('/auth/login');
     }
 }
+
 
 module.exports = { isAuthenticated };
