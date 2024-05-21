@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const helmet = require('helmet');
+const pool = require('./database');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 const morgan = require('morgan');
@@ -14,6 +15,8 @@ const pagosRouter = require('./routes/pagosRoutes');
 const historialesRoutes = require('./routes/historialRoutes');
 const carritoRouter = require('./routes/carritoRouters');
 const { isAuthenticated } = require('./utils/passwordUtils');
+
+
 
 const sessionStore = new MySQLStore({}, pool);
 
