@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const path = require('path');
 const { login, register, logout } = require('../controllers/authController');
 const passport = require('./passportConfig');
+
 
 // Ruta para iniciar sesión local
 router.post('/login', login);
