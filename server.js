@@ -1,18 +1,20 @@
 const express = require('express');
 const app = express();
 const helmet = require('helmet');
+
+const session = require('express-session');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const session = require('express-session');
 const passport = require('passport');
 const path = require('path');
 const authRoutes = require('./routes/authRoutes');
-const store = new session.MemoryStore();
+
 const productosRoutes = require('./routes/productosRoutes');
 const pagosRouter = require('./routes/pagosRoutes');
 const historialesRoutes = require('./routes/historialRoutes');
 const carritoRouter = require('./routes/carritoRouters');
 const { isAuthenticated } = require('./utils/passwordUtils');
+
 
 
 
@@ -31,10 +33,10 @@ const PORT = process.env.PORT || 4001;
 
 app.use(session({
     secret: process.env.SESSION_SECRET,
-    cookie: { maxAge: 86400000, secure: process.env.NODE_ENV === 'production' },
     resave: false,
     saveUninitialized: false,
-    store: store
+    store: sessionStore,
+    cookie: { maxAge: 86400000, secure: process.env.NODE_ENV === 'production' }
 }));
 
 
