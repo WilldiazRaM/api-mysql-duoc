@@ -44,7 +44,7 @@ app.set('views', path.join(__dirname, 'views'));
 // Middleware de seguridad
 app.use((req, res, next) => {
     res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubdomains');
-    res.setHeader('Content-Security-Policy', "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://kit.fontawesome.com;"); // Aquí incluí los dominios relevantes para los scripts y estilos
+    res.setHeader('Content-Security-Policy', "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://kit.fontawesome.com;");
     res.setHeader('X-Frame-Options', 'SAMEORIGIN');
     res.setHeader('Permissions-Policy', "geolocation=(self 'https://api-mysql-duoc.onrender.com')");
     // Configuración de CORS para permitir solicitudes desde dominios externos (por ejemplo, GitHub y Google)
