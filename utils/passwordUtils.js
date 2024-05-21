@@ -35,5 +35,4 @@ function isAuthenticated(req, res, next) {
     res.redirect('/login');
 }
 
-
 module.exports = { hashPassword, comparePasswords, requireAuth, isAuthenticated };

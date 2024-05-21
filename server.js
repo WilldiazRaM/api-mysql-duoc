@@ -18,7 +18,7 @@ require('dotenv').config();
 
 // Configurar el motor de vistas
 app.set('view engine', 'ejs');
-app.set('views', __dirname + '/views');
+app.set('views', path.join(__dirname, 'views'));
 
 // Servir archivos estáticos
 app.use(express.static('public'));
@@ -62,10 +62,8 @@ app.use((req, res, next) => {
 
 
 
-// Ruta para servir el archivo login.html
-app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'login', 'login.html'));
-});
+
+
 
 
 //Rutas LOGIN
@@ -76,22 +74,10 @@ app.use('/historial-compras', historialesRoutes);
 app.use('/carrito', carritoRouter);
 
 
-// Ruta para servir el archivo login.html
-app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'login', 'login.html'));
-});
-
 // Ruta para la vista de perfil
-app.get('/profile', (req, res) => {
-    if (req.isAuthenticated()) {
-        res.render('profile', { user: req.user });
-    } else {
-        res.redirect('/auth/login');
-    }
+app.get('/profile', isAuthenticated, (req, res) => {
+    res.render('profile', { user: req.user });
 });
-
-
-
 
 // Middleware de manejo de errores global
 app.use((err, req, res, next) => {
