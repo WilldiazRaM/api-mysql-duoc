@@ -30,13 +30,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const PORT = process.env.PORT || 4001;
 
 app.use(session({
-    secret: process.env.SESSION_SECRET ,
-    cookie: { maxAge: 86400000, secure: true },
+    secret: process.env.SESSION_SECRET,
+    cookie: { maxAge: 86400000, secure: process.env.NODE_ENV === 'production' },
     resave: false,
     saveUninitialized: false,
-    store: store,
-    secure: true
+    store: store
 }));
+
 
 
 app.use(passport.initialize());

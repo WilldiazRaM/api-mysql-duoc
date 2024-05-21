@@ -31,12 +31,16 @@ function requireAuth(JWT_SECRET) {
 
 // Middleware para verificar si el usuario está autenticado
 function isAuthenticated(req, res, next) {
+    console.log('Verificando autenticación');
+    console.log('Usuario autenticado:', req.isAuthenticated());
+    console.log('req.user:', req.user);
+
     if (req.isAuthenticated() || (req.user && (req.user.provider === 'google' || req.user.provider === 'github'))) {
         return next();
     }
 
-    // Verificar el token JWT si está presente
     const token = req.headers['authorization'] && req.headers['authorization'].split(' ')[1];
+    console.log('Token:', token);
 
     if (token) {
         jwt.verify(token, JWT_SECRET, (err, decoded) => {
@@ -45,14 +49,15 @@ function isAuthenticated(req, res, next) {
                 return res.redirect('/auth/login');
             }
 
-            // Token válido, seguir al siguiente middleware
-            req.user = decoded; // Opcional: puedes establecer req.user con la información decodificada del token
+            console.log('Token decodificado:', decoded);
+            req.user = decoded;
             return next();
         });
     } else {
-        // Ni autenticado ni token presente, redirigir a login
+        console.log('No autenticado y no se encontró token');
         return res.redirect('/auth/login');
     }
 }
+
 
 module.exports = { hashPassword, comparePasswords, requireAuth, isAuthenticated };
