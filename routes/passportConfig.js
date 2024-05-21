@@ -3,11 +3,16 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const db = require('../utils/databaseUtils');
 const GitHubStrategy = require('passport-github2').Strategy;
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 
 const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
 const CALLBACK_URL = 'https://api-mysql-duoc.onrender.com/auth/github/callback';
+
+
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 
 
 
@@ -59,6 +64,16 @@ passport.use(new GitHubStrategy({
   }
 ));
 
-
+passport.use(new GoogleStrategy({
+    clientID: GOOGLE_CLIENT_ID,
+    clientSecret: GOOGLE_CLIENT_SECRET,
+    callbackURL: 'https://api-mysql-duoc.onrender.com/auth/google/callback'
+},
+function(accessToken, refreshToken, profile, done) {
+    // Aquí puedes buscar o crear un usuario en tu base de datos
+    // En este ejemplo, simplemente devolvemos el perfil de Google
+    return done(null, profile);
+}
+));
 
 module.exports = passport;
