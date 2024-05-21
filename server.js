@@ -16,8 +16,6 @@ const { isAuthenticated } = require('./utils/passwordUtils');
 
 
 
-require('dotenv').config();
-
 // Servir archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 
