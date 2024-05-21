@@ -38,16 +38,19 @@ passport.use(new GitHubStrategy({
 }));
 
 
+
 // Configuración de Google Strategy
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
     callbackURL: GOOGLE_CALLBACK_URL
 }, (accessToken, refreshToken, profile, done) => {
+    console.log('Google Strategy: Autenticación exitosa');
+    console.log('Profile:', profile);
     // Aquí puedes buscar o crear un usuario en tu base de datos
-    // En este ejemplo, simplemente devolvemos el perfil de Google
     return done(null, profile);
 }));
+
 
 
 passport.serializeUser((user, done) => {
