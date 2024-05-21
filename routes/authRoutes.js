@@ -20,8 +20,8 @@ router.get('/logout', logout);
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 // Ruta de callback después de la autenticación con Google
-router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/auth/login' }), (req, res) => {
-    res.redirect('/profile');
+router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
+    res.redirect('/profile'); // Redirige al usuario a la página de perfil después de la autenticación exitosa
 });
 
 
@@ -29,8 +29,8 @@ router.get('/google/callback', passport.authenticate('google', { failureRedirect
 router.get('/github', passport.authenticate('github'));
 
 // Ruta de callback después de la autenticación con GitHub
-router.get('/github/callback', passport.authenticate('github', { failureRedirect: '/auth/login' }), (req, res) => {
-    res.redirect('/profile');
+router.get('/github/callback', passport.authenticate('github', { failureRedirect: '/login' }), (req, res) => {
+    res.redirect('/profile'); // Redirige al usuario a la página de perfil después de la autenticación exitosa
 });
 
 // Ruta para la vista de perfil
