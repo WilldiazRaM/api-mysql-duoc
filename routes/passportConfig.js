@@ -63,7 +63,8 @@ passport.use(new GoogleStrategy({
 passport.use(new GitHubStrategy({
     clientID: GITHUB_CLIENT_ID,
     clientSecret: GITHUB_CLIENT_SECRET,
-    callbackURL: GITHUB_CALLBACK_URL
+    callbackURL: GITHUB_CALLBACK_URL,
+    scope: ['user:email'] // Solicitar acceso al correo electrónico del usuario
 }, async (accessToken, refreshToken, profile, done) => {
     try {
         if (!profile.emails || profile.emails.length === 0) {
@@ -81,6 +82,7 @@ passport.use(new GitHubStrategy({
         return done(error, null);
     }
 }));
+
 
 
 
