@@ -66,6 +66,11 @@ passport.use(new GitHubStrategy({
     callbackURL: GITHUB_CALLBACK_URL
 }, async (accessToken, refreshToken, profile, done) => {
     try {
+        if (!profile.emails || profile.emails.length === 0) {
+            // Si no hay correos electrónicos en el perfil, devolver un error
+            return done(new Error('No se encontraron correos electrónicos en el perfil de GitHub'), null);
+        }
+
         let user = await db.findByEmail(profile.emails[0].value);
         if (!user) {
             // Crear usuario si no existe
