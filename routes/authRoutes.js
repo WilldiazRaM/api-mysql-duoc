@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const path = require('path');
 const { login, register, logout } = require('../controllers/authController');
 const passport = require('./passportConfig');
 const { isAuthenticated } = require('../utils/passwordUtils')
@@ -29,5 +28,9 @@ router.get('/github/callback', passport.authenticate('github', { failureRedirect
 });
 
 
+// Ruta para la vista de login
+router.get('/login', (req, res) => {
+    res.sendFile('login.html', { root: './public/login' }); // Enviar el archivo login.html
+});
 
 module.exports = router;
