@@ -5,44 +5,22 @@ const db = require('../utils/databaseUtils');
 const GitHubStrategy = require('passport-github2').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const pool = require('../database');
-const User = require('../models/userModels');
-
-
-const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
-const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
-const GITHUB_CALLBACK_URL = 'https://api-mysql-duoc.onrender.com/auth/github/callback';
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const GOOGLE_CALLBACK_URL = 'https://api-mysql-duoc.onrender.com/auth/google/callback';
 
 // Configuración de GitHub Strategy
+// Configuración de GitHub Strategy
 passport.use(new GitHubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
     callbackURL: 'https://api-mysql-duoc.onrender.com/auth/github/callback'
-}, async (accessToken, refreshToken, profile, done) => {
-    // Lógica para manejar el perfil del usuario
-    const { id, displayName, emails } = profile;
-    const email = emails && emails.length ? emails[0].value : null;
-
-    // Lógica para buscar o crear el usuario en tu base de datos
-    try {
-        let user = await User.findOne({ githubId: id });
-
-        if (!user) {
-            user = await User.create({
-                githubId: id,
-                displayName: displayName,
-                email: email
-            });
-        }
-
-        const token = jwt.sign({ id: user.id, provider: 'github' }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        done(null, { ...user.toObject(), token });
-    } catch (err) {
-        done(err, null);
-    }
+}, (accessToken, refreshToken, profile, done) => {
+    console.log('GitHub Strategy: Autenticación exitosa');
+    console.log('Profile:', profile);
+    // Aquí puedes buscar o crear un usuario en tu base de datos
+    return done(null, profile);
 }));
 
 
