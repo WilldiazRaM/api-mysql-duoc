@@ -8,6 +8,12 @@ router.post('/login', login);
 router.post('/registrar', register); 
 router.get('/logout', logout);
 
+// Ruta para cargar la página de inicio de sesión
+router.get('/login', (req, res) => {
+    res.sendFile('login.html', { root: './public/login' });
+});
+
+
 
 //GOOGLE
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
