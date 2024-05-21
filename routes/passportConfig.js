@@ -5,6 +5,9 @@ const db = require('../utils/databaseUtils');
 const GitHubStrategy = require('passport-github2').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const pool = require('../database');
+const User = require('../models/User');
+
+
 const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
 const GITHUB_CALLBACK_URL = 'https://api-mysql-duoc.onrender.com/auth/github/callback';
