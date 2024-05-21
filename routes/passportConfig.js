@@ -5,16 +5,13 @@ const db = require('../utils/databaseUtils');
 const GitHubStrategy = require('passport-github2').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
-
 const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
-const CALLBACK_URL = 'https://api-mysql-duoc.onrender.com/auth/github/callback';
-
+const GITHUB_CALLBACK_URL = 'https://api-mysql-duoc.onrender.com/auth/github/callback';
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-
-
+const GOOGLE_CALLBACK_URL = 'https://api-mysql-duoc.onrender.com/auth/google/callback';
 
 passport.serializeUser((user, done) => {
     done(null, user.id);
@@ -28,7 +25,6 @@ passport.deserializeUser(async (id, done) => {
         done(error, null);
     }
 });
-
 
 passport.use(new LocalStrategy({
     usernameField: 'email',
@@ -51,29 +47,24 @@ passport.use(new LocalStrategy({
     }
 }));
 
-
 passport.use(new GitHubStrategy({
     clientID: GITHUB_CLIENT_ID,
     clientSecret: GITHUB_CLIENT_SECRET,
-    callbackURL: CALLBACK_URL
-  },
-  function(accessToken, refreshToken, profile, done) {
+    callbackURL: GITHUB_CALLBACK_URL
+}, (accessToken, refreshToken, profile, done) => {
     // Aquí puedes buscar o crear un usuario en tu base de datos
     // En este ejemplo, simplemente devolvemos el perfil de GitHub
     return done(null, profile);
-  }
-));
+}));
 
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: 'https://api-mysql-duoc.onrender.com/auth/google/callback'
-},
-function(accessToken, refreshToken, profile, done) {
+    callbackURL: GOOGLE_CALLBACK_URL
+}, (accessToken, refreshToken, profile, done) => {
     // Aquí puedes buscar o crear un usuario en tu base de datos
     // En este ejemplo, simplemente devolvemos el perfil de Google
     return done(null, profile);
-}
-));
+}));
 
 module.exports = passport;
