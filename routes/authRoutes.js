@@ -14,15 +14,16 @@ router.get('/logout', logout);
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 // Ruta de callback después de la autenticación con Google
-router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
+router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/auth/login' }), (req, res) => {
     res.redirect('/profile');
 });
+
 
 // Ruta para iniciar sesión con GitHub
 router.get('/github', passport.authenticate('github'));
 
 // Ruta de callback después de la autenticación con GitHub
-router.get('/github/callback', passport.authenticate('github', { failureRedirect: '/login' }), (req, res) => {
+router.get('/github/callback', passport.authenticate('github', { failureRedirect: '/auth/login' }), (req, res) => {
     res.redirect('/profile');
 });
 
