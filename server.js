@@ -16,11 +16,12 @@ const carritoRouter = require('./routes/carritoRouters');
 
 require('dotenv').config();
 
-// Configurar el motor de plantillas y la ubicación de las vistas
+// Configurar el motor de vistas
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', __dirname + '/views');
 
-
+// Servir archivos estáticos
+app.use(express.static('public'));
 
 
 
@@ -57,7 +58,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
+
 
 
 
@@ -73,6 +74,7 @@ app.use('/productos', productosRoutes);
 app.use('/pagos', pagosRouter);
 app.use('/historial-compras', historialesRoutes);
 app.use('/carrito', carritoRouter);
+
 
 
 
