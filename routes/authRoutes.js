@@ -4,6 +4,11 @@ const path = require('path');
 const { login, register, logout } = require('../controllers/authController');
 const passport = require('./passportConfig');
 
+// Ruta para la vista de perfil
+router.get('/profile', isAuthenticated, (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/login/profile.html')); 
+});
+
 
 // Ruta para iniciar sesión local
 router.post('/login', login);

@@ -47,6 +47,18 @@ passport.use(new LocalStrategy({
     }
 }));
 
+// Configuración de Google Strategy
+passport.use(new GoogleStrategy({
+    clientID: GOOGLE_CLIENT_ID,
+    clientSecret: GOOGLE_CLIENT_SECRET,
+    callbackURL: GOOGLE_CALLBACK_URL
+}, (accessToken, refreshToken, profile, done) => {
+    // Aquí puedes buscar o crear un usuario en tu base de datos
+    // En este ejemplo, simplemente devolvemos el perfil de Google
+    return done(null, profile);
+}));
+
+// Configuración de GitHub Strategy
 passport.use(new GitHubStrategy({
     clientID: GITHUB_CLIENT_ID,
     clientSecret: GITHUB_CLIENT_SECRET,
@@ -57,14 +69,6 @@ passport.use(new GitHubStrategy({
     return done(null, profile);
 }));
 
-passport.use(new GoogleStrategy({
-    clientID: GOOGLE_CLIENT_ID,
-    clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: GOOGLE_CALLBACK_URL
-}, (accessToken, refreshToken, profile, done) => {
-    // Aquí puedes buscar o crear un usuario en tu base de datos
-    // En este ejemplo, simplemente devolvemos el perfil de Google
-    return done(null, profile);
-}));
+
 
 module.exports = passport;
