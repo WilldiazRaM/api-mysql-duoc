@@ -12,6 +12,8 @@ const productosRoutes = require('./routes/productosRoutes');
 const pagosRouter = require('./routes/pagosRoutes');
 const historialesRoutes = require('./routes/historialRoutes');
 const carritoRouter = require('./routes/carritoRouters');
+const { isAuthenticated } = require('./utils/passwordUtils');
+
 
 
 require('dotenv').config();
