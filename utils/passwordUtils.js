@@ -27,4 +27,13 @@ function requireAuth(JWT_SECRET) {
     };
 }
 
-module.exports = { hashPassword, comparePasswords, requireAuth };
+// Middleware para verificar si el usuario está autenticado
+function isAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/login');
+}
+
+
+module.exports = { hashPassword, comparePasswords, requireAuth, isAuthenticated };

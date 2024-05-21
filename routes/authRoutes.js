@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { login, register, logout } = require('../controllers/authController');
-const { requireAuth } = require('../utils/passwordUtils');
+const { requireAuth, isAuthenticated } = require('../utils/passwordUtils');
 const { JWT_SECRET } = require('../controllers/authController');
 const passport = require('./passportConfig');
 
@@ -20,18 +20,6 @@ router.get('/github/callback', passport.authenticate('github', { failureRedirect
     // Redirige al usuario a la página principal o a donde quieras después de la autenticación exitosa
     res.redirect('/login/profile.html');
 });
-
-// Middleware para verificar si el usuario está autenticado
-function isAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect('/login');
-}
-
-
-
-
 
 
 router.get('/profile', requireAuth(JWT_SECRET), isAuthenticated, (req, res) => {
