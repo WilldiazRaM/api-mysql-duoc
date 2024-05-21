@@ -68,6 +68,7 @@ app.use('/pagos', pagosRouter);
 app.use('/historial-compras', historialesRoutes);
 app.use('/carrito', carritoRouter);
 
+// Ruta protegida para el perfil del usuario
 app.get('/profile', isAuthenticated, (req, res) => {
     res.sendFile('profile.html', { root: './public/login' });
 });
