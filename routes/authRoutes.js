@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const { login, register, logout } = require('../controllers/authController');
-const { requireAuth, isAuthenticated } = require('../utils/passwordUtils');
 const passport = require('./passportConfig');
 
 // Ruta para iniciar sesión local
@@ -32,6 +31,11 @@ router.get('/profile', (req, res) => {
     } else {
         res.redirect('/login');
     }
+});
+
+// Ruta para la vista de login
+router.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/login/login.html'));
 });
 
 module.exports = router;
