@@ -3,6 +3,7 @@ const router = express.Router();
 const path = require('path');
 const { login, register, logout } = require('../controllers/authController');
 const passport = require('./passportConfig');
+const { isAuthenticated } = require('../utils/passwordUtils')
 
 // Ruta para la vista de perfil
 router.get('/profile', isAuthenticated, (req, res) => {
