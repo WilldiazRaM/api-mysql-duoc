@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const { login, register, logout } = require('../controllers/authController');
 const passport = require('./passportConfig');
+const jwt = require('jsonwebtoken');
+
 
 // Ruta para iniciar sesión local
 router.post('/login', login);
