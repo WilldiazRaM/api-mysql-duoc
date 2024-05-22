@@ -67,7 +67,7 @@
                     // Guardar el token en localStorage
                     localStorage.setItem('token', data.token);
                     // Redirigir al usuario a la página de perfil
-                    window.location.href = '/profile';
+                    window.location.href = `/profile?token=${data.token}`;
                 } else {
                     alert('Login failed: ' + data.error);
                 }
@@ -75,7 +75,7 @@
                 console.error('Error:', error);
                 alert('Login failed: ' + error.message);
             }
-        });
+        }); 
     </script>
 </body>
 </html>
