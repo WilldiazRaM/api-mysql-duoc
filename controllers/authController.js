@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { createUser } = require('../models/userModel');
 const { authenticateUser } = require('../utils/databaseUtils');
 const { hashPassword } = require('../utils/passwordUtils');
 const JWT_SECRET = process.env.JWT_SECRET || 'secretoSuperSeguro';
