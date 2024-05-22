@@ -47,35 +47,37 @@
     <script src="https://kit.fontawesome.com/1dfe34419e.js" crossorigin="anonymous"></script>
     <script>
         document.getElementById('loginForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+    event.preventDefault();
+    const email = document.getElementById('email').value;
+    // Cambia 'password' a 'userPassword'
+    const password = document.getElementById('userPassword').value;
 
-            try {
-                const response = await fetch('/auth/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-email': email,
-                        'x-password': password
-                    }
-                });
-
-                const data = await response.json();
-                if (response.ok) {
-                    alert('Login successful');
-                    // Guardar el token en localStorage
-                    localStorage.setItem('token', data.token);
-                    // Redirigir al usuario a la página de perfil
-                    window.location.href = `/profile?token=${data.token}`;
-                } else {
-                    alert('Login failed: ' + data.error);
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Login failed: ' + error.message);
+    try {
+        const response = await fetch('/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-email': email,
+                'x-password': password
             }
-        }); 
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            alert('Login successful');
+            // Guardar el token en localStorage
+            localStorage.setItem('token', data.token);
+            // Redirigir al usuario a la página de perfil
+            window.location.href = `/profile?token=${data.token}`;
+        } else {
+            alert('Login failed: ' + data.error);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Login failed: ' + error.message);
+    }
+});
+ 
     </script>
 </body>
 </html>
