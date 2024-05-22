@@ -70,24 +70,16 @@
 
                 const data = await response.json();
                 if (response.ok) {
-                    Swal.fire({
-                        title: '¡Inicio de sesión exitoso!',
-                        html: 'Cargando...',
-                        timer: 2000,
-                        timerProgressBar: true,
-                        onBeforeOpen: () => {
-                            Swal.showLoading();
-                        },
-                        onClose: () => {
-                            window.location.href = `/profile?token=${data.token}`;
-                        }
-                    });
+                    
+                    localStorage.setItem('token', data.token);
+                    
+                    window.location.href = `/profile?token=${data.token}`;
                 } else {
-                    Swal.fire('¡Error!', data.error, 'error');
+                    alert('Login failed: ' + data.error);
                 }
             } catch (error) {
                 console.error('Error:', error);
-                Swal.fire('¡Error!', 'Ocurrió un error durante el inicio de sesión', 'error');
+                alert('Login failed: ' + error.message);
             }
         }); 
     </script>
