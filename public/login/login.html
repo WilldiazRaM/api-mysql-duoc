@@ -64,9 +64,10 @@
                 const data = await response.json();
                 if (response.ok) {
                     alert('Login successful');
-                    // Aquí puedes redirigir al usuario o guardar el token, por ejemplo:
-                    // localStorage.setItem('token', data.token);
-                    // window.location.href = '/profile';
+                    // Guardar el token en localStorage
+                    localStorage.setItem('token', data.token);
+                    // Redirigir al usuario a la página de perfil
+                    window.location.href = '/profile';
                 } else {
                     alert('Login failed: ' + data.error);
                 }
