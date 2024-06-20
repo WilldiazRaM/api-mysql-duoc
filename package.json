@@ -27,6 +27,7 @@
     "express-flash": "^0.0.2",
     "express-mysql-session": "^3.0.2",
     "express-session": "^1.18.0",
+    "express-validator": "^7.1.0",
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
