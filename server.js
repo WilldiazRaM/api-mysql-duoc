@@ -13,7 +13,6 @@ const pagosRouter = require('./routes/pagosRoutes');
 const historialesRoutes = require('./routes/historialRoutes');
 const carritoRouter = require('./routes/carritoRouters');
 const { isAuthenticated } = require('./utils/authUtils');
-const sanitizeAndValidateInput = require('./utils/sanitizeUtils');
 
 
 // Servir archivos estáticos
@@ -68,6 +67,11 @@ app.use((req, res, next) => {
         }
         return false;
     };
+
+    console.log('req.body:', req.body);
+    console.log('req.params:', req.params);
+    console.log('req.query:', req.query);
+    console.log('req.headers:', req.headers);
 
     // Verificar caracteres peligrosos en req.body
     for (let key in req.body) {
