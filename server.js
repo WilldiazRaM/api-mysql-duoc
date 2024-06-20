@@ -56,54 +56,6 @@ app.use((req, res, next) => {
 
 
 
-// Middleware para filtrar caracteres peligrosos
-app.use((req, res, next) => {
-    const dangerousChars = /['";]/;
-    const dangerousSequence = /--/;
-
-    const checkForDangerousChars = (input) => {
-        if (dangerousChars.test(input) || dangerousSequence.test(input)) {
-            return true;
-        }
-        return false;
-    };
-
-    console.log('req.body:', req.body);
-    console.log('req.params:', req.params);
-    console.log('req.query:', req.query);
-    console.log('req.headers:', req.headers);
-
-    // Verificar caracteres peligrosos en req.body
-    for (let key in req.body) {
-        if (checkForDangerousChars(req.body[key])) {
-            return res.status(400).send('Caracteres peligrosos detectados. \n with ❤️ from 🇨🇱 👊👊👊 \n ');
-        }
-    }
-
-    // Verificar caracteres peligrosos en req.params
-    for (let key in req.params) {
-        if (checkForDangerousChars(req.params[key])) {
-            return res.status(400).send('Caracteres peligrosos detectados. \n with ❤️ from 🇨🇱 👊👊👊 \n ');
-        }
-    }
-
-    // Verificar caracteres peligrosos en req.query
-    for (let key in req.query) {
-        if (checkForDangerousChars(req.query[key])) {
-            return res.status(400).send('Caracteres peligrosos detectados. \n with ❤️ from 🇨🇱 👊👊👊 \n ');
-        }
-    }
-
-    // Verificar caracteres peligrosos en req.headers
-    for (let key in req.headers) {
-        if (checkForDangerousChars(req.headers[key])) {
-            return res.status(400).send('Caracteres peligrosos detectados. \n with ❤️ from 🇨🇱 👊👊👊 \n ');
-        }
-    }
-
-    next();
-});
-
 
 // Rutas
 app.use('/auth', authRoutes);
