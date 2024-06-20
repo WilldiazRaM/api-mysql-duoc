@@ -13,6 +13,8 @@ const pagosRouter = require('./routes/pagosRoutes');
 const historialesRoutes = require('./routes/historialRoutes');
 const carritoRouter = require('./routes/carritoRouters');
 const { isAuthenticated } = require('./utils/authUtils');
+const sanitizeInput = require('./utils/sanitizeUtils');
+
 
 // Servir archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
@@ -53,6 +55,9 @@ app.use((req, res, next) => {
     next();
 });
 
+
+// Middleware de saneamiento de entrada "inyeciones"
+app.use(sanitizeInput);
 
 // Rutas
 app.use('/auth', authRoutes);
