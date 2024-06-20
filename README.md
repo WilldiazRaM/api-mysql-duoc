@@ -12,7 +12,7 @@ Este repositorio contiene una aplicación web desarrollada con Node.js y Express
 
 **URL**
 ```
-https://api-mysql-duoc.onrender.com
+https://api-mysql-duoc.onrender.com/auth/login
 ```
 Nota: Por estar utilizando la capa gratuita en Render, el tiempo de carga puede ser de hasta 60 segundos después de un período de inactividad.
 
