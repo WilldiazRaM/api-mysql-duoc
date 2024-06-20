@@ -3,7 +3,7 @@ const router = express.Router();
 const passport = require('passport');
 const { login, register, logout } = require('../controllers/authController');
 const jwt = require('jsonwebtoken');
-const sanitizeAndValidateInput = require('./utils/sanitizeUtils');
+const sanitizeAndValidateInput = require('../utils/sanitizeUtils');
 
 
 
