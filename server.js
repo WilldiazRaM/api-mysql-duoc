@@ -13,7 +13,7 @@ const pagosRouter = require('./routes/pagosRoutes');
 const historialesRoutes = require('./routes/historialRoutes');
 const carritoRouter = require('./routes/carritoRouters');
 const { isAuthenticated } = require('./utils/authUtils');
-const sanitizeInput = require('./utils/sanitizeUtils');
+const sanitizeInput = require('../utils/sanitizeUtils');
 
 
 // Servir archivos estáticos
