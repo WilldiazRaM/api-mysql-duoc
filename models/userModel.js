@@ -5,6 +5,9 @@ async function findUserByEmail(email) {
     const query = 'SELECT * FROM "Usuarios" WHERE email = $1';
     const values = [email];
     
+    console.log('Consulta SQL:', query);
+    console.log('Valores:', values);
+
     try {
         const result = await pool.query(query, values);
         if (result.rows.length > 0) {
