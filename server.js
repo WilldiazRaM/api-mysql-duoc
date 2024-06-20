@@ -56,6 +56,8 @@ app.use((req, res, next) => {
 });
 
 
+// Middleware de saneamiento de entrada
+app.use(sanitizeAndValidateInput);
 
 // Rutas
 app.use('/auth', authRoutes);
@@ -65,18 +67,6 @@ app.use('/historial-compras', historialesRoutes);
 app.use('/carrito', carritoRouter);
 
 // Ruta protegida para el perfil del usuario
-app.get('/profile', isAuthenticated, (req, res) => {
-    // Verificar si hay un token en la solicitud
-    const token = req.query.token;
-    if (token) {
-        // Si hay un token, el usuario está autenticado, puedes enviar la página de perfil
-        res.sendFile('profile.html', { root: './public/login/' });
-    } else {
-        // Si no hay un token, redirige al usuario a la página de inicio de sesión
-        res.redirect('/auth/login');
-    }
-});
-
 app.get('/profile', isAuthenticated, (req, res) => {
     const token = req.query.token;
     if (token) {
