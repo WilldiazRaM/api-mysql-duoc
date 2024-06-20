@@ -3,13 +3,12 @@ const router = express.Router();
 const passport = require('passport');
 const { login, register, logout } = require('../controllers/authController');
 const jwt = require('jsonwebtoken');
-const sanitizeAndValidateInput = require('../utils/sanitizeUtils');
 
 
 
 // Rutas de autenticación locales
-router.post('/login', sanitizeAndValidateInput, login);
-router.post('/registrar', sanitizeAndValidateInput, register); 
+router.post('/login', login);
+router.post('/registrar',  register); 
 router.get('/logout', logout);
 
 // Ruta para cargar la página de inicio de sesión
