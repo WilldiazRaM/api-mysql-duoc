@@ -2,7 +2,7 @@ const pool = require('../database');
 const { comparePasswords } = require('../utils/passwordUtils');
 
 async function findUserByEmail(email) {
-    const query = 'SELECT * FROM Usuarios WHERE email = $1';
+    const query = 'SELECT * FROM "Usuarios" WHERE email = $1';
     const values = [email];
     
     try {
@@ -18,9 +18,9 @@ async function findUserByEmail(email) {
     }
 }
 
-async function createUser(email, hashedPassword) {
-    const query = 'INSERT INTO Usuarios (email, password) VALUES ($1, $2)';
-    const values = [email, hashedPassword];
+async function createUser(nombre, email, hashedPassword, role) {
+    const query = 'INSERT INTO "Usuarios" (nombre, email, password, role) VALUES ($1, $2, $3, $4)';
+    const values = [nombre, email, hashedPassword, role];
     
     try {
         await pool.query(query, values);
