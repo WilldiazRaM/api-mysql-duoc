@@ -56,8 +56,6 @@ app.use((req, res, next) => {
 });
 
 
-// Middleware de saneamiento de entrada
-app.use(sanitizeAndValidateInput);
 
 // Rutas
 app.use('/auth', authRoutes);
