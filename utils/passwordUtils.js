@@ -32,4 +32,4 @@ function requireAuth(JWT_SECRET) {
 
 
 
-module.exports = { hashPassword, comparePasswords, requireAuth };
+module.exports = { hashPassword, comparePasswords, requireAuth , JWT_SECRET };

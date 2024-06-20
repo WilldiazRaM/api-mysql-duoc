@@ -15,7 +15,6 @@ const carritoRouter = require('./routes/carritoRouters');
 const { isAuthenticated } = require('./utils/authUtils');
 const jwt = require('jsonwebtoken');
 
-
 // Servir archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 
