@@ -1,10 +1,7 @@
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { createUser } = require('../models/userModel');
-const { authenticateUser } = require('../utils/databaseUtils');
+const { createUser, authenticateUser } = require('../utils/databaseUtils');
 const { hashPassword } = require('../utils/passwordUtils');
 const JWT_SECRET = process.env.JWT_SECRET || 'secretoSuperSeguro';
-
 
 async function login(req, res) {
     const email = req.headers['x-email'];
@@ -27,8 +24,6 @@ async function login(req, res) {
         res.status(500).json({ error: "Ocurrió un error durante el inicio de sesión" });
     }
 }
-
-
 
 async function register(req, res) {
     const nombre = req.headers['x-nombre'];
@@ -55,19 +50,15 @@ async function register(req, res) {
     }
 }
 
-
 async function logout(req, res) {
     req.logout((err) => {
         if (err) {
             console.error('Error al cerrar sesión:', err);
             return res.status(500).json({ error: 'Ocurrió un error al cerrar sesión' });
         }
-        // Si la sesión se cerró correctamente, redirige al usuario a: ...
         res.redirect('/auth/login');
     });
 }
-
-
 
 module.exports = {
     login,
