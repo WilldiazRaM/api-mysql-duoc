@@ -29,20 +29,19 @@ async function login(req, res) {
 
 
 async function register(req, res) {
-    const email = req.headers['x-email'];
-    const password = req.headers['x-password'];
+    const { nombre, email, password, role } = req.headers;
 
-    if (!email || !password) {
-        return res.status(400).json({ error: "Email y contraseña son requeridos" });
+    if (!nombre || !email || !password || !role) {
+        return res.status(400).json({ error: "Nombre, email, contraseña y rol son requeridos" });
     }
 
     try {
-        const hashedPassword = await hashPassword(password);
-        await createUser(email, hashedPassword);
+        const hashedPassword = await bcrypt.hash(password, 10);
+        await createUser(nombre, email, hashedPassword, role);
         res.status(201).json({ message: "Usuario registrado exitosamente" });
     } catch (error) {
         console.error("Error al registrar usuario:", error);
-        if (error.code === 'ER_DUP_ENTRY') {
+        if (error.code === '23505') { // Código de error para entradas duplicadas en PostgreSQL
             return res.status(409).json({ error: "El correo electrónico ya está en uso" });
         }
         res.status(500).json({ error: "Ocurrió un error al registrar el usuario" });
