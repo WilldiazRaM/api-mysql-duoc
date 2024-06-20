@@ -38,5 +38,8 @@
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "pg": "^8.12.0"
+  },
+  "resolutions": {
+    "mime-types": "^2.1.37"
   }
 }
