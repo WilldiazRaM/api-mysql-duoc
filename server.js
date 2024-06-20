@@ -13,6 +13,7 @@ const pagosRouter = require('./routes/pagosRoutes');
 const historialesRoutes = require('./routes/historialRoutes');
 const carritoRouter = require('./routes/carritoRouters');
 const { isAuthenticated } = require('./utils/authUtils');
+const jwt = require('jsonwebtoken');
 
 
 // Servir archivos estáticos
