@@ -29,7 +29,12 @@ async function login(req, res) {
 
 
 async function register(req, res) {
-    const { nombre, email, password, role } = req.headers;
+    const nombre = req.headers['x-nombre'];
+    const email = req.headers['x-email'];
+    const password = req.headers['x-password'];
+    const role = req.headers['x-role'];
+
+    console.log('Headers recibidos:', { nombre, email, password, role });
 
     if (!nombre || !email || !password || !role) {
         return res.status(400).json({ error: "Nombre, email, contraseña y rol son requeridos" });
