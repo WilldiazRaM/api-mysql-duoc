@@ -2,18 +2,33 @@ const pool = require('../database');
 const { comparePasswords } = require('../utils/passwordUtils');
 
 async function findUserByEmail(email) {
-    const query = 'SELECT * FROM Usuarios WHERE email = ?';
-    const [rows] = await pool.query(query, [email]);
-    if (rows.length > 0) {
-        return rows[0];
-    } else {
-        return null;
+    const query = 'SELECT * FROM Usuarios WHERE email = $1';
+    const values = [email];
+    
+    try {
+        const result = await pool.query(query, values);
+        if (result.rows.length > 0) {
+            return result.rows[0];
+        } else {
+            return null;
+        }
+    } catch (error) {
+        console.error('Error al encontrar usuario por email:', error.message);
+        throw error;
     }
 }
 
 async function createUser(email, hashedPassword) {
-    const query = 'INSERT INTO Usuarios (email, password) VALUES (?, ?)';
-    await pool.query(query, [email, hashedPassword]);
+    const query = 'INSERT INTO Usuarios (email, password) VALUES ($1, $2)';
+    const values = [email, hashedPassword];
+    
+    try {
+        await pool.query(query, values);
+        console.log('Usuario creado exitosamente.');
+    } catch (error) {
+        console.error('Error al crear usuario:', error.message);
+        throw error;
+    }
 }
 
 async function authenticateUser(email, password) {
