@@ -15,8 +15,7 @@ const carritoRouter = require('./routes/carritoRouters');
 const { isAuthenticated } = require('./utils/authUtils');
 const jwt = require('jsonwebtoken');
 const securityHeaders = require('./config/securityHeaders');
-const { Pool } = require('pg');
-
+const pool = require('./database');
 const PORT = process.env.PORT || 4001;
 
 // Configuración de la base de datos PostgreSQL
