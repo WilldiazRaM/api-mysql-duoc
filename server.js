@@ -14,7 +14,7 @@ const historialesRoutes = require('./routes/historialRoutes');
 const carritoRouter = require('./routes/carritoRouters');
 const { isAuthenticated } = require('./utils/authUtils');
 const jwt = require('jsonwebtoken');
-const securityHeaders = require('./config/securityheaders');
+const securityHeaders = require('./config/securityHeaders');
 
 const PORT = process.env.PORT || 4001;
 
@@ -43,7 +43,7 @@ app.use(passport.session());
 // Servir archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Configuración de EJS como motor de plantillas (puedes eliminar esta parte si no usas EJS)
+// Configuración de EJS como motor de plantillas
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
