@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const helmet = require('helmet');
 const session = require('express-session');
-const store = new session.MemoryStore();
+const pgSession = require('connect-pg-simple')(session);
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const passport = require('./config/passportConfig');
@@ -15,8 +15,17 @@ const carritoRouter = require('./routes/carritoRouters');
 const { isAuthenticated } = require('./utils/authUtils');
 const jwt = require('jsonwebtoken');
 const securityHeaders = require('./config/securityHeaders');
+const { Pool } = require('pg');
 
 const PORT = process.env.PORT || 4001;
+
+// Configuración de la base de datos PostgreSQL
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
+});
 
 // Middleware de seguridad
 app.use(helmet());
@@ -27,12 +36,15 @@ app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Configuración de sesiones
+// Configuración de sesiones con PostgreSQL
 app.use(session({
+    store: new pgSession({
+        pool: pool,                // Conexión a la base de datos
+        tableName: 'session'       // Nombre de la tabla de sesiones
+    }),
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    store: store,
     cookie: { maxAge: 86400000, secure: process.env.NODE_ENV === 'production' }
 }));
 
