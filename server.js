@@ -5,7 +5,7 @@ const session = require('express-session');
 const store = new session.MemoryStore();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const passport = require('./routes/passportConfig');
+const passport = require('./config/passportConfig');
 const path = require('path');
 const authRoutes = require('./routes/authRoutes');
 const productosRoutes = require('./routes/productosRoutes');
@@ -42,14 +42,6 @@ app.use(passport.session());
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Middleware de seguridad
-app.use((req, res, next) => {
-    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubdomains');
-    res.setHeader('Content-Security-Policy', "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://kit.fontawesome.com;");
-    res.setHeader('X-Frame-Options', 'SAMEORIGIN');
-    res.setHeader('Permissions-Policy', "geolocation=(self 'https://api-mysql-duoc.onrender.com')");
-    next();
-});
 
 // Rutas
 app.use('/auth', authRoutes);

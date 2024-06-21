@@ -4,13 +4,11 @@ const LocalStrategy = require('passport-local').Strategy;
 const db = require('../utils/databaseUtils');
 const GitHubStrategy = require('passport-github2').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const pool = require('../database');
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const GOOGLE_CALLBACK_URL = 'https://api-mysql-duoc.onrender.com/auth/google/callback';
 
-// Configuración de GitHub Strategy
 // Configuración de GitHub Strategy
 passport.use(new GitHubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
@@ -22,7 +20,6 @@ passport.use(new GitHubStrategy({
     // Aquí puedes buscar o crear un usuario en tu base de datos
     return done(null, profile);
 }));
-
 
 // Configuración de Google Strategy
 passport.use(new GoogleStrategy({
@@ -36,8 +33,6 @@ passport.use(new GoogleStrategy({
     return done(null, profile);
 }));
 
-
-
 passport.serializeUser((user, done) => {
     done(null, user.id);
 });
@@ -50,7 +45,6 @@ passport.deserializeUser(async (id, done) => {
         done(error, null);
     }
 });
-
 
 passport.use(new LocalStrategy({
     usernameField: 'email',
@@ -72,11 +66,5 @@ passport.use(new LocalStrategy({
         return done(err)
     }
 }));
-
-
-
-
-
-
 
 module.exports = passport;
