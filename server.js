@@ -38,7 +38,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Configuración de EJS como motor de plantillas
+// Configuración de EJS como motor de plantillas (puedes eliminar esta parte si no usas EJS)
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -48,14 +48,8 @@ app.use((req, res, next) => {
     res.setHeader('Content-Security-Policy', "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://kit.fontawesome.com;");
     res.setHeader('X-Frame-Options', 'SAMEORIGIN');
     res.setHeader('Permissions-Policy', "geolocation=(self 'https://api-mysql-duoc.onrender.com')");
-    // Configuración de CORS para permitir solicitudes desde dominios externos (por ejemplo, GitHub y Google)
-    
-
     next();
 });
-
-
-
 
 // Rutas
 app.use('/auth', authRoutes);
@@ -72,7 +66,8 @@ app.get('/profile', isAuthenticated, (req, res) => {
             if (err) {
                 return res.redirect('/auth/login');
             }
-            res.render('profile', { user: decoded });
+            // En lugar de renderizar una vista, envía el archivo HTML estático
+            res.sendFile(path.join(__dirname, 'public', 'login', 'profile.html'));
         });
     } else {
         res.redirect('/auth/login');
