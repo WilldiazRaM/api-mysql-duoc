@@ -74,6 +74,14 @@ app.get('/profile', isAuthenticated, (req, res) => {
     }
 });
 
+// Ruta para obtener los datos del usuario
+app.get('/api/user', isAuthenticated, (req, res) => {
+    res.json({ email: req.user.email });
+});
+
+
+
+
 // Middleware de manejo de errores global
 app.use((err, req, res, next) => {
     console.error(err.stack);

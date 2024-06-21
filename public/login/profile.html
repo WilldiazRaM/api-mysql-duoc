@@ -13,8 +13,17 @@
     <div class="container">
         <h1>User Profile</h1>
         <p>Welcome!!</p>
-        <p>Email: </p>
+        <p>Email: <span id="email"></span></p>
         <a href="/auth/logout" class="btn btn-primary">Logout</a>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/api/user')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('email').textContent = data.email;
+                });
+        });
+    </script>
 </body>
 </html>
