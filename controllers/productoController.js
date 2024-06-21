@@ -1,4 +1,4 @@
-const { createProducto, obtenerProductos, obtenerProductoPorId, actualizarProducto, eliminarProducto } = require('../models/productoModel');
+const { createProducto, obtenerProductos, obtenerProductoPorId } = require('../models/productoModel');
 
 const crearProducto = async (req, res) => {
     const { nombre, precio, descripcion, stock, categoria_nombre } = req.body;

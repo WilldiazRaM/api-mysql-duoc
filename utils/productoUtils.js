@@ -1,6 +1,5 @@
 const pool = require('../database');
 
-
 const categoriasId = {
     'Herramientas Manuales': 1,
     'Herramientas Eléctricas': 2,
@@ -13,63 +12,52 @@ const categoriasId = {
 };
 
 async function createProducto(nombre, precio, descripcion, stock, categoria_nombre) {
-    return new Promise((resolve, reject) => {
-        // Obtener el id de la categoría correspondiente al nombre de la categoría
-        const categoria_id = categoriasId[categoria_nombre];
-        if (!categoria_id) {
-            // Si la categoría no existe en el diccionario, rechazar la promesa con un error
-            const error = new Error('La categoría especificada no existe');
-            console.error("Error en createProducto:", error);
-            return reject(error);
-        }
+    const categoria_id = categoriasId[categoria_nombre];
+    if (!categoria_id) {
+        throw new Error('La categoría especificada no existe');
+    }
 
-        // Realizar la inserción del producto con el id de la categoría obtenido
-        const query = 'INSERT INTO Productos (nombre, precio, descripcion, stock, categoria_id) VALUES (?, ?, ?, ?, ?)';
-        pool.query(query, [nombre, precio, descripcion, stock, categoria_id], (error, result) => {
-            if (error) {
-                console.error("Error en createProducto:", error);
-                return reject(error); // Rechazar la promesa con el error
-            }
-            const newProductId = result.insertId;
-            // Resolver con los datos del producto registrado
-            resolve({ id: newProductId, nombre, precio, descripcion, stock, categoria_id });
-        });
-    });
+    const query = 'INSERT INTO "Productos" (nombre, precio, descripcion, stock, categoria_id) VALUES ($1, $2, $3, $4, $5) RETURNING *';
+    const values = [nombre, precio, descripcion, stock, categoria_id];
+
+    try {
+        const result = await pool.query(query, values);
+        return result.rows[0];
+    } catch (error) {
+        console.error("Error en createProducto:", error);
+        throw error;
+    }
 }
 
 // Función para obtener todos los productos
 async function obtenerProductos() {
-    return new Promise((resolve, reject) => {
-        console.log("Iniciando consulta de productos...");
-        pool.query('SELECT * FROM Productos;', (error, result) => {
-            if (error) {
-                console.error("Error al obtener productos:", error);
-                return reject(error);
-            }
-            console.log("Consulta de productos completada.");
-            const productos = result.rows; // Accede a los resultados reales
-            resolve(productos);
-        });
-    });
+    const query = 'SELECT * FROM "Productos"';
+
+    try {
+        const result = await pool.query(query);
+        return result.rows;
+    } catch (error) {
+        console.error("Error al obtener productos:", error);
+        throw error;
+    }
 }
-
-
 
 // Función para obtener un producto por su ID
 async function obtenerProductoPorId(id) {
-    return new Promise((resolve, reject) => {
-        pool.query('SELECT * FROM Productos WHERE id = ?', [id], (error, result) => {
-            if (error) {
-                console.error("Error al obtener producto por ID:", error);
-                return reject(error);
-            }
-            const producto = result.rows[0]; // Accede al primer resultado (si existe)
-            resolve(producto);
-        });
-    });
+    const query = 'SELECT * FROM "Productos" WHERE id = $1';
+    const values = [id];
+
+    try {
+        const result = await pool.query(query, values);
+        return result.rows[0];
+    } catch (error) {
+        console.error("Error al obtener producto por ID:", error);
+        throw error;
+    }
 }
 
-
 module.exports = {
-    createProducto, obtenerProductos, obtenerProductoPorId
+    createProducto,
+    obtenerProductos,
+    obtenerProductoPorId
 };
