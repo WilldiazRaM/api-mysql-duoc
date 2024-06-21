@@ -14,7 +14,7 @@ const historialesRoutes = require('./routes/historialRoutes');
 const carritoRouter = require('./routes/carritoRouters');
 const { isAuthenticated } = require('./utils/authUtils');
 const jwt = require('jsonwebtoken');
-const securityHeaders = require('./securityheaders');
+const securityHeaders = require('./config/securityheaders');
 
 const PORT = process.env.PORT || 4001;
 
