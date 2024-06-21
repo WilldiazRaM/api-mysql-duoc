@@ -3,27 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
-    <!-- Agrega tus estilos CSS aquí -->
+    <title>Perfil del Usuario (ruta protegida)</title>
+    
     <link rel="stylesheet" href="/style.css">
-    <!-- Agrega el framework de Bootstrap -->
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
 <body>
     <div class="container">
-        <h1>User Profile</h1>
-        <p>Welcome!!</p>
-        <p>Email: <span id="email"></span></p>
+        <h1>Perfil de tu cuenta (ruta protegida)</h1>
+        <p>Bienvenido!</p>
+        <p>ApiRestful DUOC UCS <span id="email"></span></p>
         <a href="/auth/logout" class="btn btn-primary">Logout</a>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            fetch('/api/user')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('email').textContent = data.email;
-                });
-        });
-    </script>
+
 </body>
 </html>
