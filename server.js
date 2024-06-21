@@ -14,18 +14,20 @@ const historialesRoutes = require('./routes/historialRoutes');
 const carritoRouter = require('./routes/carritoRouters');
 const { isAuthenticated } = require('./utils/authUtils');
 const jwt = require('jsonwebtoken');
+const securityHeaders = require('./securityheaders');
 
-// Servir archivos estáticos
-app.use(express.static(path.join(__dirname, 'public')));
+const PORT = process.env.PORT || 4001;
 
+// Middleware de seguridad
 app.use(helmet());
+app.use(securityHeaders);
+
+// Middleware de logging y parsing
 app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const PORT = process.env.PORT || 4001;
-
-// Configuración de sesión
+// Configuración de sesiones
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
@@ -38,10 +40,12 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Servir archivos estáticos
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Configuración de EJS como motor de plantillas (puedes eliminar esta parte si no usas EJS)
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-
 
 // Rutas
 app.use('/auth', authRoutes);
@@ -56,6 +60,7 @@ app.get('/profile', isAuthenticated, (req, res) => {
     if (token) {
         jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
             if (err) {
+                console.error('JWT Verification Error:', err);
                 return res.redirect('/auth/login');
             }
             // En lugar de renderizar una vista, envía el archivo HTML estático
@@ -65,8 +70,6 @@ app.get('/profile', isAuthenticated, (req, res) => {
         res.redirect('/auth/login');
     }
 });
-
-
 
 // Middleware de manejo de errores global
 app.use((err, req, res, next) => {
