@@ -15,16 +15,9 @@ const carritoRouter = require('./routes/carritoRouters');
 const { isAuthenticated } = require('./utils/authUtils');
 const jwt = require('jsonwebtoken');
 const securityHeaders = require('./config/securityHeaders');
-const pool = require('./database');
-const PORT = process.env.PORT || 4001;
+const pool = require('./database');  // Importa el pool desde database.js
 
-// Configuración de la base de datos PostgreSQL
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false
-    }
-});
+const PORT = process.env.PORT || 4001;
 
 // Middleware de seguridad
 app.use(helmet());
