@@ -4,7 +4,7 @@ const passport = require('passport');
 const { check, validationResult } = require('express-validator');
 const { login, register, logout } = require('../controllers/authController');
 const jwt = require('jsonwebtoken');
-const { checkHeaders } = require('../middleware/headerValidator');
+const { checkHeaders } = require('../middleware/sqlInjectionFilter');
 
 // Rutas de autenticación locales
 router.post('/login', checkHeaders(['x-email', 'x-password']), login);
