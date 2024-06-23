@@ -12,7 +12,10 @@ async function hashPassword(password) {
 
 async function comparePasswords(plainPassword, hashedPassword) {
     console.log('Contraseña en texto plano:', plainPassword);
+    console.log('Longitud de la contraseña en texto plano:', plainPassword.length);
     console.log('Contraseña hash:', hashedPassword);
+    console.log('Longitud de la contraseña hash:', hashedPassword.length);
+
     const result = await bcrypt.compare(plainPassword, hashedPassword);
     console.log('Resultado de la comparación:', result);
     return result;
