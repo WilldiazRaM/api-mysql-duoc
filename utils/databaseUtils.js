@@ -58,11 +58,14 @@ async function authenticateUser(email, password) {
     try {
         const result = await pool.query(query, values);
         if (result.rows.length === 0) {
+            console.log('No se encontró el usuario');
             return null;
         }
 
         const user = result.rows[0];
+        console.log('Usuario encontrado:', user);
         const isPasswordValid = await comparePasswords(password, user.password);
+        console.log('Contraseña válida:', isPasswordValid);
 
         if (isPasswordValid) {
             return user;
