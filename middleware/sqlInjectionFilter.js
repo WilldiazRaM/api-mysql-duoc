@@ -57,5 +57,6 @@ const checkHeaders = (fields) => {
 
 module.exports = {
     sqlInjectionFilter,
-    checkHeaders
+    checkHeaders,
+    checkForDangerousChars
 };
