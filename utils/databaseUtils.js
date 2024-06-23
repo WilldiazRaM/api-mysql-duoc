@@ -38,12 +38,13 @@ async function findUserById(id) {
 
 async function createUser(nombre, email, password, role) {
     const hashedPassword = await hashPassword(password);
-    const query = 'INSERT INTO "Usuarios" (nombre, email, password, role, created_at) VALUES ($1, $2, $3, $4, NOW())';
+    const query = 'INSERT INTO "Usuarios" (nombre, email, password, role, created_at) VALUES ($1, $2, $3, $4, NOW()) RETURNING id';
     const values = [nombre, email, hashedPassword, role];
 
     try {
         const result = await pool.query(query, values);
-        return { id: result.rows[0].id, nombre, email, role, created_at: new Date() };
+        const userId = result.rows[0].id;
+        return { id: userId, nombre, email, role, created_at: new Date() };
     } catch (error) {
         console.error('Error al crear usuario:', error);
         throw error;
