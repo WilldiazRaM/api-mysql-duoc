@@ -55,4 +55,7 @@ const checkHeaders = (fields) => {
     ];
 };
 
-module.exports = sqlInjectionFilter, checkHeaders;
+module.exports = {
+    sqlInjectionFilter,
+    checkHeaders
+};
