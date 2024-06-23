@@ -15,7 +15,8 @@ const carritoRouter = require('./routes/carritoRouters');
 const { isAuthenticated } = require('./utils/authUtils');
 const jwt = require('jsonwebtoken');
 const securityHeaders = require('./config/securityHeaders');
-const pool = require('./database');  // Importa el pool desde database.js
+const pool = require('./database');
+const sqlInjectionFilter = require('./middleware/sqlInjectionFilter');
 
 const PORT = process.env.PORT || 4001;
 
@@ -27,6 +28,9 @@ app.use(securityHeaders);
 app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Middleware de filtrado de inyecciones SQL
+app.use(sqlInjectionFilter);
 
 // Configuración de sesiones con PostgreSQL
 app.use(session({
