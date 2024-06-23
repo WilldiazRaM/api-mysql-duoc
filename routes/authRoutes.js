@@ -1,14 +1,34 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
+const { check, validationResult } = require('express-validator');
 const { login, register, logout } = require('../controllers/authController');
 const jwt = require('jsonwebtoken');
 
-
-
 // Rutas de autenticación locales
-router.post('/login', login);
-router.post('/registrar',  register); 
+router.post('/login', [
+    check('username').isString().withMessage('El nombre de usuario debe ser una cadena'),
+    check('password').isString().withMessage('La contraseña debe ser una cadena')
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+}, login);
+
+router.post('/registrar', [
+    check('username').isString().withMessage('El nombre de usuario debe ser una cadena'),
+    check('password').isString().withMessage('La contraseña debe ser una cadena'),
+    check('email').isEmail().withMessage('Debe ser un correo electrónico válido')
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+}, register);
+
 router.get('/logout', logout);
 
 // Ruta para cargar la página de inicio de sesión
@@ -39,6 +59,5 @@ router.get('/github/callback', passport.authenticate('github', { failureRedirect
     const token = jwt.sign({ id: req.user.id, provider: 'github' }, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.redirect(`/profile?token=${token}`);
 });
-
 
 module.exports = router;

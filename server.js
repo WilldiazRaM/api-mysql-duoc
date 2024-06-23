@@ -67,7 +67,7 @@ app.get('/profile', isAuthenticated, (req, res) => {
                 console.error('JWT Verification Error:', err);
                 return res.redirect('/auth/login');
             }
-            // En lugar de renderizar una vista, envía el archivo HTML estático
+            
             res.sendFile(path.join(__dirname, 'public', 'login', 'profile.html'));
         });
     } else {
