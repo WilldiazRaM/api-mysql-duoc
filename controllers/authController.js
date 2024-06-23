@@ -40,6 +40,7 @@ async function register(req, res) {
 
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
+        console.log('Contraseña hash generada:', hashedPassword); // Añadir este log para verificar el hash generado
         await createUser(nombre, email, hashedPassword, role);
         res.status(201).json({ message: "Usuario registrado exitosamente" });
     } catch (error) {

@@ -58,14 +58,13 @@ async function authenticateUser(email, password) {
     try {
         const result = await pool.query(query, values);
         if (result.rows.length === 0) {
-            console.log('No se encontró el usuario');
             return null;
         }
 
         const user = result.rows[0];
-        console.log('Usuario encontrado:', user);
-        const isPasswordValid = await comparePasswords(password, user.password);
-        console.log('Contraseña válida:', isPasswordValid);
+        console.log('Usuario encontrado:', user); // Añadir este log para verificar el usuario encontrado
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        console.log('Resultado de la comparación:', isPasswordValid); // Añadir este log para verificar el resultado de la comparación
 
         if (isPasswordValid) {
             return user;
