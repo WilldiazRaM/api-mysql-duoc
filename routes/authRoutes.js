@@ -17,15 +17,33 @@ router.post('/login', [
     next();
 }, login);
 
-router.post('/registrar', [
-    check('username').isString().withMessage('El nombre de usuario debe ser una cadena'),
-    check('password').isString().withMessage('La contraseña debe ser una cadena'),
-    check('email').isEmail().withMessage('Debe ser un correo electrónico válido')
-], (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+router.post('/registrar', (req, res, next) => {
+    const nombre = req.headers['x-nombre'];
+    const email = req.headers['x-email'];
+    const password = req.headers['x-password'];
+    const role = req.headers['x-role'];
+
+    const errors = [];
+
+    if (!nombre || typeof nombre !== 'string') {
+        errors.push({ msg: 'El nombre de usuario debe ser una cadena', path: 'username' });
     }
+    if (!password || typeof password !== 'string') {
+        errors.push({ msg: 'La contraseña debe ser una cadena', path: 'password' });
+    }
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+        errors.push({ msg: 'Debe ser un correo electrónico válido', path: 'email' });
+    }
+
+    if (errors.length > 0) {
+        return res.status(400).json({ errors });
+    }
+
+    req.body.username = nombre;
+    req.body.password = password;
+    req.body.email = email;
+    req.body.role = role;
+
     next();
 }, register);
 
