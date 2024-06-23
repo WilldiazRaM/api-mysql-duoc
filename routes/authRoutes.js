@@ -5,6 +5,8 @@ const { check, validationResult } = require('express-validator');
 const { login, register, logout } = require('../controllers/authController');
 const jwt = require('jsonwebtoken');
 const { checkHeaders } = require('../middleware/sqlInjectionFilter');
+const bcrypt = require('bcrypt');
+
 
 // Rutas de autenticación locales
 router.post('/login', checkHeaders(['x-email', 'x-password']), login);
@@ -70,5 +72,25 @@ router.get('/github/callback', passport.authenticate('github', { failureRedirect
     const token = jwt.sign({ id: req.user.id, provider: 'github' }, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.redirect(`/profile?token=${token}`);
 });
+
+
+
+
+
+// Ruta para comparar contraseñas manualmente
+router.get('/debug/compare', async (req, res) => {
+    const plainPassword = 'password123.';
+    const hashedPassword = '$2b$10$gUIv0aHyC1n/p1EPRHRchOUBnGF2gkYMpvB/urCL2QKg9xBJv8rJW'; // Reemplaza con la contraseña hash de la base de datos
+
+    try {
+        const result = await bcrypt.compare(plainPassword, hashedPassword);
+        res.status(200).json({ isValid: result });
+    } catch (err) {
+        console.error('Error al comparar contraseñas:', err);
+        res.status(500).json({ error: 'Error al comparar contraseñas' });
+    }
+});
+
+
 
 module.exports = router;
