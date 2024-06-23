@@ -30,7 +30,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Middleware de filtrado de inyecciones SQL
-app.use(sqlInjectionFilter);
+app.use(sqlInjectionFilter.sqlInjectionFilter);
 
 // Configuración de sesiones con PostgreSQL
 app.use(session({
