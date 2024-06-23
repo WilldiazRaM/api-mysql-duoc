@@ -6,16 +6,8 @@ const { login, register, logout } = require('../controllers/authController');
 const jwt = require('jsonwebtoken');
 
 // Rutas de autenticación locales
-router.post('/login', [
-    check('username').isString().withMessage('El nombre de usuario debe ser una cadena'),
-    check('password').isString().withMessage('La contraseña debe ser una cadena')
-], (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
-    next();
-}, login);
+router.post('/login', checkHeaders(['x-email', 'x-password']), login);
+
 
 router.post('/registrar', (req, res, next) => {
     const nombre = req.headers['x-nombre'];

@@ -25,6 +25,7 @@ async function login(req, res) {
     }
 }
 
+
 async function register(req, res) {
     const nombre = req.headers['x-nombre'];
     const email = req.headers['x-email'];
