@@ -1,14 +1,14 @@
 import * as chai from 'chai';
 import chaiHttp from 'chai-http';
-import server from '../server.js';
+import app from '../server.js'; // Importa la aplicación de Express
 
-chai.use(chaiHttp);
-const should = chai.should();
+chai.default.use(chaiHttp);
+const should = chai.default.should();
 
 describe('Auth Controller', () => {
   describe('POST /auth/login', () => {
     it('should login a user', (done) => {
-      chai.request(server)
+      chai.default.request(app)
           .post('/auth/login')
           .set('x-email', 'test@example.com')
           .set('x-password', 'password123')
@@ -21,7 +21,7 @@ describe('Auth Controller', () => {
     });
 
     it('should return error for invalid credentials', (done) => {
-      chai.request(server)
+      chai.default.request(app)
           .post('/auth/login')
           .set('x-email', 'invalid@example.com')
           .set('x-password', 'wrongpassword')
@@ -36,7 +36,7 @@ describe('Auth Controller', () => {
 
   describe('POST /auth/registrar', () => {
     it('should register a user', (done) => {
-      chai.request(server)
+      chai.default.request(app)
           .post('/auth/registrar')
           .set('x-nombre', 'Test User')
           .set('x-email', 'testuser@example.com')
@@ -51,7 +51,7 @@ describe('Auth Controller', () => {
     });
 
     it('should return error for missing fields', (done) => {
-      chai.request(server)
+      chai.default.request(app)
           .post('/auth/registrar')
           .set('x-email', 'testuser@example.com')
           .set('x-password', 'password123')

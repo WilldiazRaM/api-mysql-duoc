@@ -32,12 +32,8 @@ app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
-
 // Middleware de filtrado de inyecciones SQL
 app.use(sqlInjectionFilter);
-
-
 
 // Configuración de sesiones con PostgreSQL
 app.use(session({
@@ -78,16 +74,12 @@ app.get('/profile', isAuthenticated, (req, res) => {
                 console.error('JWT Verification Error:', err);
                 return res.redirect('/auth/login');
             }
-            
             res.sendFile(path.join(__dirname, 'public', 'login', 'profile.html'));
         });
     } else {
         res.redirect('/auth/login');
     }
 });
-
-
-
 
 //DEBUG DE RUTAS
 app.use((req, res, next) => {
@@ -107,6 +99,8 @@ app.use((err, req, res, next) => {
 });
 
 // Iniciar el servidor
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`Server is listening on ${PORT}`);
 });
+
+module.exports = app;  // Exporta la aplicación de Express
