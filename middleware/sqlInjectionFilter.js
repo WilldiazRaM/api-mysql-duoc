@@ -47,7 +47,8 @@ const sqlInjectionFilter = (req, res, next) => {
         'cf-ew-via', 'cf-ipcountry', 'cf-ray', 'cf-visitor', 'accept-language', 'cache-control', 'pragma', 'true-client-ip',
         'x-forwarded-for', 'x-forwarded-proto', 'x-request-start', 'sec-ch-ua', 'sec-ch-ua-mobile', 'sec-ch-ua-platform',
         'upgrade-insecure-requests', 'origin', 'content-length', 'content-type', 'x-requested-with', 'sec-fetch-site',
-        'sec-fetch-mode', 'sec-fetch-user', 'sec-fetch-dest', 'sec-fetch-secure', 'dnt', 'early-data', 'priority', 'cf-worker'
+        'sec-fetch-mode', 'sec-fetch-user', 'sec-fetch-dest', 'sec-fetch-secure', 'dnt', 'early-data', 'priority', 'cf-worker',
+        'if-modified-since', 'if-none-match', 'render-proxy-ttl', 'rndr-id'
     ];
 
     for (let key in req.headers) {
