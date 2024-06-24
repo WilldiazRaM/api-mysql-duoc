@@ -1,5 +1,5 @@
 const { createTransaction, confirmTransaction } = require('../utils/pagosUtils');
-const { savePayment, getVentaById, createVenta, getUserById } = require('../models/pagoModel');
+const { savePayment, getVentaById, createVenta, getUserById, getPaymentByToken } = require('../models/pagoModel');
 
 const iniciarTransaccion = async (req, res) => {
   const { buyOrder, sessionId, amount, returnUrl, metodoPago, userId } = req.body;
@@ -24,6 +24,16 @@ const iniciarTransaccion = async (req, res) => {
     const transaction = await createTransaction(newBuyOrder, sessionId, amount, returnUrl);
 
     if (transaction.token) {
+      // Guardar el pago con el token en la base de datos
+      const paymentData = {
+        id_venta: newBuyOrder,
+        monto: amount,
+        metodo_pago: metodoPago,
+        estado_pago: 'iniciado',
+        token: transaction.token,
+      };
+      await savePayment(paymentData);
+
       res.status(200).json({ token: transaction.token, url: transaction.url, buyOrder: newBuyOrder });
     } else {
       res.status(500).json({ message: 'Error iniciando transacción con Transbank' });
@@ -34,21 +44,19 @@ const iniciarTransaccion = async (req, res) => {
 };
 
 const confirmarTransaccion = async (req, res) => {
-  const { token, buyOrder } = req.body;
+  const { token } = req.body;
 
   try {
+    // Obtener el pago usando el token
+    const payment = await getPaymentByToken(token);
+    const buyOrder = payment.id_venta;
+
+    // Confirmar la transacción con Transbank
     const transactionResult = await confirmTransaction(token);
 
     if (transactionResult.status === 'AUTHORIZED') {
-      // Guardar información del pago en la base de datos
-      const paymentData = {
-        id_venta: buyOrder,
-        monto: transactionResult.amount,
-        metodo_pago: 'webpay',
-        estado_pago: 'confirmado',
-      };
-      await savePayment(paymentData);
-
+      // Actualizar el estado del pago en la base de datos
+      await updatePaymentStatus(buyOrder, 'confirmado');
       res.status(200).json({ message: 'Transacción confirmada y guardada', transactionResult });
     } else {
       res.status(500).json({ message: 'Transacción no autorizada', transactionResult });
