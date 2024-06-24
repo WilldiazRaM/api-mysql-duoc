@@ -3,6 +3,6 @@ const router = express.Router();
 const { iniciarTransaccion, confirmarTransaccion } = require('../controllers/pagoController');
 
 router.post('/iniciar', iniciarTransaccion);
-router.put('/confirmar/:token', confirmarTransaccion);
+router.post('/confirmar', confirmarTransaccion);
 
 module.exports = router;
