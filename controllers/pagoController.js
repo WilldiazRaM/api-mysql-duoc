@@ -13,14 +13,15 @@ const iniciarTransaccion = async (req, res) => {
 
     // Verificar que la venta exista o crear una nueva venta
     let venta = await getVentaById(buyOrder);
+    let newBuyOrder = buyOrder;
     if (!venta) {
       // Crear una nueva venta si no existe
       venta = await createVenta({ id_usuario: userId, monto: amount });
-      buyOrder = venta.id;
+      newBuyOrder = venta.id;
     }
 
     // Iniciar transacción con Transbank
-    const transaction = await createTransaction(buyOrder, sessionId, amount, returnUrl);
+    const transaction = await createTransaction(newBuyOrder, sessionId, amount, returnUrl);
 
     if (transaction.token) {
       res.status(200).json(transaction);
