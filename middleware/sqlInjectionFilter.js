@@ -31,6 +31,20 @@ const sqlInjectionFilter = (req, res, next) => {
 
 const checkHeaders = (fields) => {
     return [
+        // Verificar si los campos están vacíos
+        (req, res, next) => {
+            const errors = [];
+            fields.forEach(field => {
+                if (!req.headers[field] || req.headers[field].trim() === '') {
+                    errors.push({ msg: `El campo ${field} es requerido`, path: field });
+                }
+            });
+            if (errors.length > 0) {
+                return res.status(400).json({ error: "Email y contraseña son requeridos" });
+            }
+            next();
+        },
+        // Validaciones específicas para cada campo
         ...fields.map(field => {
             switch (field) {
                 case 'x-email':
@@ -45,6 +59,7 @@ const checkHeaders = (fields) => {
                     return check(field).exists().withMessage(`El campo ${field} es requerido`);
             }
         }),
+        // Manejar errores de validación
         (req, res, next) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
