@@ -42,8 +42,10 @@ const sqlInjectionFilter = (req, res, next) => {
         }
     }
     // Verificar req.headers, excluyendo user-agent, accept, accept-encoding, y cdn-loop
+    const excludedHeaders = ['user-agent', 'accept', 'accept-encoding', 'cdn-loop', 'referer', 'connection', 'host'];
     for (let key in req.headers) {
-        if (['user-agent', 'accept', 'accept-encoding', 'cdn-loop'].includes(key.toLowerCase())) {
+        if (excludedHeaders.includes(key.toLowerCase())) {
+            console.log(`Excluyendo req.headers.${key} de la verificación`);
             continue; // Excluir estos encabezados de la verificación
         }
         console.log(`Verificando req.headers.${key}: ${req.headers[key]}`);
