@@ -36,11 +36,11 @@ const checkHeaders = (fields) => {
             const errors = [];
             fields.forEach(field => {
                 if (!req.headers[field] || req.headers[field].trim() === '') {
-                    errors.push({ msg: `El campo ${field} es requerido`, path: field });
+                    errors.push({ msg: `El campo ${field} es requerido`, path: field, location: 'headers' });
                 }
             });
             if (errors.length > 0) {
-                return res.status(400).json({ error: "Email y contraseña son requeridos" });
+                return res.status(400).json({ errors });
             }
             next();
         },
@@ -48,22 +48,22 @@ const checkHeaders = (fields) => {
         ...fields.map(field => {
             switch (field) {
                 case 'x-email':
-                    return check(field).isEmail().withMessage('Debe ser un correo electrónico válido');
+                    return check(field).isEmail().withMessage('Debe ser un correo electrónico válido').bail();
                 case 'x-password':
-                    return check(field).isString().withMessage('La contraseña debe ser una cadena');
+                    return check(field).isString().withMessage('La contraseña debe ser una cadena').bail();
                 case 'x-nombre':
-                    return check(field).isString().withMessage('El nombre de usuario debe ser una cadena');
+                    return check(field).isString().withMessage('El nombre de usuario debe ser una cadena').bail();
                 case 'x-role':
-                    return check(field).isString().withMessage('El rol debe ser una cadena');
+                    return check(field).isString().withMessage('El rol debe ser una cadena').bail();
                 default:
-                    return check(field).exists().withMessage(`El campo ${field} es requerido`);
+                    return check(field).exists().withMessage(`El campo ${field} es requerido`).bail();
             }
         }),
         // Manejar errores de validación
         (req, res, next) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(400).json({ errors: errors.array() });
+                return res.status(400).json({ errors: errors.array().map(err => ({ msg: err.msg, path: err.param, location: 'headers' })) });
             }
             next();
         }
