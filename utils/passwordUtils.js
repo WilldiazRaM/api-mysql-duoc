@@ -12,10 +12,18 @@ async function hashPassword(password) {
 async function comparePasswords(plainPassword, hashedPassword) {
     console.log('Contraseña en texto plano:', plainPassword);
     console.log('Contraseña hash de la BD:', hashedPassword);
-    const result = await bcrypt.compare(plainPassword, hashedPassword);
-    console.log('Resultado de la comparación en comparePasswords:', result);
-    return result;
+
+    try {
+        const result = await bcrypt.compare(plainPassword, hashedPassword);
+        console.log('Resultado de la comparación en comparePasswords:', result);
+        return result;
+    } catch (err) {
+        console.error('Error al comparar contraseñas:', err);
+        return false;
+    }
 }
+
+
 function requireAuth(JWT_SECRET) {
     return function(req, res, next) {
         const token = req.headers.authorization;
