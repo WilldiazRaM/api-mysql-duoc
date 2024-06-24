@@ -24,7 +24,7 @@ const iniciarTransaccion = async (req, res) => {
     const transaction = await createTransaction(newBuyOrder, sessionId, amount, returnUrl);
 
     if (transaction.token) {
-      res.status(200).json(transaction);
+      res.status(200).json({ token: transaction.token, url: transaction.url, buyOrder: newBuyOrder });
     } else {
       res.status(500).json({ message: 'Error iniciando transacción con Transbank' });
     }
