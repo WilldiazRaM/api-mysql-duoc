@@ -14,29 +14,34 @@ const sqlInjectionFilter = (req, res, next) => {
     // Verificar req.body
     for (let key in req.body) {
         if (checkForDangerousChars(req.body[key])) {
-            return res.status(400).send('Caracteres peligrosos detectados. \n with ❤️ from 🇨🇱 👊👊👊 ');
+            console.log(`Caracteres peligrosos detectados en req.body.${key}: ${req.body[key]}`);
+            return res.status(400).send('Caracteres peligrosos detectados. with ❤️ from 🇨🇱 👊👊👊');
         }
     }
     // Verificar req.params
     for (let key in req.params) {
         if (checkForDangerousChars(req.params[key])) {
-            return res.status(400).send('Caracteres peligrosos detectados. \n with ❤️ from 🇨🇱 👊👊👊 ');
+            console.log(`Caracteres peligrosos detectados en req.params.${key}: ${req.params[key]}`);
+            return res.status(400).send('Caracteres peligrosos detectados. with ❤️ from 🇨🇱 👊👊👊');
         }
     }
     // Verificar req.query
     for (let key in req.query) {
         if (checkForDangerousChars(req.query[key])) {
-            return res.status(400).send('Caracteres peligrosos detectados. \n with ❤️ from 🇨🇱 👊👊👊 ');
+            console.log(`Caracteres peligrosos detectados en req.query.${key}: ${req.query[key]}`);
+            return res.status(400).send('Caracteres peligrosos detectados. with ❤️ from 🇨🇱 👊👊👊');
         }
     }
     // Verificar req.headers
     for (let key in req.headers) {
         if (checkForDangerousChars(req.headers[key])) {
-            return res.status(400).send('Caracteres peligrosos detectados. \n with ❤️ from 🇨🇱 👊👊👊 ');
+            console.log(`Caracteres peligrosos detectados en req.headers.${key}: ${req.headers[key]}`);
+            return res.status(400).send('Caracteres peligrosos detectados. with ❤️ from 🇨🇱 👊👊👊');
         }
     }
     next();
 };
+
 
 const checkHeaders = (fields) => {
     return [
