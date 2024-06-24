@@ -79,6 +79,20 @@ app.get('/profile', isAuthenticated, (req, res) => {
     }
 });
 
+
+
+
+//DEBUG DE RUTAS
+app.use((req, res, next) => {
+    console.log(`Request Method: ${req.method}`);
+    console.log(`Request URL: ${req.url}`);
+    console.log('Request Headers:', req.headers);
+    console.log('Request Body:', req.body);
+    console.log('Request Params:', req.params);
+    console.log('Request Query:', req.query);
+    next();
+});
+
 // Middleware de manejo de errores global
 app.use((err, req, res, next) => {
     console.error(err.stack);
