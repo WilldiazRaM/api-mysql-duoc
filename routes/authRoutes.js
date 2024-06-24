@@ -4,7 +4,6 @@ const passport = require('passport');
 const { check, validationResult } = require('express-validator');
 const { login, register, logout } = require('../controllers/authController');
 const jwt = require('jsonwebtoken');
-const { checkHeaders } = require('../middleware/sqlInjectionFilter');
 const { checkHeaders, sqlInjectionFilter } = require('../middleware/sqlInjectionFilter');
 const bcrypt = require('bcrypt');
 
