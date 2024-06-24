@@ -41,8 +41,15 @@ const sqlInjectionFilter = (req, res, next) => {
             return res.status(400).send('Caracteres peligrosos detectados. with ❤️ from 🇨🇱 👊👊👊');
         }
     }
-    // Verificar req.headers, excluyendo más encabezados comunes
-    const excludedHeaders = ['user-agent', 'accept', 'accept-encoding', 'cdn-loop', 'referer', 'connection', 'host', 'cf-connecting-ip', 'cf-ew-via', 'cf-ipcountry', 'cf-ray', 'cf-visitor', 'accept-language', 'cache-control', 'pragma'];
+    // Verificar req.headers, excluyendo encabezados comunes
+    const excludedHeaders = [
+        'user-agent', 'accept', 'accept-encoding', 'cdn-loop', 'referer', 'connection', 'host', 'cf-connecting-ip',
+        'cf-ew-via', 'cf-ipcountry', 'cf-ray', 'cf-visitor', 'accept-language', 'cache-control', 'pragma', 'true-client-ip',
+        'x-forwarded-for', 'x-forwarded-proto', 'x-request-start', 'sec-ch-ua', 'sec-ch-ua-mobile', 'sec-ch-ua-platform',
+        'upgrade-insecure-requests', 'origin', 'content-length', 'content-type', 'x-requested-with', 'sec-fetch-site',
+        'sec-fetch-mode', 'sec-fetch-user', 'sec-fetch-dest', 'sec-fetch-secure', 'dnt', 'early-data', 'priority', 'cf-worker'
+    ];
+
     for (let key in req.headers) {
         if (excludedHeaders.includes(key.toLowerCase())) {
             console.log(`Excluyendo req.headers.${key} de la verificación`);
