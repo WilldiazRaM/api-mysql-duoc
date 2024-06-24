@@ -1,23 +1,24 @@
 const { createTransaction, confirmTransaction } = require('../utils/pagosUtils');
-const { savePayment, updatePaymentStatus, getVentaById } = require('../models/pagoModel');
+const { savePayment, updatePaymentStatus, getVentaById, createVenta } = require('../models/pagoModel');
 
 const iniciarTransaccion = async (req, res) => {
   const { buyOrder, sessionId, amount, returnUrl, metodoPago } = req.body;
 
   try {
     // Verificar que la venta exista
-    const venta = await getVentaById(buyOrder);
+    let venta = await getVentaById(buyOrder);
     if (!venta) {
-      return res.status(400).json({ message: 'Venta no encontrada' });
+      // Crear una nueva venta si no existe
+      venta = await createVenta({ id_usuario: 1, monto: amount });  // Asigna un id_usuario válido
     }
 
     // Iniciar transacción con Transbank
-    const transaction = await createTransaction(buyOrder, sessionId, amount, returnUrl);
+    const transaction = await createTransaction(venta.id, sessionId, amount, returnUrl);
 
     if (transaction.token) {
       // Guardar información del pago en la base de datos
       const paymentData = {
-        id_venta: buyOrder,
+        id_venta: venta.id,
         monto: amount,
         metodo_pago: metodoPago,
         estado_pago: 'iniciado',
@@ -46,7 +47,7 @@ const confirmarTransaccion = async (req, res) => {
 
     res.status(200).json(transactionResult);
   } catch (error) {
-    res.status (500).json({ message: 'Error confirmando transacción', error: error.message });
+    res.status(500).json({ message: 'Error confirmando transacción', error: error.message });
   }
 };
 
