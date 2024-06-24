@@ -21,7 +21,7 @@ const { sqlInjectionFilter } = require('./middleware/sqlInjectionFilter');
 const PORT = process.env.PORT || 4001;
 
 // Middleware de seguridad
-app.use(helmet());
+// app.use(helmet());
 app.use(securityHeaders);
 
 // Middleware de logging y parsing
