@@ -17,7 +17,7 @@ async function savePayment(paymentData) {
       console.error('Error guardando el pago:', error);
       throw error;
     }
-  }
+}
 
 // Obtener el pago por token
 async function getPaymentByToken(token) {
@@ -34,6 +34,25 @@ async function getPaymentByToken(token) {
       return result.rows[0];
     } catch (error) {
       console.error('Error obteniendo el pago por token:', error);
+      throw error;
+    }
+}
+
+// Obtener usuario por ID
+async function getUserById(id) {
+    const query = `
+      SELECT * FROM "Usuarios" WHERE id = $1;
+    `;
+    const values = [id];
+  
+    try {
+      const result = await pool.query(query, values);
+      if (result.rowCount === 0) {
+        throw new Error('Usuario no encontrado');
+      }
+      return result.rows[0];
+    } catch (error) {
+      console.error('Error obteniendo el usuario por ID:', error);
       throw error;
     }
 }
@@ -60,5 +79,6 @@ async function updatePaymentStatus(buyOrder, estado_pago) {
 module.exports = {
     savePayment,
     getPaymentByToken,
+    getUserById,
     updatePaymentStatus
 };
