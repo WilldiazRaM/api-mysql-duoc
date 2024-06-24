@@ -1,4 +1,3 @@
-// utils/pagosUtils.js
 const axios = require('axios');
 
 const createTransaction = async (buyOrder, sessionId, amount, returnUrl) => {
