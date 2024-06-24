@@ -1,28 +1,28 @@
-const { getAllPagos, getPagoById } = require('../models/pagoModel');
-const { generateBuyOrder, generateSessionId } = require('../utils/pagosUtils');
+const { createTransaction, confirmTransaction } = require('../utils/pagosUtils');
 
-const obtenerPagos = async (req, res) => {
-    try {
-        const pagos = await getAllPagos();
-        res.status(200).json(pagos);
-    } catch (error) {
-        console.error("Error al obtener los pagos:", error);
-        res.status(500).json({ error: "Ocurrió un error al obtener los pagos" });
-    }
+const iniciarTransaccion = async (req, res) => {
+  const { buyOrder, sessionId, amount, returnUrl } = req.body;
+
+  try {
+    const transaction = await createTransaction(buyOrder, sessionId, amount, returnUrl);
+    res.status(200).json(transaction);
+  } catch (error) {
+    res.status(500).json({ message: 'Error iniciando transacción', error: error.message });
+  }
 };
 
-const obtenerPagoPorId = async (req, res) => {
-    const { id } = req.params;
-    try {
-        const pago = await getPagoById(id);
-        res.status(200).json(pago);
-    } catch (error) {
-        console.error("Error al obtener el pago:", error);
-        res.status(500).json({ error: error.message });
-    }
+const confirmarTransaccion = async (req, res) => {
+  const { token } = req.params;
+
+  try {
+    const transactionResult = await confirmTransaction(token);
+    res.status(200).json(transactionResult);
+  } catch (error) {
+    res.status(500).json({ message: 'Error confirmando transacción', error: error.message });
+  }
 };
 
 module.exports = {
-    obtenerPagos,
-    obtenerPagoPorId
+  iniciarTransaccion,
+  confirmarTransaccion
 };

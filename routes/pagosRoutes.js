@@ -1,11 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { obtenerPagos, obtenerPagoPorId } = require('../controllers/pagoController');
+const { iniciarTransaccion, confirmarTransaccion } = require('../controllers/pagoController');
 
-// Obtener todos los pagos
-router.get('/', obtenerPagos);
-
-// Obtener un pago por su ID
-router.get('/:id', obtenerPagoPorId);
+router.post('/iniciar', iniciarTransaccion);
+router.put('/confirmar/:token', confirmarTransaccion);
 
 module.exports = router;

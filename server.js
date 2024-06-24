@@ -32,8 +32,12 @@ app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
+
 // Middleware de filtrado de inyecciones SQL
 app.use(sqlInjectionFilter);
+
+
 
 // Configuración de sesiones con PostgreSQL
 app.use(session({
@@ -51,8 +55,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Servir archivos estáticos
-app.use(express.static(path.join(__dirname, 'public')));
+
 
 // Configuración de EJS como motor de plantillas
 app.set('view engine', 'ejs');
@@ -61,7 +64,7 @@ app.set('views', path.join(__dirname, 'views'));
 // Rutas
 app.use('/auth', authRoutes);
 app.use('/productos', productosRoutes);
-app.use('/pagos', pagosRouter);
+app.use('/api/pagos', pagosRouter);
 app.use('/historial-compras', historialesRoutes);
 app.use('/carrito', carritoRouter);
 
@@ -74,12 +77,16 @@ app.get('/profile', isAuthenticated, (req, res) => {
                 console.error('JWT Verification Error:', err);
                 return res.redirect('/auth/login');
             }
+            
             res.sendFile(path.join(__dirname, 'public', 'login', 'profile.html'));
         });
     } else {
         res.redirect('/auth/login');
     }
 });
+
+
+
 
 //DEBUG DE RUTAS
 app.use((req, res, next) => {
@@ -99,8 +106,6 @@ app.use((err, req, res, next) => {
 });
 
 // Iniciar el servidor
-const server = app.listen(PORT, () => {
+app.listen(PORT, () => {
     console.log(`Server is listening on ${PORT}`);
 });
-
-module.exports = app;  // Exporta la aplicación de Express
