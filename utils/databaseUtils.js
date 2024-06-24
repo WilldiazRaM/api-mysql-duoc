@@ -1,5 +1,6 @@
 const pool = require('../database');
-const { hashPassword, comparePasswords } = require('./passwordUtils');
+const { hashPassword, comparePasswords } = require('../utils/passwordUtils'); 
+const bcrypt = require('bcrypt');
 
 async function findByEmail(email) {
     const query = 'SELECT * FROM "Usuarios" WHERE email = $1';
@@ -63,6 +64,8 @@ async function authenticateUser(email, password) {
         const user = result.rows[0];
         console.log('Usuario encontrado:', user); // Añadir este log para verificar el usuario encontrado
         const isPasswordValid = await comparePasswords(password, user.password);
+        console.log('Contraseña en texto plano:', password);
+        console.log('Contraseña hash de la BD:', user.password);
         console.log('Resultado de la comparación:', isPasswordValid); // Añadir este log para verificar el resultado de la comparación
 
         if (isPasswordValid) {

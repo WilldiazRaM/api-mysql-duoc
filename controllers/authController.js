@@ -39,7 +39,7 @@ async function register(req, res) {
 
     try {
         const hashedPassword = await hashPassword(password);
-        console.log('Contraseña hash generada:', hashedPassword); 
+        console.log('Contraseña hash generada:', hashedPassword);
         await createUser(nombre, email, hashedPassword, role);
         res.status(201).json({ message: "Usuario registrado exitosamente" });
     } catch (error) {
