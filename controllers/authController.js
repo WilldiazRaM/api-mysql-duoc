@@ -52,6 +52,7 @@ async function register(req, res) {
     }
 }
 
+
 async function logout(req, res) {
     req.logout((err) => {
         if (err) {

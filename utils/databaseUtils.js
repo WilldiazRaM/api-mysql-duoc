@@ -18,6 +18,21 @@ async function findByEmail(email) {
     }
 }
 
+async function createUser(nombre, email, hashedPassword, role) {
+    const query = 'INSERT INTO "Usuarios" (nombre, email, password, role, created_at) VALUES ($1, $2, $3, $4, NOW()) RETURNING id';
+    const values = [nombre, email, hashedPassword, role];
+
+    try {
+        const result = await pool.query(query, values);
+        const userId = result.rows[0].id;
+        console.log('Usuario creado con ID:', userId);
+        return { id: userId, nombre, email, role, created_at: new Date() };
+    } catch (error) {
+        console.error('Error al crear usuario:', error);
+        throw error;
+    }
+}
+
 async function authenticateUser(email, password) {
     const user = await findByEmail(email);
     if (!user) {
@@ -27,4 +42,4 @@ async function authenticateUser(email, password) {
     return isPasswordValid ? user : null;
 }
 
-module.exports = { findByEmail, authenticateUser };
+module.exports = { findByEmail, createUser, authenticateUser };
