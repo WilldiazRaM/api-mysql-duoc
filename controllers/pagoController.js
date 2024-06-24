@@ -5,27 +5,33 @@ const iniciarTransaccion = async (req, res) => {
   const { buyOrder, sessionId, amount, returnUrl, metodoPago } = req.body;
 
   try {
-    // Verificar que la venta exista
+    // Verificar que la venta exista o crear una nueva venta
     let venta = await getVentaById(buyOrder);
     if (!venta) {
-      // Crear una nueva venta si no existe
       venta = await createVenta({ id_usuario: 1, monto: amount });  // Asigna un id_usuario válido
+      buyOrder = venta.id;
     }
 
     // Iniciar transacción con Transbank
-    const transaction = await createTransaction(venta.id, sessionId, amount, returnUrl);
+    const transaction = await createTransaction(buyOrder, sessionId, amount, returnUrl);
 
     if (transaction.token) {
-      // Guardar información del pago en la base de datos
-      const paymentData = {
-        id_venta: venta.id,
-        monto: amount,
-        metodo_pago: metodoPago,
-        estado_pago: 'iniciado',
-      };
-      await savePayment(paymentData);
+      // Confirmar transacción con Transbank
+      const confirmation = await confirmTransaction(transaction.token);
 
-      res.status(200).json(transaction);
+      if (confirmation.status === 'AUTHORIZED') {
+        // Guardar información del pago en la base de datos
+        const paymentData = {
+          id_venta: buyOrder,
+          monto: amount,
+          metodo_pago: metodoPago,
+          estado_pago: 'confirmado',
+        };
+        await savePayment(paymentData);
+        res.status(200).json({ message: 'Transacción confirmada y guardada', confirmation });
+      } else {
+        res.status(500).json({ message: 'Transacción no autorizada', confirmation });
+      }
     } else {
       res.status(500).json({ message: 'Error iniciando transacción con Transbank' });
     }
