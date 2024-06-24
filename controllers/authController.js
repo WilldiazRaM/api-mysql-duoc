@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { createUser, authenticateUser } = require('../utils/databaseUtils');
 const JWT_SECRET = process.env.JWT_SECRET || 'secretoSuperSeguro';
-const bcrypt = require('bcrypt');
 
 async function login(req, res) {
     const email = req.headers['x-email'];
@@ -25,7 +24,6 @@ async function login(req, res) {
     }
 }
 
-
 async function register(req, res) {
     const nombre = req.headers['x-nombre'];
     const email = req.headers['x-email'];
@@ -39,13 +37,13 @@ async function register(req, res) {
     }
 
     try {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        console.log('Contraseña hash generada:', hashedPassword); // Añadir este log para verificar el hash generado
+        const hashedPassword = await hashPassword(password);
+        console.log('Contraseña hash generada:', hashedPassword); 
         await createUser(nombre, email, hashedPassword, role);
         res.status(201).json({ message: "Usuario registrado exitosamente" });
     } catch (error) {
         console.error("Error al registrar usuario:", error);
-        if (error.code === '23505') { // Código de error para entradas duplicadas en PostgreSQL
+        if (error.code === '23505') {
             return res.status(409).json({ error: "El correo electrónico ya está en uso" });
         }
         res.status(500).json({ error: "Ocurrió un error al registrar el usuario" });

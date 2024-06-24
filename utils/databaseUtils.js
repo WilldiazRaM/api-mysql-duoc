@@ -1,6 +1,5 @@
 const pool = require('../database');
-const { hashPassword, comparePasswords } = require('./passwordUtils'); 
-const bcrypt = require('bcrypt');
+const { hashPassword, comparePasswords } = require('./passwordUtils');
 
 async function findByEmail(email) {
     const query = 'SELECT * FROM "Usuarios" WHERE email = $1';
@@ -15,23 +14,6 @@ async function findByEmail(email) {
         }
     } catch (err) {
         console.error('Error al encontrar usuario por email:', err);
-        throw err;
-    }
-}
-
-async function findUserById(id) {
-    const query = 'SELECT * FROM "Usuarios" WHERE id = $1';
-    const values = [id];
-
-    try {
-        const result = await pool.query(query, values);
-        if (result.rows.length === 0) {
-            return null;
-        } else {
-            return result.rows[0];
-        }
-    } catch (err) {
-        console.error('Error al encontrar usuario por ID:', err);
         throw err;
     }
 }
@@ -62,9 +44,9 @@ async function authenticateUser(email, password) {
         }
 
         const user = result.rows[0];
-        console.log('Usuario encontrado:', user); // Añadir este log para verificar el usuario encontrado
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-        console.log('Resultado de la comparación:', isPasswordValid); // Añadir este log para verificar el resultado de la comparación
+        console.log('Usuario encontrado:', user);
+        const isPasswordValid = await comparePasswords(password, user.password);
+        console.log('Resultado de la comparación:', isPasswordValid);
 
         if (isPasswordValid) {
             return user;
@@ -77,4 +59,4 @@ async function authenticateUser(email, password) {
     }
 }
 
-module.exports = { findByEmail, createUser, findUserById, authenticateUser };
+module.exports = { findByEmail, createUser, authenticateUser };
