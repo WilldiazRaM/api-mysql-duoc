@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
-const { createUser, authenticateUser } = require('../utils/databaseUtils');
+const { createUser, authenticateUser, hashPassword } = require('../utils/databaseUtils');
 const JWT_SECRET = process.env.JWT_SECRET || 'secretoSuperSeguro';
+
 
 async function login(req, res) {
     const email = req.headers['x-email'];
