@@ -1,12 +1,18 @@
 const { createTransaction, confirmTransaction } = require('../utils/pagosUtils');
-const { savePayment, updatePaymentStatus } = require('../models/pagoModel');
+const { savePayment, updatePaymentStatus, getVentaById } = require('../models/pagoModel');
 
 const iniciarTransaccion = async (req, res) => {
   const { buyOrder, sessionId, amount, returnUrl, metodoPago } = req.body;
 
   try {
+    // Verificar que la venta exista
+    const venta = await getVentaById(buyOrder);
+    if (!venta) {
+      return res.status(400).json({ message: 'Venta no encontrada' });
+    }
+
     const transaction = await createTransaction(buyOrder, sessionId, amount, returnUrl);
-    
+
     // Guardar información del pago en la base de datos
     const paymentData = {
       id_venta: buyOrder, // asumiendo que buyOrder es el id de la venta
