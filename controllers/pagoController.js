@@ -1,5 +1,5 @@
 const { createTransaction, confirmTransaction } = require('../utils/pagosUtils');
-const { savePayment, updatePaymentStatus, getVentaById, createVenta } = require('../models/pagoModel');
+const { savePayment, getVentaById, createVenta } = require('../models/pagoModel');
 
 const iniciarTransaccion = async (req, res) => {
   const { buyOrder, sessionId, amount, returnUrl, metodoPago } = req.body;
@@ -8,7 +8,8 @@ const iniciarTransaccion = async (req, res) => {
     // Verificar que la venta exista o crear una nueva venta
     let venta = await getVentaById(buyOrder);
     if (!venta) {
-      venta = await createVenta({ id_usuario: 1, monto: amount });  // Asigna un id_usuario válido
+      // Crear una nueva venta si no existe, asegurando un id_usuario válido
+      venta = await createVenta({ id_usuario: 1, monto: amount });  // Cambia 1 por un id_usuario válido
       buyOrder = venta.id;
     }
 
@@ -16,22 +17,7 @@ const iniciarTransaccion = async (req, res) => {
     const transaction = await createTransaction(buyOrder, sessionId, amount, returnUrl);
 
     if (transaction.token) {
-      // Confirmar transacción con Transbank
-      const confirmation = await confirmTransaction(transaction.token);
-
-      if (confirmation.status === 'AUTHORIZED') {
-        // Guardar información del pago en la base de datos
-        const paymentData = {
-          id_venta: buyOrder,
-          monto: amount,
-          metodo_pago: metodoPago,
-          estado_pago: 'confirmado',
-        };
-        await savePayment(paymentData);
-        res.status(200).json({ message: 'Transacción confirmada y guardada', confirmation });
-      } else {
-        res.status(500).json({ message: 'Transacción no autorizada', confirmation });
-      }
+      res.status(200).json(transaction);
     } else {
       res.status(500).json({ message: 'Error iniciando transacción con Transbank' });
     }
@@ -41,17 +27,25 @@ const iniciarTransaccion = async (req, res) => {
 };
 
 const confirmarTransaccion = async (req, res) => {
-  const { token } = req.params;
+  const { token, buyOrder } = req.body;
 
   try {
     const transactionResult = await confirmTransaction(token);
 
-    // Actualizar estado del pago en la base de datos
-    const { buy_order, status } = transactionResult;
-    const estado_pago = status === 'AUTHORIZED' ? 'confirmado' : 'fallido';
-    await updatePaymentStatus(buy_order, estado_pago);
+    if (transactionResult.status === 'AUTHORIZED') {
+      // Guardar información del pago en la base de datos
+      const paymentData = {
+        id_venta: buyOrder,
+        monto: transactionResult.amount,
+        metodo_pago: 'webpay',
+        estado_pago: 'confirmado',
+      };
+      await savePayment(paymentData);
 
-    res.status(200).json(transactionResult);
+      res.status(200).json({ message: 'Transacción confirmada y guardada', transactionResult });
+    } else {
+      res.status(500).json({ message: 'Transacción no autorizada', transactionResult });
+    }
   } catch (error) {
     res.status(500).json({ message: 'Error confirmando transacción', error: error.message });
   }
