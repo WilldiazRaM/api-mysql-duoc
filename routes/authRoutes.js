@@ -5,7 +5,12 @@ const { check, validationResult } = require('express-validator');
 const { login, register, logout } = require('../controllers/authController');
 const jwt = require('jsonwebtoken');
 const { checkHeaders } = require('../middleware/sqlInjectionFilter');
+const { checkHeaders, sqlInjectionFilter } = require('../middleware/sqlInjectionFilter');
 const bcrypt = require('bcrypt');
+
+// Aplicar el middleware de filtrado de inyecciones SQL
+router.use(sqlInjectionFilter);
+
 
 // Rutas de autenticación locales
 router.post('/login', checkHeaders(['x-email', 'x-password']), login);

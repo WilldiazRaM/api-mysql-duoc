@@ -1,5 +1,3 @@
-const { check, validationResult } = require('express-validator');
-
 const dangerousChars = /['";]/;
 const dangerousSequence = /--/;
 
@@ -11,24 +9,32 @@ const checkForDangerousChars = (input) => {
 };
 
 const sqlInjectionFilter = (req, res, next) => {
+    // Verificar req.body
     for (let key in req.body) {
         if (checkForDangerousChars(req.body[key])) {
             return res.status(400).send('Caracteres peligrosos detectados. \n with ❤️ from 🇨🇱 👊👊👊 ');
         }
     }
+    // Verificar req.params
     for (let key in req.params) {
         if (checkForDangerousChars(req.params[key])) {
             return res.status(400).send('Caracteres peligrosos detectados. \n with ❤️ from 🇨🇱 👊👊👊 ');
         }
     }
+    // Verificar req.query
     for (let key in req.query) {
         if (checkForDangerousChars(req.query[key])) {
             return res.status(400).send('Caracteres peligrosos detectados. \n with ❤️ from 🇨🇱 👊👊👊 ');
         }
     }
+    // Verificar req.headers
+    for (let key in req.headers) {
+        if (checkForDangerousChars(req.headers[key])) {
+            return res.status(400).send('Caracteres peligrosos detectados. \n with ❤️ from 🇨🇱 👊👊👊 ');
+        }
+    }
     next();
 };
-
 
 const checkHeaders = (fields) => {
     return [
@@ -71,7 +77,7 @@ const checkHeaders = (fields) => {
     ];
 };
 
-module.exports = { 
+module.exports = {
     sqlInjectionFilter,
     checkHeaders,
     checkForDangerousChars
