@@ -11,6 +11,11 @@ const checkForDangerousChars = (input) => {
 };
 
 const sqlInjectionFilter = (req, res, next) => {
+    // Excepción para la ruta /auth/login
+    if (req.path === '/auth/login' && req.method === 'GET') {
+        return next();
+    }
+
     // Verificar req.body
     for (let key in req.body) {
         if (checkForDangerousChars(req.body[key])) {
@@ -41,7 +46,6 @@ const sqlInjectionFilter = (req, res, next) => {
     }
     next();
 };
-
 
 const checkHeaders = (fields) => {
     return [

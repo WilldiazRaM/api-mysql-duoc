@@ -21,7 +21,7 @@ const { sqlInjectionFilter } = require('./middleware/sqlInjectionFilter');
 const PORT = process.env.PORT || 4001;
 
 // Middleware de seguridad
-// app.use(helmet());
+app.use(helmet());
 app.use(securityHeaders);
 
 // Middleware de logging y parsing
@@ -29,7 +29,11 @@ app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
+
 // Middleware de filtrado de inyecciones SQL
+app.use(sqlInjectionFilter);
+
 
 
 // Configuración de sesiones con PostgreSQL
