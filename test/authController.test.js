@@ -1,9 +1,9 @@
-const chai = require('chai');
-const chaiHttp = require('chai-http');
-const server = require('../server'); // Asegúrate de que la ruta a tu servidor sea correcta
-const should = chai.should();
+import chai from 'chai';
+import chaiHttp from 'chai-http';
+import { app as server } from '../server.js'; 
 
 chai.use(chaiHttp);
+const should = chai.should();
 
 describe('Auth Controller', () => {
   describe('POST /auth/login', () => {
