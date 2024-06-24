@@ -4,7 +4,7 @@
   "description": "Una api para DuocUc",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -39,5 +39,9 @@
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "pg": "^8.12.0"
+  },
+  "devDependencies": {
+    "chai": "^5.1.1",
+    "mocha": "^10.4.0"
   }
 }
