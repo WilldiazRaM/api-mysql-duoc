@@ -41,10 +41,10 @@ const sqlInjectionFilter = (req, res, next) => {
             return res.status(400).send('Caracteres peligrosos detectados. with ❤️ from 🇨🇱 👊👊👊');
         }
     }
-    // Verificar req.headers, excluyendo user-agent
+    // Verificar req.headers, excluyendo user-agent, accept, accept-encoding, y cdn-loop
     for (let key in req.headers) {
-        if (key.toLowerCase() === 'user-agent') {
-            continue; // Excluir user-agent de la verificación
+        if (['user-agent', 'accept', 'accept-encoding', 'cdn-loop'].includes(key.toLowerCase())) {
+            continue; // Excluir estos encabezados de la verificación
         }
         console.log(`Verificando req.headers.${key}: ${req.headers[key]}`);
         if (checkForDangerousChars(req.headers[key])) {
