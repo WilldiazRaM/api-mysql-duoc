@@ -1,10 +1,16 @@
 const { createTransaction, confirmTransaction } = require('../utils/pagosUtils');
-const { savePayment, updatePaymentStatus } = require('../models/pagoModel');
+const { savePayment, updatePaymentStatus, getVentaById } = require('../models/pagoModel');
 
 const iniciarTransaccion = async (req, res) => {
   const { buyOrder, sessionId, amount, returnUrl, metodoPago } = req.body;
 
   try {
+    // Verificar que la venta exista
+    const venta = await getVentaById(buyOrder);
+    if (!venta) {
+      return res.status(400).json({ message: 'Venta no encontrada' });
+    }
+
     // Iniciar transacción con Transbank
     const transaction = await createTransaction(buyOrder, sessionId, amount, returnUrl);
 
@@ -40,7 +46,7 @@ const confirmarTransaccion = async (req, res) => {
 
     res.status(200).json(transactionResult);
   } catch (error) {
-    res.status(500).json({ message: 'Error confirmando transacción', error: error.message });
+    res.status (500).json({ message: 'Error confirmando transacción', error: error.message });
   }
 };
 

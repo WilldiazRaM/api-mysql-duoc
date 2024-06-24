@@ -1,5 +1,16 @@
 const pool = require('../database');
 
+// Obtener una venta por su ID
+async function getVentaById(id) {
+  try {
+    const result = await pool.query('SELECT * FROM "Ventas" WHERE id = $1', [id]);
+    return result.rows[0];
+  } catch (error) {
+    console.error('Error al obtener la venta:', error);
+    throw error;
+  }
+}
+
 // Guardar un nuevo pago
 async function savePayment(paymentData) {
     const { id_venta, monto, metodo_pago, estado_pago } = paymentData;
@@ -59,17 +70,6 @@ async function getPagoById(id) {
     return result.rows[0];
   } catch (error) {
     console.error("Error al obtener el pago:", error);
-    throw error;
-  }
-}
-
-// Obtener una venta por su ID
-async function getVentaById(id) {
-  try {
-    const result = await pool.query('SELECT * FROM "Ventas" WHERE id = $1', [id]);
-    return result.rows[0];
-  } catch (error) {
-    console.error('Error al obtener la venta:', error);
     throw error;
   }
 }
