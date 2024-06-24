@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Una api para DuocUc",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "test": "mocha"
   },
