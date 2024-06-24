@@ -4,8 +4,8 @@ const axios = require('axios');
 const createTransaction = async (buyOrder, sessionId, amount, returnUrl) => {
   const url = 'https://webpay3gint.transbank.cl/rswebpaytransaction/api/webpay/v1.2/transactions';
   const headers = {
-    'Tbk-Api-Key-Id': '597055555532',
-    'Tbk-Api-Key-Secret': '579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C',
+    'Tbk-Api-Key-Id': process.env.TBK_API_KEY_ID,
+    'Tbk-Api-Key-Secret': process.env.TBK_API_KEY_SECRET,
     'Content-Type': 'application/json'
   };
 
@@ -28,8 +28,8 @@ const createTransaction = async (buyOrder, sessionId, amount, returnUrl) => {
 const confirmTransaction = async (token) => {
   const url = `https://webpay3gint.transbank.cl/rswebpaytransaction/api/webpay/v1.2/transactions/${token}`;
   const headers = {
-    'Tbk-Api-Key-Id': '597055555532',
-    'Tbk-Api-Key-Secret': '579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C',
+    'Tbk-Api-Key-Id': process.env.TBK_API_KEY_ID,
+    'Tbk-Api-Key-Secret': process.env.TBK_API_KEY_SECRET,
     'Content-Type': 'application/json'
   };
 
