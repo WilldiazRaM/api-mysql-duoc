@@ -16,7 +16,7 @@ const { isAuthenticated } = require('./utils/authUtils');
 const jwt = require('jsonwebtoken');
 const securityHeaders = require('./config/securityHeaders');
 const pool = require('./database');
-const sqlInjectionFilter = require('./middleware/sqlInjectionFilter');
+const { sqlInjectionFilter } = require('./middleware/sqlInjectionFilter');
 
 const PORT = process.env.PORT || 4001;
 
