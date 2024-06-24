@@ -5,18 +5,18 @@ const JWT_SECRET = process.env.JWT_SECRET || 'secretoSuperSeguro';
 async function hashPassword(password) {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-    console.log('Contraseña hash:', hashedPassword);
+    console.log('Contraseña hash generada en hashPassword:', hashedPassword);
     return hashedPassword;
 }
 
 async function comparePasswords(plainPassword, hashedPassword) {
     console.log('Contraseña en texto plano:', plainPassword);
     console.log('Longitud de la contraseña en texto plano:', plainPassword.length);
-    console.log('Contraseña hash:', hashedPassword);
+    console.log('Contraseña hash de la BD:', hashedPassword);
     console.log('Longitud de la contraseña hash:', hashedPassword.length);
 
     const result = await bcrypt.compare(plainPassword, hashedPassword);
-    console.log('Resultado de la comparación:', result);
+    console.log('Resultado de la comparación en comparePasswords:', result);
     return result;
 }
 
