@@ -1,3 +1,5 @@
+const { check, validationResult } = require('express-validator');
+
 const dangerousChars = /['";]/;
 const dangerousSequence = /--/;
 
