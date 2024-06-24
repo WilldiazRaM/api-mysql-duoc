@@ -11,14 +11,20 @@ const iniciarTransaccion = async (req, res) => {
       return res.status(400).json({ message: 'Usuario no encontrado' });
     }
 
-    // Verificar que la venta exista o crear una nueva venta
-    let venta = await getVentaById(buyOrder);
-    let newBuyOrder = buyOrder;
-    if (!venta) {
-      // Crear una nueva venta si no existe
-      venta = await createVenta({ id_usuario: userId, monto: amount });
-      newBuyOrder = venta.id;
+    // Intentar obtener la venta por ID
+    let venta;
+    try {
+      venta = await getVentaById(buyOrder);
+    } catch (error) {
+      if (error.message === 'Venta no encontrada') {
+        // Crear una nueva venta si no existe
+        venta = await createVenta({ id_usuario: userId, monto: amount });
+      } else {
+        throw error;
+      }
     }
+
+    const newBuyOrder = venta.id;
 
     // Iniciar transacción con Transbank
     const transaction = await createTransaction(newBuyOrder, sessionId, amount, returnUrl);
