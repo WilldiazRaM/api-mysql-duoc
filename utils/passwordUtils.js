@@ -2,7 +2,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = process.env.JWT_SECRET || 'secretoSuperSeguro';
 
-
 async function hashPassword(password) {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -21,7 +20,6 @@ async function comparePasswords(plainPassword, hashedPassword) {
     return result;
 }
 
-
 function requireAuth(JWT_SECRET) {
     return function(req, res, next) {
         const token = req.headers.authorization;
@@ -39,7 +37,4 @@ function requireAuth(JWT_SECRET) {
     };
 }
 
-
-
-
-module.exports = { hashPassword, comparePasswords, requireAuth , JWT_SECRET };
+module.exports = { hashPassword, comparePasswords, requireAuth, JWT_SECRET };

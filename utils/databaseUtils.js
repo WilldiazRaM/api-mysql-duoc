@@ -1,6 +1,5 @@
 const pool = require('../database');
 const { hashPassword, comparePasswords } = require('./passwordUtils');
-const bcrypt = require('bcrypt');
 
 async function findByEmail(email) {
     const query = 'SELECT * FROM "Usuarios" WHERE email = $1';
