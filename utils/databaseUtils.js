@@ -37,12 +37,14 @@ async function findUserById(id) {
 
 async function createUser(nombre, email, password, role) {
     const hashedPassword = await hashPassword(password);
+    console.log('Hash de la contraseña generado en createUser:', hashedPassword); // Log adicional
     const query = 'INSERT INTO "Usuarios" (nombre, email, password, role, created_at) VALUES ($1, $2, $3, $4, NOW()) RETURNING id';
     const values = [nombre, email, hashedPassword, role];
 
     try {
         const result = await pool.query(query, values);
         const userId = result.rows[0].id;
+        console.log('Usuario creado con ID:', userId); // Log adicional
         return { id: userId, nombre, email, role, created_at: new Date() };
     } catch (error) {
         console.error('Error al crear usuario:', error);
@@ -65,11 +67,13 @@ async function authenticateUser(email, password) {
         const isPasswordValid = await comparePasswords(password, user.password);
         console.log('Contraseña en texto plano:', password);
         console.log('Contraseña hash de la BD:', user.password);
-        console.log('Resultado de la comparación:', isPasswordValid); 
+        console.log('Resultado de la comparación en authenticateUser:', isPasswordValid); 
 
         if (isPasswordValid) {
+            console.log('Contraseña válida, autenticación exitosa'); // Log adicional
             return user;
         } else {
+            console.log('Contraseña no válida'); // Log adicional
             return null;
         }
     } catch (error) {
@@ -77,5 +81,4 @@ async function authenticateUser(email, password) {
         throw new Error('Error en la autenticación');
     }
 }
-
 module.exports = { findByEmail, createUser, findUserById, authenticateUser };
