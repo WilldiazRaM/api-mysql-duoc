@@ -29,6 +29,7 @@ const sqlInjectionFilter = (req, res, next) => {
     next();
 };
 
+
 const checkHeaders = (fields) => {
     return [
         // Verificar si los campos están vacíos
