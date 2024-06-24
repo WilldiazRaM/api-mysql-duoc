@@ -57,6 +57,44 @@ async function getUserById(id) {
     }
 }
 
+// Obtener venta por ID
+async function getVentaById(id) {
+    const query = `
+      SELECT * FROM "Ventas" WHERE id = $1;
+    `;
+    const values = [id];
+  
+    try {
+      const result = await pool.query(query, values);
+      if (result.rowCount === 0) {
+        throw new Error('Venta no encontrada');
+      }
+      return result.rows[0];
+    } catch (error) {
+      console.error('Error obteniendo la venta por ID:', error);
+      throw error;
+    }
+}
+
+// Crear una nueva venta
+async function createVenta(ventaData) {
+    const { id_usuario, monto } = ventaData;
+    const query = `
+      INSERT INTO "Ventas" (id_usuario, monto)
+      VALUES ($1, $2)
+      RETURNING *;
+    `;
+    const values = [id_usuario, monto];
+  
+    try {
+      const result = await pool.query(query, values);
+      return result.rows[0];
+    } catch (error) {
+      console.error('Error creando la venta:', error);
+      throw error;
+    }
+}
+
 // Actualizar el estado del pago
 async function updatePaymentStatus(buyOrder, estado_pago) {
   const query = `
@@ -80,5 +118,7 @@ module.exports = {
     savePayment,
     getPaymentByToken,
     getUserById,
+    getVentaById,
+    createVenta,
     updatePaymentStatus
 };

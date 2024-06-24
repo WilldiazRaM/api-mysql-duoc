@@ -1,5 +1,5 @@
 const { createTransaction, confirmTransaction } = require('../utils/pagosUtils');
-const { savePayment, getVentaById, createVenta, getUserById, getPaymentByToken } = require('../models/pagoModel');
+const { savePayment, getVentaById, createVenta, getUserById, getPaymentByToken, updatePaymentStatus } = require('../models/pagoModel');
 
 const iniciarTransaccion = async (req, res) => {
   const { buyOrder, sessionId, amount, returnUrl, metodoPago, userId } = req.body;
