@@ -1,15 +1,21 @@
 const { createTransaction, confirmTransaction } = require('../utils/pagosUtils');
-const { savePayment, getVentaById, createVenta } = require('../models/pagoModel');
+const { savePayment, getVentaById, createVenta, getUserById } = require('../models/pagoModel');
 
 const iniciarTransaccion = async (req, res) => {
-  const { buyOrder, sessionId, amount, returnUrl, metodoPago } = req.body;
+  const { buyOrder, sessionId, amount, returnUrl, metodoPago, userId } = req.body;
 
   try {
+    // Verificar que el usuario exista
+    const usuario = await getUserById(userId);
+    if (!usuario) {
+      return res.status(400).json({ message: 'Usuario no encontrado' });
+    }
+
     // Verificar que la venta exista o crear una nueva venta
     let venta = await getVentaById(buyOrder);
     if (!venta) {
-      // Crear una nueva venta si no existe, asegurando un id_usuario válido
-      venta = await createVenta({ id_usuario: 1, monto: amount });  // Cambia 1 por un id_usuario válido
+      // Crear una nueva venta si no existe
+      venta = await createVenta({ id_usuario: userId, monto: amount });
       buyOrder = venta.id;
     }
 

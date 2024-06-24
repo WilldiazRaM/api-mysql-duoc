@@ -11,6 +11,17 @@ async function getVentaById(id) {
   }
 }
 
+// Obtener un usuario por su ID
+async function getUserById(id) {
+  try {
+    const result = await pool.query('SELECT * FROM "Usuarios" WHERE id = $1', [id]);
+    return result.rows[0];
+  } catch (error) {
+    console.error('Error al obtener el usuario:', error);
+    throw error;
+  }
+}
+
 // Crear una nueva venta
 async function createVenta(ventaData) {
   const { id_usuario, monto } = ventaData;
@@ -51,6 +62,7 @@ async function savePayment(paymentData) {
 
 module.exports = {
   getVentaById,
+  getUserById,
   createVenta,
   savePayment
 };
