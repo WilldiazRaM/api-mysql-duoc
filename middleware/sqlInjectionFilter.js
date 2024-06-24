@@ -1,9 +1,8 @@
 const { check, validationResult } = require('express-validator');
 
-const dangerousChars = /['";]/;
-const dangerousSequence = /--/;
-
 const checkForDangerousChars = (input) => {
+    const dangerousChars = /['";]/;
+    const dangerousSequence = /--/;
     if (dangerousChars.test(input) || dangerousSequence.test(input)) {
         return true;
     }
@@ -11,55 +10,67 @@ const checkForDangerousChars = (input) => {
 };
 
 const sqlInjectionFilter = (req, res, next) => {
-    // Exclude OAuth routes from the filter
+    // Excluir rutas OAuth del filtro
     const oauthRoutes = ['/auth/google', '/auth/google/callback', '/auth/github', '/auth/github/callback'];
     if (oauthRoutes.includes(req.path) && req.method === 'GET') {
+        console.log(`Ruta OAuth detectada: ${req.path}`);
         return next();
     }
 
-    // Verify req.body
+    // Verificar req.body
     for (let key in req.body) {
+        console.log(`Verificando req.body.${key}: ${req.body[key]}`);
         if (checkForDangerousChars(req.body[key])) {
-            console.log(`Dangerous characters detected in req.body.${key}: ${req.body[key]}`);
-            return res.status(400).send('Dangerous characters detected. with ❤️ from 🇨🇱 👊👊👊');
+            console.log(`Caracteres peligrosos detectados en req.body.${key}: ${req.body[key]}`);
+            return res.status(400).send('Caracteres peligrosos detectados. with ❤️ from 🇨🇱 👊👊👊');
         }
     }
-    // Verify req.params
+    // Verificar req.params
     for (let key in req.params) {
+        console.log(`Verificando req.params.${key}: ${req.params[key]}`);
         if (checkForDangerousChars(req.params[key])) {
-            console.log(`Dangerous characters detected in req.params.${key}: ${req.params[key]}`);
-            return res.status(400).send('Dangerous characters detected. with ❤️ from 🇨🇱 👊👊👊');
+            console.log(`Caracteres peligrosos detectados en req.params.${key}: ${req.params[key]}`);
+            return res.status(400).send('Caracteres peligrosos detectados. with ❤️ from 🇨🇱 👊👊👊');
         }
     }
-    // Verify req.query
+    // Verificar req.query
     for (let key in req.query) {
+        console.log(`Verificando req.query.${key}: ${req.query[key]}`);
         if (checkForDangerousChars(req.query[key])) {
-            console.log(`Dangerous characters detected in req.query.${key}: ${req.query[key]}`);
-            return res.status(400).send('Dangerous characters detected. with ❤️ from 🇨🇱 👊👊👊');
+            console.log(`Caracteres peligrosos detectados en req.query.${key}: ${req.query[key]}`);
+            return res.status(400).send('Caracteres peligrosos detectados. with ❤️ from 🇨🇱 👊👊👊');
         }
     }
-    // Verify req.headers
+    // Verificar req.headers
     for (let key in req.headers) {
+        console.log(`Verificando req.headers.${key}: ${req.headers[key]}`);
         if (checkForDangerousChars(req.headers[key])) {
-            console.log(`Dangerous characters detected in req.headers.${key}: ${req.headers[key]}`);
-            return res.status(400).send('Dangerous characters detected. with ❤️ from 🇨🇱 👊👊👊');
+            console.log(`Caracteres peligrosos detectados en req.headers.${key}: ${req.headers[key]}`);
+            return res.status(400).send('Caracteres peligrosos detectados. with ❤️ from 🇨🇱 👊👊👊');
         }
     }
     next();
 };
 
-
 const checkHeaders = (fields) => {
     return [
         // Verificar si los campos están vacíos
         (req, res, next) => {
+            const oauthRoutes = ['/auth/google', '/auth/google/callback', '/auth/github', '/auth/github/callback'];
+            if (oauthRoutes.includes(req.path) && req.method === 'GET') {
+                console.log(`Ruta OAuth detectada en checkHeaders: ${req.path}`);
+                return next();
+            }
+
             const errors = [];
             fields.forEach(field => {
                 if (!req.headers[field] || req.headers[field].trim() === '') {
+                    console.log(`Campo vacío detectado en headers: ${field}`);
                     errors.push({ msg: `El campo ${field} es requerido`, path: field, location: 'headers' });
                 }
             });
             if (errors.length > 0) {
+                console.log(`Errores de validación de headers:`, errors);
                 return res.status(400).json({ errors });
             }
             next();
@@ -83,6 +94,7 @@ const checkHeaders = (fields) => {
         (req, res, next) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
+                console.log(`Errores de validación específicos:`, errors.array());
                 return res.status(400).json({ errors: errors.array().map(err => ({ msg: err.msg, path: err.param, location: 'headers' })) });
             }
             next();
