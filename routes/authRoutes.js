@@ -74,7 +74,7 @@ router.get('/github/callback', passport.authenticate('github', { failureRedirect
 // Ruta para comparar contraseñas manualmente
 router.get('/debug/compare', async (req, res) => {
     const plainPassword = 'password123.';
-    const hashedPassword = '$2b$10$aH34g9ugNghhp1iplWby3efAiwNSYRj/Ycfd1XuKLufoXwly6ZVPK'; // Reemplaza con la contraseña hash de la base de datos
+    const hashedPassword = '$2b$10$SXrEgwtWnDT/vTsQCqNF/uoCJ2TfdwnK5dLrDQnNo3LP678dJCYae'; // Reemplaza con la contraseña hash de la base de datos
 
     try {
         const result = await bcrypt.compare(plainPassword, hashedPassword);

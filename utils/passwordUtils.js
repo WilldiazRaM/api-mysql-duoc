@@ -16,7 +16,6 @@ async function comparePasswords(plainPassword, hashedPassword) {
     console.log('Resultado de la comparación en comparePasswords:', result);
     return result;
 }
-
 function requireAuth(JWT_SECRET) {
     return function(req, res, next) {
         const token = req.headers.authorization;
