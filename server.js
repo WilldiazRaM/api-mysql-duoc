@@ -20,6 +20,9 @@ const { sqlInjectionFilter } = require('./middleware/sqlInjectionFilter');
 
 const PORT = process.env.PORT || 4001;
 
+// Middleware para servir archivos estáticos
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Middleware de seguridad
 app.use(helmet());
 app.use(securityHeaders);
