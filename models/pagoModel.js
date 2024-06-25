@@ -36,7 +36,8 @@ async function getPaymentByToken(token) {
       console.error('Error obteniendo el pago por token:', error);
       throw error;
     }
-}
+  }
+  
 
 // Obtener usuario por ID
 async function getUserById(id) {
@@ -97,23 +98,26 @@ async function createVenta(ventaData) {
 
 // Actualizar el estado del pago
 async function updatePaymentStatus(buyOrder, estado_pago) {
-  const query = `
-    UPDATE "Pagos"
-    SET estado_pago = $1
-    WHERE id_venta = $2
-    RETURNING *;
-  `;
-  const values = [estado_pago, buyOrder];
-
-  try {
-    const result = await pool.query(query, values);
-    return result.rows[0];
-  } catch (error) {
-    console.error('Error actualizando el estado del pago:', error);
-    throw error;
+    const query = `
+      UPDATE "Pagos"
+      SET estado_pago = $1
+      WHERE id_venta = $2
+      RETURNING *;
+    `;
+    const values = [estado_pago, buyOrder];
+  
+    try {
+      const result = await pool.query(query, values);
+      if (result.rowCount === 0) {
+        throw new Error('Pago no encontrado para la orden de compra proporcionada');
+      }
+      return result.rows[0];
+    } catch (error) {
+      console.error('Error actualizando el estado del pago:', error);
+      throw error;
+    }
   }
-}
-
+  
 module.exports = {
     savePayment,
     getPaymentByToken,

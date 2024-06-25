@@ -55,22 +55,28 @@ const confirmarTransaccion = async (req, res) => {
   try {
     // Obtener el pago usando el token
     const payment = await getPaymentByToken(token);
+    if (!payment) {
+      return res.status(404).json({ message: 'Pago no encontrado' });
+    }
+
     const buyOrder = payment.id_venta;
 
-    // Confirmar la transacción con Transbank
-    const transactionResult = await confirmTransaction(token);
-
-    if (transactionResult.status === 'AUTHORIZED') {
-      // Actualizar el estado del pago en la base de datos
-      await updatePaymentStatus(buyOrder, 'confirmado');
-      res.status(200).json({ message: 'Transacción confirmada y guardada', transactionResult });
-    } else {
-      res.status(500).json({ message: 'Transacción no autorizada', transactionResult });
+    // Aquí puedes añadir lógica adicional para validar la transacción, por ejemplo:
+    // Validar que el estado actual del pago sea 'iniciado'
+    if (payment.estado_pago !== 'iniciado') {
+      return res.status(400).json({ message: 'El estado del pago no permite la confirmación' });
     }
+
+    // Actualizar el estado del pago en la base de datos a 'confirmado'
+    await updatePaymentStatus(buyOrder, 'confirmado');
+    
+    res.status(200).json({ message: 'Transacción confirmada y guardada' });
   } catch (error) {
+    console.error('Error confirmando transacción', error);
     res.status(500).json({ message: 'Error confirmando transacción', error: error.message });
   }
 };
+
 
 module.exports = {
   iniciarTransaccion,
