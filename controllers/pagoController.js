@@ -30,7 +30,6 @@ const iniciarTransaccion = async (req, res) => {
 
     const newBuyOrder = venta.id;
 
-
     // Iniciar transacción con Transbank
     const transaction = await createTransaction(newBuyOrder, sessionId, amount, returnUrl);
 
@@ -56,7 +55,6 @@ const iniciarTransaccion = async (req, res) => {
   }
 };
 
-
 const confirmarTransaccion = async (req, res) => {
   const { token } = req.body;
 
@@ -74,7 +72,6 @@ const confirmarTransaccion = async (req, res) => {
 
     console.log('Pago encontrado:', payment);
 
-    // Aquí puedes añadir lógica adicional para validar la transacción, por ejemplo:
     // Validar que el estado actual del pago sea 'iniciado'
     if (payment.estado_pago !== 'iniciado') {
       return res.status(400).json({ message: 'El estado del pago no permite la confirmación' });
@@ -90,6 +87,7 @@ const confirmarTransaccion = async (req, res) => {
     res.status(500).json({ message: 'Error confirmando transacción', error: error.message });
   }
 };
+
 module.exports = {
   iniciarTransaccion,
   confirmarTransaccion
