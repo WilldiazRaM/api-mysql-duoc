@@ -26,7 +26,6 @@ const iniciarTransaccion = async (req, res) => {
 
     const newBuyOrder = venta.id;
 
-
     // Iniciar transacción con Transbank
     const transaction = await createTransaction(newBuyOrder, sessionId, amount, returnUrl);
 
@@ -71,14 +70,13 @@ const confirmarTransaccion = async (req, res) => {
 
     // Actualizar el estado del pago en la base de datos a 'confirmado'
     await updatePaymentStatus(buyOrder, 'confirmado');
-
+    
     res.status(200).json({ message: 'Transacción confirmada y guardada' });
   } catch (error) {
     console.error('Error confirmando transacción', error);
     res.status(500).json({ message: 'Error confirmando transacción', error: error.message });
   }
 };
-
 
 module.exports = {
   iniciarTransaccion,
