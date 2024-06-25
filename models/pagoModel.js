@@ -75,7 +75,7 @@ async function getVentaById(id) {
       console.error('Error obteniendo la venta por ID:', error);
       throw error;
     }
-}
+  }
 
 // Crear una nueva venta
 async function createVenta(ventaData) {
@@ -94,7 +94,7 @@ async function createVenta(ventaData) {
       console.error('Error creando la venta:', error);
       throw error;
     }
-}
+  }
 
 // Actualizar el estado del pago
 async function updatePaymentStatus(buyOrder, estado_pago) {
