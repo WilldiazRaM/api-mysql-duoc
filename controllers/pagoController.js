@@ -5,6 +5,8 @@ const iniciarTransaccion = async (req, res) => {
   const { buyOrder, sessionId, amount, returnUrl, metodoPago, userId } = req.body;
 
   try {
+    console.log('Inicio de transacción con:', req.body);
+
     // Verificar que el usuario exista
     const usuario = await getUserById(userId);
     if (!usuario) {
@@ -15,16 +17,19 @@ const iniciarTransaccion = async (req, res) => {
     let venta;
     try {
       venta = await getVentaById(buyOrder);
+      console.log('Venta encontrada:', venta);
     } catch (error) {
       if (error.message === 'Venta no encontrada') {
         // Crear una nueva venta si no existe
         venta = await createVenta({ id_usuario: userId, monto: amount });
+        console.log('Venta creada:', venta);
       } else {
         throw error;
       }
     }
 
     const newBuyOrder = venta.id;
+
 
     // Iniciar transacción con Transbank
     const transaction = await createTransaction(newBuyOrder, sessionId, amount, returnUrl);
@@ -39,6 +44,7 @@ const iniciarTransaccion = async (req, res) => {
         token: transaction.token,
       };
       await savePayment(paymentData);
+      console.log('Pago guardado:', paymentData);
 
       res.status(200).json({ token: transaction.token, url: transaction.url, buyOrder: newBuyOrder });
     } else {
@@ -50,17 +56,23 @@ const iniciarTransaccion = async (req, res) => {
   }
 };
 
+
 const confirmarTransaccion = async (req, res) => {
   const { token } = req.body;
 
   try {
+    console.log('Confirmación de transacción con token:', token);
+
     // Obtener el pago usando el token
     const payment = await getPaymentByToken(token);
     if (!payment) {
+      console.error('Pago no encontrado para el token:', token);
       return res.status(404).json({ message: 'Pago no encontrado' });
     }
 
     const buyOrder = payment.id_venta;
+
+    console.log('Pago encontrado:', payment);
 
     // Aquí puedes añadir lógica adicional para validar la transacción, por ejemplo:
     // Validar que el estado actual del pago sea 'iniciado'
@@ -69,15 +81,15 @@ const confirmarTransaccion = async (req, res) => {
     }
 
     // Actualizar el estado del pago en la base de datos a 'confirmado'
-    await updatePaymentStatus(buyOrder, 'confirmado');
-    
+    const updatedPayment = await updatePaymentStatus(buyOrder, 'confirmado');
+    console.log('Pago actualizado:', updatedPayment);
+
     res.status(200).json({ message: 'Transacción confirmada y guardada' });
   } catch (error) {
     console.error('Error confirmando transacción', error);
     res.status(500).json({ message: 'Error confirmando transacción', error: error.message });
   }
 };
-
 module.exports = {
   iniciarTransaccion,
   confirmarTransaccion
