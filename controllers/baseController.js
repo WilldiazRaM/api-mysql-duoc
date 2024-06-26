@@ -25,17 +25,6 @@ class BaseController {
         }
     }
 
-    async create(req, res) {
-        const { nombre, email, password, role } = req.body;
-        try {
-            const hashedPassword = await this.model.hashPassword(password);
-            await this.model.createUser(nombre, email, hashedPassword, role);
-            res.status(201).json({ message: 'Usuario creado exitosamente' });
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
-    }
-
     async update(req, res) {
         const { nombre, email, role } = req.body;
         try {
