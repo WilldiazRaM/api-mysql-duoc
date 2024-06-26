@@ -5,7 +5,7 @@ class BaseController {
 
     async getAll(req, res) {
         try {
-            const items = await this.model.findAll();
+            const items = await this.model.getAllUsers();
             res.json(items);
         } catch (error) {
             res.status(500).json({ error: error.message });
@@ -14,7 +14,7 @@ class BaseController {
 
     async getById(req, res) {
         try {
-            const item = await this.model.findByPk(req.params.id);
+            const item = await this.model.findUserById(req.params.id);
             if (item) {
                 res.json(item);
             } else {
@@ -26,20 +26,23 @@ class BaseController {
     }
 
     async create(req, res) {
+        const { nombre, email, password, role } = req.body;
         try {
-            const item = await this.model.create(req.body);
-            res.status(201).json(item);
+            const hashedPassword = await this.model.hashPassword(password);
+            await this.model.createUser(nombre, email, hashedPassword, role);
+            res.status(201).json({ message: 'Usuario creado exitosamente' });
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
     }
 
     async update(req, res) {
+        const { nombre, email, role } = req.body;
         try {
-            const item = await this.model.findByPk(req.params.id);
+            const item = await this.model.findUserById(req.params.id);
             if (item) {
-                await item.update(req.body);
-                res.json(item);
+                await this.model.updateUser(req.params.id, nombre, email, role);
+                res.json({ message: 'Usuario actualizado exitosamente' });
             } else {
                 res.status(404).json({ error: 'Item not found' });
             }
@@ -50,10 +53,10 @@ class BaseController {
 
     async delete(req, res) {
         try {
-            const item = await this.model.findByPk(req.params.id);
+            const item = await this.model.findUserById(req.params.id);
             if (item) {
-                await item.destroy();
-                res.json({ message: 'Item deleted' });
+                await this.model.deleteUser(req.params.id);
+                res.json({ message: 'Usuario eliminado exitosamente' });
             } else {
                 res.status(404).json({ error: 'Item not found' });
             }

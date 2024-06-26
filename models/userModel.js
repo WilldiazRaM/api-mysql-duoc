@@ -1,13 +1,16 @@
 const pool = require('../database');
+const bcrypt = require('bcrypt');
 const { comparePasswords } = require('../utils/passwordUtils');
+
+async function hashPassword(password) {
+    const saltRounds = 10;
+    return await bcrypt.hash(password, saltRounds);
+}
 
 async function findUserByEmail(email) {
     const query = 'SELECT * FROM "Usuarios" WHERE email = $1';
     const values = [email];
     
-    console.log('Consulta SQL:', query);
-    console.log('Valores:', values);
-
     try {
         const result = await pool.query(query, values);
         if (result.rows.length > 0) {
@@ -102,6 +105,7 @@ async function authenticateUser(email, password) {
 }
 
 module.exports = {
+    hashPassword,
     findUserByEmail,
     createUser,
     updateUser,
