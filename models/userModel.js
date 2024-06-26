@@ -34,6 +34,61 @@ async function createUser(nombre, email, hashedPassword, role) {
     }
 }
 
+async function updateUser(id, nombre, email, role) {
+    const query = 'UPDATE "Usuarios" SET nombre = $1, email = $2, role = $3 WHERE id = $4';
+    const values = [nombre, email, role, id];
+    
+    try {
+        await pool.query(query, values);
+        console.log('Usuario actualizado exitosamente.');
+    } catch (error) {
+        console.error('Error al actualizar usuario:', error.message);
+        throw error;
+    }
+}
+
+async function deleteUser(id) {
+    const query = 'DELETE FROM "Usuarios" WHERE id = $1';
+    const values = [id];
+    
+    try {
+        await pool.query(query, values);
+        console.log('Usuario eliminado exitosamente.');
+    } catch (error) {
+        console.error('Error al eliminar usuario:', error.message);
+        throw error;
+    }
+}
+
+async function getAllUsers() {
+    const query = 'SELECT * FROM "Usuarios"';
+    
+    try {
+        const result = await pool.query(query);
+        return result.rows;
+    } catch (error) {
+        console.error('Error al obtener todos los usuarios:', error.message);
+        throw error;
+    }
+}
+
+async function findUserById(id) {
+    const query = 'SELECT * FROM "Usuarios" WHERE id = $1';
+    const values = [id];
+    
+    try {
+        const result = await pool.query(query, values);
+        if (result.rows.length > 0) {
+            return result.rows[0];
+        } else {
+            return null;
+        }
+    } catch (error) {
+        console.error('Error al encontrar usuario por ID:', error.message);
+        throw error;
+    }
+}
+
 async function authenticateUser(email, password) {
     const user = await findUserByEmail(email);
     if (!user) {
@@ -49,5 +104,9 @@ async function authenticateUser(email, password) {
 module.exports = {
     findUserByEmail,
     createUser,
+    updateUser,
+    deleteUser,
+    getAllUsers,
+    findUserById,
     authenticateUser
 };
