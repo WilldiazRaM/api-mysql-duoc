@@ -18,6 +18,7 @@ const jwt = require('jsonwebtoken');
 const securityHeaders = require('./config/securityHeaders');
 const pool = require('./database');
 const { sqlInjectionFilter } = require('./middleware/sqlInjectionFilter');
+const categoriasProductosRoutes = require('./routes/categoriasProductos');
 
 const PORT = process.env.PORT || 4001;
 
@@ -65,6 +66,7 @@ app.set('views', path.join(__dirname, 'views'));
 // Rutas
 app.use('/auth', authRoutes);
 app.use('/usuarios', usuarioRoutes);
+app.use('/categorias-productos', categoriasProductosRoutes);
 app.use('/productos', productosRoutes);
 app.use('/api/pagos', pagosRouter);
 app.use('/historial-compras', historialesRoutes);
