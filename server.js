@@ -7,6 +7,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const passport = require('./config/passportConfig');
 const path = require('path');
+const usuarioRoutes = require('./routes/usuarioRoutes');
 const authRoutes = require('./routes/authRoutes');
 const productosRoutes = require('./routes/productosRoutes');
 const pagosRouter = require('./routes/pagosRoutes');
@@ -63,6 +64,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Rutas
 app.use('/auth', authRoutes);
+app.use('/usuarios', usuarioRoutes);
 app.use('/productos', productosRoutes);
 app.use('/api/pagos', pagosRouter);
 app.use('/historial-compras', historialesRoutes);
