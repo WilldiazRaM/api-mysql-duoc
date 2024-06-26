@@ -1,5 +1,5 @@
 const BaseController = require('./baseController');
-const Usuarios = require('../models/usuarioModel');
+const Usuarios = require('../models/userModel');
 const { register } = require('./authController');
 
 class UsuarioController extends BaseController {
