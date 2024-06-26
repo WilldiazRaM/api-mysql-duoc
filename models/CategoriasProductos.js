@@ -1,5 +1,4 @@
-const { Pool } = require('pg');
-const pool = new Pool();
+const pool = require('../config/database');
 
 class CategoriasProductos {
     static async getAll() {
@@ -23,7 +22,8 @@ class CategoriasProductos {
     }
 
     static async delete(id) {
-        await pool.query('DELETE FROM "CategoriasProductos" WHERE id = $1', [id]);
+        const res = await pool.query('DELETE FROM "CategoriasProductos" WHERE id = $1 RETURNING *', [id]);
+        return res.rows[0];
     }
 }
 
