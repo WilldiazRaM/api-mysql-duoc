@@ -1,4 +1,5 @@
 const Venta = require('../models/ventasModel');
+const pool = require('../database');
 
 exports.crearVenta = async (req, res) => {
     try {
