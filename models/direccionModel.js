@@ -1,7 +1,7 @@
 const pool = require('../database');
 
-async function createDireccion(direccion) {
-    const { id_usuario, direccion, ciudad, codigo_postal } = direccion;
+async function createDireccion(data) {
+    const { id_usuario, direccion, ciudad, codigo_postal } = data;
 
     // Validaciones de input
     if (!id_usuario || !direccion || !ciudad || !codigo_postal) {
@@ -45,8 +45,8 @@ async function getDireccionById(id) {
     return result.rows[0];
 }
 
-async function updateDireccion(id, direccion) {
-    const { id_usuario, direccion, ciudad, codigo_postal } = direccion;
+async function updateDireccion(id, data) {
+    const { id_usuario, direccion, ciudad, codigo_postal } = data;
 
     // Validaciones de input
     if (!id_usuario || !direccion || !ciudad || !codigo_postal) {
