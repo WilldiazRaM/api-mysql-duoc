@@ -142,3 +142,15 @@ CREATE INDEX idx_logs_tipo ON "Logs" ("tipo");
 
 -- Crear índice para buscar logs por fecha
 CREATE INDEX idx_logs_fecha ON "Logs" ("fecha");
+
+INSERT INTO "CategoriasProductos" (nombre) VALUES
+('Herramientas Manuales'),
+('Herramientas Eléctricas'),
+('Materiales de Construcción'),
+('Pinturas y Accesorios'),
+('Fontanería'),
+('Electricidad'),
+('Jardinería'),
+('Ferretería General'),
+('Adhesivos y Selladores'),
+('Protección y Seguridad');
