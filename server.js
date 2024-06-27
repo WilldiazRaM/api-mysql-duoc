@@ -7,7 +7,8 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const passport = require('./config/passportConfig');
 const path = require('path');
-//Routers
+
+// Routers
 const usuarioRoutes = require('./routes/usuarioRoutes');
 const authRoutes = require('./routes/authRoutes');
 const productosRoutes = require('./routes/productosRoutes');
@@ -17,40 +18,36 @@ const carritoRouter = require('./routes/carritoRouters');
 const ventasRoutes = require('./routes/ventasRouters');
 const categoriasProductosRoutes = require('./routes/categoriasProductos');
 const detalleVentaRoutes = require('./routes/detalleVentaRouters');
-//end Routers
+
+// Other imports
 const { isAuthenticated } = require('./utils/authUtils');
 const jwt = require('jsonwebtoken');
 const securityHeaders = require('./config/securityHeaders');
 const pool = require('./database');
 const { sqlInjectionFilter } = require('./middleware/sqlInjectionFilter');
 
-
 const PORT = process.env.PORT || 4001;
 
-// Middleware para servir archivos estáticos
+// Middleware for serving static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Middleware de seguridad
+// Security Middleware
 app.use(helmet());
 app.use(securityHeaders);
 
-// Middleware de logging y parsing
+// Logging and parsing Middleware
 app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
-
-// Middleware de filtrado de inyecciones SQL
+// SQL Injection Filter Middleware
 app.use(sqlInjectionFilter);
 
-
-
-// Configuración de sesiones con PostgreSQL
+// PostgreSQL Session Configuration
 app.use(session({
     store: new pgSession({
-        pool: pool,                // Conexión a la base de datos
-        tableName: 'session'       // Nombre de la tabla de sesiones
+        pool: pool,                // Database connection
+        tableName: 'session'       // Session table name
     }),
     secret: process.env.SESSION_SECRET,
     resave: false,
@@ -58,17 +55,15 @@ app.use(session({
     cookie: { maxAge: 86400000, secure: process.env.NODE_ENV === 'production' }
 }));
 
-// Inicialización de Passport
+// Initialize Passport
 app.use(passport.initialize());
 app.use(passport.session());
 
-
-
-// Configuración de EJS como motor de plantillas
+// Configure EJS as template engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Rutas
+// Routes
 app.use('/auth', authRoutes);
 app.use('/usuarios', usuarioRoutes);
 app.use('/categorias-productos', categoriasProductosRoutes);
@@ -79,7 +74,7 @@ app.use('/api/pagos', pagosRouter);
 app.use('/historial-compras', historialesRoutes);
 app.use('/carrito', carritoRouter);
 
-// Ruta protegida para el perfil del usuario
+// Protected route for user profile
 app.get('/profile', isAuthenticated, (req, res) => {
     const token = req.query.token;
     if (token) {
@@ -88,7 +83,6 @@ app.get('/profile', isAuthenticated, (req, res) => {
                 console.error('JWT Verification Error:', err);
                 return res.redirect('/auth/login');
             }
-            
             res.sendFile(path.join(__dirname, 'public', 'login', 'profile.html'));
         });
     } else {
@@ -96,16 +90,13 @@ app.get('/profile', isAuthenticated, (req, res) => {
     }
 });
 
-
-
-
-// Middleware de manejo de errores global
+// Global error handling Middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something went wrong!');
 });
 
-// Iniciar el servidor
+// Start the server
 app.listen(PORT, () => {
     console.log(`Server is listening on ${PORT}`);
 });
