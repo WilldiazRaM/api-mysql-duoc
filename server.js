@@ -8,6 +8,16 @@ const bodyParser = require('body-parser');
 const passport = require('./config/passportConfig');
 const path = require('path');
 
+// Ensure body parser middleware is used before any other middleware
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+const { sqlInjectionFilter } = require('./middleware/sqlInjectionFilter');
+const { isAuthenticated } = require('./utils/authUtils');
+const jwt = require('jsonwebtoken');
+const securityHeaders = require('./config/securityHeaders');
+const pool = require('./database');
+
 // Routers
 const usuarioRoutes = require('./routes/usuarioRoutes');
 const authRoutes = require('./routes/authRoutes');
@@ -19,13 +29,6 @@ const ventasRoutes = require('./routes/ventasRouters');
 const categoriasProductosRoutes = require('./routes/categoriasProductos');
 const detalleVentaRoutes = require('./routes/detalleVentaRouters');
 
-// Other imports
-const { isAuthenticated } = require('./utils/authUtils');
-const jwt = require('jsonwebtoken');
-const securityHeaders = require('./config/securityHeaders');
-const pool = require('./database');
-const { sqlInjectionFilter } = require('./middleware/sqlInjectionFilter');
-
 const PORT = process.env.PORT || 4001;
 
 // Middleware for serving static files
@@ -35,10 +38,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(helmet());
 app.use(securityHeaders);
 
-// Logging and parsing Middleware
+// Logging Middleware
 app.use(morgan('combined'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
 // SQL Injection Filter Middleware
 app.use(sqlInjectionFilter);
