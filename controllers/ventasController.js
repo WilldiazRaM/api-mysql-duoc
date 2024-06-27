@@ -3,6 +3,13 @@ const Venta = require('../models/ventasModel');
 exports.crearVenta = async (req, res) => {
     try {
         const { id_usuario, monto } = req.body;
+        
+        // Verificar si el usuario existe
+        const usuarioExiste = await pool.query('SELECT 1 FROM "Usuarios" WHERE id = $1', [id_usuario]);
+        if (usuarioExiste.rowCount === 0) {
+            return res.status(400).json({ error: 'El id de usuario no existe' });
+        }
+        
         const newVenta = await Venta.createVenta(id_usuario, monto);
         res.status(201).json(newVenta);
     } catch (err) {
