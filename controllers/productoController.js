@@ -1,71 +1,59 @@
-const { createProducto, obtenerProductos, obtenerProductoPorId } = require('../models/productoModel');
+const Producto = require('../models/productoModel');
 
-const crearProducto = async (req, res) => {
-    const { nombre, precio, descripcion, stock, categoria_nombre } = req.body;
-
+exports.crearProducto = async (req, res) => {
     try {
-        const nuevoProducto = await createProducto(nombre, precio, descripcion, stock, categoria_nombre);
-        res.status(201).json(nuevoProducto);
-    } catch (error) {
-        console.error("Error al crear producto:", error);
-        res.status(500).json({ error: "Ocurrió un error al crear el producto" });
+        const { nombre, precio, descripcion, stock, categoria_nombre } = req.body;
+        const newProducto = await Producto.createProducto(nombre, precio, descripcion, stock, categoria_nombre);
+        res.status(201).json(newProducto);
+    } catch (err) {
+        console.error("Error creating product:", err.message);
+        res.status(500).json({ error: err.message });
     }
 };
 
-const obtenerTodosLosProductos = async (req, res) => {
+exports.obtenerTodosLosProductos = async (req, res) => {
     try {
-        const productos = await obtenerProductos();
-        res.status(200).json(productos);
-    } catch (error) {
-        console.error("Error al obtener productos:", error);
-        res.status(500).json({ error: "Ocurrió un error al obtener los productos" });
+        const productos = await Producto.obtenerProductos();
+        res.json(productos);
+    } catch (err) {
+        console.error("Error fetching products:", err.message);
+        res.status(500).json({ error: err.message });
     }
 };
 
-const obtenerProducto = async (req, res) => {
-    const { id } = req.params;
-
+exports.obtenerProducto = async (req, res) => {
     try {
-        const producto = await obtenerProductoPorId(id);
+        const producto = await Producto.obtenerProductoPorId(req.params.id);
         if (!producto) {
-            return res.status(404).json({ error: "Producto no encontrado" });
+            return res.status(404).json({ error: "Product not found" });
         }
         res.json(producto);
-    } catch (error) {
-        console.error("Error al obtener producto por ID:", error);
-        res.status(500).json({ error: "Ocurrió un error al obtener el producto" });
+    } catch (err) {
+        console.error("Error fetching product:", err.message);
+        res.status(500).json({ error: err.message });
     }
 };
 
-const actualizarProductoPorId = async (req, res) => {
-    const { id } = req.params;
-    const { nombre, precio, descripcion, stock, categoria_nombre } = req.body;
-
+exports.actualizarProductoPorId = async (req, res) => {
     try {
-        const productoActualizado = await actualizarProducto(id, nombre, precio, descripcion, stock, categoria_nombre);
-        res.json({ message: "Producto actualizado correctamente", productoActualizado });
-    } catch (error) {
-        console.error("Error al actualizar producto:", error);
-        res.status(500).json({ error: "Ocurrió un error al actualizar el producto" });
+        const { nombre, precio, descripcion, stock, categoria_nombre } = req.body;
+        const updatedProducto = await Producto.actualizarProducto(req.params.id, nombre, precio, descripcion, stock, categoria_nombre);
+        if (!updatedProducto) {
+            return res.status(404).json({ error: "Product not found" });
+        }
+        res.json(updatedProducto);
+    } catch (err) {
+        console.error("Error updating product:", err.message);
+        res.status(500).json({ error: err.message });
     }
 };
 
-const eliminarProductoPorId = async (req, res) => {
-    const { id } = req.params;
-
+exports.eliminarProductoPorId = async (req, res) => {
     try {
-        await eliminarProducto(id);
-        res.json({ message: "Producto eliminado correctamente" });
-    } catch (error) {
-        console.error("Error al eliminar producto:", error);
-        res.status(500).json({ error: "Ocurrió un error al eliminar el producto" });
+        await Producto.eliminarProducto(req.params.id);
+        res.status(204).send();
+    } catch (err) {
+        console.error("Error deleting product:", err.message);
+        res.status(500).json({ error: err.message });
     }
-};
-
-module.exports = {
-    crearProducto,
-    obtenerTodosLosProductos,
-    obtenerProducto,
-    actualizarProductoPorId,
-    eliminarProductoPorId
 };

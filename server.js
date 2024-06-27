@@ -19,6 +19,7 @@ const securityHeaders = require('./config/securityHeaders');
 const pool = require('./database');
 const { sqlInjectionFilter } = require('./middleware/sqlInjectionFilter');
 const categoriasProductosRoutes = require('./routes/categoriasProductos');
+const productosRoutes = require('./routes/productoRouters');
 
 const PORT = process.env.PORT || 4001;
 
