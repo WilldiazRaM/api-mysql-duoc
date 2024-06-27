@@ -4,6 +4,7 @@ const helmet = require('helmet');
 const session = require('express-session');
 const pgSession = require('connect-pg-simple')(session);
 const morgan = require('morgan');
+const bodyParser = require('body-parser');
 const passport = require('./config/passportConfig');
 const path = require('path');
 const { sqlInjectionFilter } = require('./middleware/sqlInjectionFilter');
@@ -25,8 +26,8 @@ app.use(securityHeaders);
 app.use(morgan('combined'));
 
 // Body Parser Middleware 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // SQL Injection Filter Middleware
 app.use(sqlInjectionFilter);
