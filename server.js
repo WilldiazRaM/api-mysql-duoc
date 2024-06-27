@@ -13,6 +13,9 @@ const jwt = require('jsonwebtoken');
 const securityHeaders = require('./config/securityHeaders');
 const pool = require('./database');
 
+
+const PORT = process.env.PORT || 10000;
+
 // Middleware for serving static files
 app.use(express.static(path.join(__dirname, 'public')));
 
