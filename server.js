@@ -8,6 +8,26 @@ const bodyParser = require('body-parser');
 const passport = require('./config/passportConfig');
 const path = require('path');
 
+// Routers
+const usuarioRoutes = require('./routes/usuarioRoutes');
+const authRoutes = require('./routes/authRoutes');
+const productosRoutes = require('./routes/productosRoutes');
+const pagosRouter = require('./routes/pagosRoutes');
+const historialesRoutes = require('./routes/historialRoutes');
+const carritoRouter = require('./routes/carritoRouters');
+const ventasRoutes = require('./routes/ventasRouters');
+const categoriasProductosRoutes = require('./routes/categoriasProductos');
+const detalleVentaRoutes = require('./routes/detalleVentaRouters');
+
+// Other imports
+const { isAuthenticated } = require('./utils/authUtils');
+const jwt = require('jsonwebtoken');
+const securityHeaders = require('./config/securityHeaders');
+const pool = require('./database');
+const { sqlInjectionFilter } = require('./middleware/sqlInjectionFilter');
+
+const PORT = process.env.PORT || 4001;
+
 // Middleware for serving static files
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -17,10 +37,8 @@ app.use(securityHeaders);
 
 // Logging and parsing Middleware
 app.use(morgan('combined'));
-
-// Ensure the following two lines are present
-app.use(bodyParser.json()); // For parsing application/json
-app.use(bodyParser.urlencoded({ extended: true })); // For parsing application/x-www-form-urlencoded
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // SQL Injection Filter Middleware
 app.use(sqlInjectionFilter);
@@ -44,17 +62,6 @@ app.use(passport.session());
 // Configure EJS as template engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-
-// Routers
-const usuarioRoutes = require('./routes/usuarioRoutes');
-const authRoutes = require('./routes/authRoutes');
-const productosRoutes = require('./routes/productosRoutes');
-const pagosRouter = require('./routes/pagosRoutes');
-const historialesRoutes = require('./routes/historialRoutes');
-const carritoRouter = require('./routes/carritoRouters');
-const ventasRoutes = require('./routes/ventasRouters');
-const categoriasProductosRoutes = require('./routes/categoriasProductos');
-const detalleVentaRoutes = require('./routes/detalleVentaRouters');
 
 // Routes
 app.use('/auth', authRoutes);
