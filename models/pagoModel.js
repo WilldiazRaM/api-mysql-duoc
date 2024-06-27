@@ -121,6 +121,7 @@ async function getPaymentById(id) {
 // Crear un nuevo pago
 async function createPayment(paymentData) {
     const { id_venta, monto, metodo_pago, estado_pago } = paymentData;
+    console.log('Creating payment with data:', paymentData); // Log the payment data
     const query = `
         INSERT INTO "Pagos" (id_venta, monto, metodo_pago, estado_pago)
         VALUES ($1, $2, $3, $4)
@@ -131,10 +132,11 @@ async function createPayment(paymentData) {
         const result = await pool.query(query, values);
         return result.rows[0];
     } catch (error) {
-        console.error('Error creando el pago:', error);
+        console.error('Error creating payment:', error);
         throw error;
     }
 }
+
 
 // Actualizar un pago
 async function updatePayment(id, paymentData) {
