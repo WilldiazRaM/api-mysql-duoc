@@ -60,7 +60,7 @@ const categoriasProductosRoutes = require('./routes/categoriasProductos');
 const detalleVentaRoutes = require('./routes/detalleVentaRouters');
 const logRoutes = require('./routes/logRoutes');
 const pedidoRoutes = require('./routes/pedidoRoutes');
-
+const direccionRoutes = require('./routes/direccionRoutes');
 
 app.use('/auth', authRoutes);
 app.use('/usuarios', usuarioRoutes);
@@ -73,7 +73,7 @@ app.use('/historial-compras', historialesRoutes);
 app.use('/carrito', carritoRouter);
 app.use('/logs', logRoutes); 
 app.use('/pedidos', pedidoRoutes); 
-
+app.use('/direcciones', direccionRoutes);
 
 
 app.get('/profile', isAuthenticated, (req, res) => {
