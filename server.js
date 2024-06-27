@@ -12,8 +12,17 @@ const { isAuthenticated, isAdmin } = require('./utils/authUtils');
 const jwt = require('jsonwebtoken');
 const securityHeaders = require('./config/securityHeaders');
 const pool = require('./database');
+const enforce = require('express-sslify');
+
 
 const PORT = process.env.PORT || 10000;
+
+// Forzar HTTPS
+if (process.env.NODE_ENV === 'production') {
+    app.use(enforce.HTTPS({ trustProtoHeader: true }));
+}
+
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
