@@ -1,4 +1,29 @@
 const pool = require('../database');
+const { 
+  createTransaction, 
+  confirmTransaction 
+} = require('../utils/pagosUtils');
+
+const { 
+  savePayment, 
+  getVentaById, 
+  createVenta, 
+  getUserById, 
+  getPaymentByToken, 
+  updatePaymentStatus,
+  getAllPayments, // Make sure this is imported
+  getPaymentById, // Make sure this is imported
+  createPayment,  // Make sure this is imported
+  updatePayment,  // Make sure this is imported
+  deletePayment   // Make sure this is imported
+} = require('../models/pagoModel');
+const { iniciarTransaccion } = require('../controllers/pagoController');
+
+
+
+
+
+
 
 // Guardar un nuevo pago
 async function savePayment(paymentData) {
@@ -109,119 +134,72 @@ async function createVenta(ventaData) {
 }
 
 // Actualizar el estado del pago
-async function updatePaymentStatus(buyOrder, estado_pago) {
-  const query = `
-    UPDATE "Pagos"
-    SET estado_pago = $1
-    WHERE id_venta = $2
-    RETURNING *;
-  `;
-  const values = [estado_pago, buyOrder];
-
+const createPago = async (req, res) => {
   try {
-    console.log('Ejecutando query updatePaymentStatus con valores:', values);
-    const result = await pool.query(query, values);
-    if (result.rowCount === 0) {
-      console.log('Pago no encontrado para la orden de compra:', buyOrder);
-      throw new Error('Pago no encontrado para la orden de compra proporcionada');
-    }
-    console.log('Resultado de updatePaymentStatus:', result.rows[0]);
-    return result.rows[0];
-  } catch (error) {
-    console.error('Error actualizando el estado del pago:', error);
-    throw error;
-  }
-}
-
-async function getAllPayments() {
-  const query = 'SELECT * FROM "Pagos"';
-  try {
-      const result = await pool.query(query);
-      return result.rows;
-  } catch (error) {
-      console.error('Error fetching payments:', error);
-      throw error;
-  }
-}
-
-async function getPaymentById(id) {
-  const query = 'SELECT * FROM "Pagos" WHERE id = $1';
-  const values = [id];
-  try {
-      const result = await pool.query(query, values);
-      if (result.rowCount === 0) {
-          throw new Error('Pago not found');
-      }
-      return result.rows[0];
-  } catch (error) {
-      console.error('Error fetching payment:', error);
-      throw error;
-  }
-}
-
-async function createPayment(paymentData) {
-  const { id_venta, monto, metodo_pago, estado_pago } = paymentData;
-  const query = `
-      INSERT INTO "Pagos" (id_venta, monto, metodo_pago, estado_pago)
-      VALUES ($1, $2, $3, $4)
-      RETURNING *;
-  `;
-  const values = [id_venta, monto, metodo_pago, estado_pago];
-  try {
-      const result = await pool.query(query, values);
-      return result.rows[0];
+      const newPago = await createPayment(req.body);
+      res.status(201).json(newPago);
   } catch (error) {
       console.error('Error creating payment:', error);
-      throw error;
+      res.status(500).json({ message: 'Error creating payment', error: error.message });
   }
-}
+};
 
-async function updatePayment(id, paymentData) {
-  const { id_venta, monto, metodo_pago, estado_pago } = paymentData;
-  const query = `
-      UPDATE "Pagos"
-      SET id_venta = $1, monto = $2, metodo_pago = $3, estado_pago = $4
-      WHERE id = $5
-      RETURNING *;
-  `;
-  const values = [id_venta, monto, metodo_pago, estado_pago, id];
+const getAllPagos = async (req, res) => {
   try {
-      const result = await pool.query(query, values);
-      if (result.rowCount === 0) {
-          throw new Error('Pago not found');
+      const pagos = await getAllPayments();
+      res.status(200).json(pagos);
+  } catch (error) {
+      console.error('Error fetching payments:', error);
+      res.status(500).json({ message: 'Error fetching payments', error: error.message });
+  }
+};
+
+const getPagoById = async (req, res) => {
+  try {
+      const pago = await getPaymentById(req.params.id);
+      if (!pago) {
+          return res.status(404).json({ message: 'Pago not found' });
       }
-      return result.rows[0];
+      res.status(200).json(pago);
+  } catch (error) {
+      console.error('Error fetching payment:', error);
+      res.status(500).json({ message: 'Error fetching payment', error: error.message });
+  }
+};
+
+const updatePago = async (req, res) => {
+  try {
+      const updatedPago = await updatePayment(req.params.id, req.body);
+      if (!updatedPago) {
+          return res.status(404).json({ message: 'Pago not found' });
+      }
+      res.status(200).json(updatedPago);
   } catch (error) {
       console.error('Error updating payment:', error);
-      throw error;
+      res.status(500).json({ message: 'Error updating payment', error: error.message });
   }
-}
+};
 
-async function deletePayment(id) {
-  const query = 'DELETE FROM "Pagos" WHERE id = $1 RETURNING *';
-  const values = [id];
+const deletePago = async (req, res) => {
   try {
-      const result = await pool.query(query, values);
-      if (result.rowCount === 0) {
-          throw new Error('Pago not found');
+      const deletedPago = await deletePayment(req.params.id);
+      if (!deletedPago) {
+          return res.status(404).json({ message: 'Pago not found' });
       }
-      return result.rows[0];
+      res.status(200).json({ message: 'Pago deleted' });
   } catch (error) {
       console.error('Error deleting payment:', error);
-      throw error;
+      res.status(500).json({ message: 'Error deleting payment', error: error.message });
   }
-}
+};
+
 
 module.exports = {
-  savePayment,
-  getPaymentByToken,
-  getUserById,
-  getVentaById,
-  createVenta,
-  updatePaymentStatus,
-  getAllPayments,
-  getPaymentById,
-  createPayment,
-  updatePayment,
-  deletePayment
+  iniciarTransaccion,
+  confirmTransaction,
+  getAllPagos,
+  getPagoById,
+  createPago,
+  updatePago,
+  deletePago
 };
