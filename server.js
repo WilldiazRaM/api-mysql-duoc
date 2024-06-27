@@ -62,6 +62,7 @@ const logRoutes = require('./routes/logRoutes');
 const pedidoRoutes = require('./routes/pedidoRoutes');
 const direccionRoutes = require('./routes/direccionRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
+const wishlistRoutes = require('./routes/wishlistRoutes');
 
 app.use('/auth', authRoutes);
 app.use('/usuarios', usuarioRoutes);
@@ -76,6 +77,8 @@ app.use('/logs', logRoutes);
 app.use('/pedidos', pedidoRoutes); 
 app.use('/direcciones', direccionRoutes);
 app.use('/reviews', reviewRoutes);
+app.use('/wishlists', wishlistRoutes);
+
 
 app.get('/profile', isAuthenticated, (req, res) => {
     const token = req.query.token;
