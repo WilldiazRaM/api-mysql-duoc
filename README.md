@@ -11,8 +11,12 @@ Este repositorio contiene una aplicación web desarrollada con Node.js y Express
 
 
 **URL**
+
+Integración OAuth2.0 con Google y GitHub
 ```
 https://api-mysql-duoc.onrender.com/auth/login
+
+
 ```
 Nota: Por estar utilizando la capa gratuita en Render, el tiempo de carga puede ser de hasta 60 segundos después de un período de inactividad.
 
@@ -96,6 +100,7 @@ La aplicación utiliza varios middleware de seguridad para protegerse contra ame
 - `express-validator`: Proporciona validaciones de datos para solicitudes HTTP.
 - `dotenv`: Gestiona variables de entorno de manera segura.
 - `connect-pg-simple`: Almacena las sesiones en una base de datos SQL.
+-`oauth2.0-server`: Gestiona login/auth con plataformas externas.
 
 ![Pantallazo de la seguridad de la API en Security Headers](images/imagen_seguridad_api_headers.jpeg)
 
