@@ -17,7 +17,7 @@ const isAuthenticated = (req, res, next) => {
         jwt.verify(token, JWT_SECRET, (err, decoded) => {
             if (err) {
                 console.error('Error verificando token JWT:', err);
-                return res.redirect('/auth/login');
+                return res.status(401).json({ error: 'Token inválido o expirado' });
             }
 
             console.log('Token decodificado:', decoded);
@@ -26,7 +26,7 @@ const isAuthenticated = (req, res, next) => {
         });
     } else {
         console.log('No autenticado y no se encontró token');
-        return res.redirect('/auth/login');
+        return res.status(401).json({ error: 'No autenticado: Se requiere un token válido' });
     }
 };
 
@@ -34,7 +34,7 @@ const isAdmin = (req, res, next) => {
     if (req.user && req.user.role === 'admin') {
         return next();
     } else {
-        return res.status(403).json({ error: 'Acceso denegado: Se requiere permisos de administrador' });
+        return res.status(403).json({ error: 'Acceso denegado: Se requieren permisos de administrador' });
     }
 };
 
