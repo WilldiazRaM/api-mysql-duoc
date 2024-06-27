@@ -7,18 +7,23 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const passport = require('./config/passportConfig');
 const path = require('path');
+//Routers
 const usuarioRoutes = require('./routes/usuarioRoutes');
 const authRoutes = require('./routes/authRoutes');
 const productosRoutes = require('./routes/productosRoutes');
 const pagosRouter = require('./routes/pagosRoutes');
 const historialesRoutes = require('./routes/historialRoutes');
 const carritoRouter = require('./routes/carritoRouters');
+const ventasRoutes = require('./routes/ventasRouters');
+const categoriasProductosRoutes = require('./routes/categoriasProductos');
+const detalleVentaRoutes = require('./routes/detalleVentaRouters');
+//end Routers
 const { isAuthenticated } = require('./utils/authUtils');
 const jwt = require('jsonwebtoken');
 const securityHeaders = require('./config/securityHeaders');
 const pool = require('./database');
 const { sqlInjectionFilter } = require('./middleware/sqlInjectionFilter');
-const categoriasProductosRoutes = require('./routes/categoriasProductos');
+
 
 const PORT = process.env.PORT || 4001;
 
@@ -68,6 +73,8 @@ app.use('/auth', authRoutes);
 app.use('/usuarios', usuarioRoutes);
 app.use('/categorias-productos', categoriasProductosRoutes);
 app.use('/productos', productosRoutes);
+app.use('/ventas', ventasRoutes);
+app.use('/detalle-venta', detalleVentaRoutes);
 app.use('/api/pagos', pagosRouter);
 app.use('/historial-compras', historialesRoutes);
 app.use('/carrito', carritoRouter);
