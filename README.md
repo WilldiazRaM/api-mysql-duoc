@@ -32,25 +32,56 @@ La base de datos utilizada en esta aplicación cuenta con las siguientes tablas:
 - **DetalleVenta**: Almacena los detalles de cada venta realizada, incluyendo los productos vendidos.
 - **Pagos**: Registra los pagos asociados a cada venta.
 - **Logs**: Contiene registros de eventos y acciones importantes dentro de la aplicación.
+- **Pedidos**: Gestiona los pedidos y su estado.
+- **Direcciones**: Guarda las direcciones de los usuarios.
+- **Reviews**: Almacena las reseñas de productos realizadas por los usuarios.
+- **Wishlists**: Guarda los productos que los usuarios desean comprar en el futuro.
+- **Coupons**: Almacena los cupones de descuento disponibles.
 
-![Modelo de Base de Datos:](images/basedatos1.svg)
+![Modelo de Base de Datos:](images/basedatos27-06-2024.svg)
 
 ## Script de la Base de Datos
 
 Puedes encontrar el script de la base de datos en el siguiente archivo:
 
-[Descargar Script SQL](images/db/api-duoc-db.sql) -Click derecho guardar como...
+[Descargar Script SQL](images/db/api-duoc-db2024.sql) -Click derecho guardar como...
 
 
 ## Endpoints Disponibles
 
 La aplicación proporciona los siguientes endpoints para interactuar con la API:
 
-- `/login`: Endpoint para iniciar sesión en la plataforma.
-- `/productos`: Endpoint para gestionar productos.
-- `/pagos`: Endpoint para realizar pagos.
-- `/historial-compras`: Endpoint para visualizar el historial de compras.
+- `/auth`: 
+  - `/login`: Endpoint para iniciar sesión en la plataforma.
+  - `/logout`: Endpoint para cerrar sesión en la plataforma.
+
 - `/carrito`: Endpoint para gestionar el carrito de compras.
+
+- `/categorias-productos`: Endpoint para gestionar categorías de productos.
+
+- `/coupons`: Endpoint para gestionar cupones de descuento.
+
+- `/detalle-venta`: Endpoint para gestionar los detalles de las ventas.
+
+- `/direcciones`: Endpoint para gestionar las direcciones de los usuarios.
+
+- `/historial-compras`: Endpoint para visualizar el historial de compras.
+
+- `/logs`: Endpoint para gestionar y visualizar los registros de eventos.
+
+- `/pagos`: Endpoint para realizar y gestionar pagos.
+
+- `/pedidos`: Endpoint para gestionar pedidos y su estado.
+
+- `/productos`: Endpoint para gestionar productos.
+
+- `/reviews`: Endpoint para gestionar reseñas de productos.
+
+- `/usuarios`: Endpoint para gestionar usuarios .
+
+- `/ventas`: Endpoint para gestionar ventas.
+
+- `/wishlists`: Endpoint para gestionar los productos que podrian comprar los clientes.
 
 ## Middleware de Seguridad
 
@@ -61,6 +92,10 @@ La aplicación utiliza varios middleware de seguridad para protegerse contra ame
 - `body-parser`: Analiza los cuerpos de las solicitudes HTTP.
 - `express-session`: Gestiona las sesiones de usuario.
 - `passport`: Middleware de autenticación para Node.js.
+- `cors`: Permite la comunicación entre aplicaciones desde diferentes orígenes.
+- `express-validator`: Proporciona validaciones de datos para solicitudes HTTP.
+- `dotenv`: Gestiona variables de entorno de manera segura.
+- `connect-pg-simple`: Almacena las sesiones en una base de datos SQL.
 
 ![Pantallazo de la seguridad de la API en Security Headers](images/imagen_seguridad_api_headers.jpeg)
 
