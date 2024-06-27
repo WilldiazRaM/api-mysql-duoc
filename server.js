@@ -29,6 +29,12 @@ app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+//DEBUG BODY
+app.use((req, res, next) => {
+    console.log('Request Body:', req.body);
+    next();
+});
+
 // SQL Injection Filter Middleware
 app.use(sqlInjectionFilter);
 
