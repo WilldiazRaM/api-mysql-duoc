@@ -85,7 +85,7 @@ app.use('/historial-compras', isAuthenticated, historialesRoutes);
 app.use('/carrito', isAuthenticated, carritoRouter);
 app.use('/logs', isAuthenticated, isAdmin, logRoutes); // RUTA PROTEGIDA SOLO ADMINISTRADORES
 app.use('/pedidos', isAuthenticated, isAdmin, pedidoRoutes); // RUTA PROTEGIDA SOLO ADMINISTRADORES
-app.use('/direcciones', isAuthenticated, isAdmin, direccionRoutes); // RUTA PROTEGIX|DA SOLO ADMINISTRADORES
+app.use('/direcciones', isAuthenticated, isAdmin, direccionRoutes); // RUTA PROTEGIDA SOLO ADMINISTRADORES
 app.use('/reviews', isAuthenticated, reviewRoutes);
 app.use('/wishlists', isAuthenticated, wishlistRoutes);
 app.use('/coupons', isAuthenticated, couponRoutes);
