@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ferreterias FerreMax</title>
-    <!-- Agrega tus estilos CSS aquí -->
     <link rel="stylesheet" href="/styleLogin.css">
-    <!-- Agrega el framework de Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/fontawesome.min.css"
     integrity="sha384-QYIZto+st3yW+o8+5OHfT6S482Zsvz2WfOzpFSXMF9zqeLcFV0/wlZpMtyFcZALm" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -14,24 +12,24 @@
 </head>
 <body class="bg-dark">
     <div class="container">
-        <div class="card">
-            <h1 class="text-center">Inicio de sesión</h1>
+        <div class="card" role="region" aria-labelledby="login-title">
+            <h1 class="text-center" id="login-title">Inicio de sesión</h1>
             <br>
             <br>
-            <form id="loginForm">
+            <form id="loginForm" aria-labelledby="login-form">
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" autocomplete="username" required>
+                    <input type="email" class="form-control" id="email" name="email" autocomplete="username" required aria-required="true">
                 </div>
                 <div class="mb-3">
                     <label for="userPassword" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="userPassword" name="userPassword" autocomplete="current-password" required>
+                    <input type="password" class="form-control" id="userPassword" name="userPassword" autocomplete="current-password" required aria-required="true">
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Login</button>
+                <button type="submit" class="btn btn-primary w-100" aria-label="Iniciar sesión">Login</button>
             </form>
             <hr>
-            <a href="/auth/google" class="btn btn-success w-100 mb-2">Login with Google <i class="fa-brands fa-google fa-bounce fa-lg" style="color: #e40101;"></i></a>
-            <a href="/auth/github" class="btn btn-dark w-100">Login with GitHub <i class="fa-brands fa-github fa-bounce fa-lg" style="color: #ffffff;"></i></a>
+            <a href="/auth/google" class="btn btn-success w-100 mb-2" role="button" aria-label="Iniciar sesión con Google">Login with Google <i class="fa-brands fa-google fa-bounce fa-lg" style="color: #e40101;"></i></a>
+            <a href="/auth/github" class="btn btn-dark w-100" role="button" aria-label="Iniciar sesión con GitHub">Login with GitHub <i class="fa-brands fa-github fa-bounce fa-lg" style="color: #ffffff;"></i></a>
         </div>
     </div>
     <script src="https://kit.fontawesome.com/1dfe34419e.js" crossorigin="anonymous"></script>
