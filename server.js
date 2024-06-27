@@ -1,12 +1,12 @@
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
+const path = require('path');
+const morgan = require('morgan');
 const helmet = require('helmet');
 const session = require('express-session');
 const pgSession = require('connect-pg-simple')(session);
-const morgan = require('morgan');
-const bodyParser = require('body-parser');
 const passport = require('./config/passportConfig');
-const path = require('path');
 const { sqlInjectionFilter } = require('./middleware/sqlInjectionFilter');
 const { isAuthenticated } = require('./utils/authUtils');
 const jwt = require('jsonwebtoken');
@@ -15,34 +15,27 @@ const pool = require('./database');
 
 const PORT = process.env.PORT || 10000;
 
-// Middleware for serving static files
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Security Middleware
-app.use(helmet());
-app.use(securityHeaders);
-
-// Logging Middleware
-app.use(morgan('combined'));
-
-// Body Parser Middleware 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//DEBUG BODY
 app.use((req, res, next) => {
     console.log('Request Body:', req.body);
     next();
 });
 
-// SQL Injection Filter Middleware
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(helmet());
+app.use(securityHeaders);
+
+app.use(morgan('combined'));
+
 app.use(sqlInjectionFilter);
 
-// PostgreSQL Session Configuration
 app.use(session({
     store: new pgSession({
-        pool: pool,                // Database connection
-        tableName: 'session'       // Session table name
+        pool: pool,
+        tableName: 'session'
     }),
     secret: process.env.SESSION_SECRET,
     resave: false,
@@ -50,15 +43,12 @@ app.use(session({
     cookie: { maxAge: 86400000, secure: process.env.NODE_ENV === 'production' }
 }));
 
-// Initialize Passport
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Configure EJS as template engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Routers
 const usuarioRoutes = require('./routes/usuarioRoutes');
 const authRoutes = require('./routes/authRoutes');
 const productosRoutes = require('./routes/productosRoutes');
@@ -69,7 +59,6 @@ const ventasRoutes = require('./routes/ventasRouters');
 const categoriasProductosRoutes = require('./routes/categoriasProductos');
 const detalleVentaRoutes = require('./routes/detalleVentaRouters');
 
-// Routes
 app.use('/auth', authRoutes);
 app.use('/usuarios', usuarioRoutes);
 app.use('/categorias-productos', categoriasProductosRoutes);
@@ -80,7 +69,6 @@ app.use('/api/pagos', pagosRouter);
 app.use('/historial-compras', historialesRoutes);
 app.use('/carrito', carritoRouter);
 
-// Protected route for user profile
 app.get('/profile', isAuthenticated, (req, res) => {
     const token = req.query.token;
     if (token) {
@@ -96,13 +84,11 @@ app.get('/profile', isAuthenticated, (req, res) => {
     }
 });
 
-// Global error handling Middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something went wrong!');
 });
 
-// Start the server
 app.listen(PORT, () => {
     console.log(`Server is listening on ${PORT}`);
 });

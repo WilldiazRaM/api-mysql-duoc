@@ -89,7 +89,8 @@ const confirmarTransaccion = async (req, res) => {
     }
 };
 
-// CRUD Operations
+// CRUD 
+// Obtener todos los pagos
 const getAllPagos = async (req, res) => {
     try {
         const pagos = await getAllPayments();
@@ -124,6 +125,7 @@ const createPago = async (req, res) => {
     }
 };
 
+// Actualizar un pago
 const updatePago = async (req, res) => {
     try {
         const updatedPago = await updatePayment(req.params.id, req.body);
@@ -137,6 +139,7 @@ const updatePago = async (req, res) => {
     }
 };
 
+// Eliminar un pago
 const deletePago = async (req, res) => {
     try {
         const deletedPago = await deletePayment(req.params.id);
