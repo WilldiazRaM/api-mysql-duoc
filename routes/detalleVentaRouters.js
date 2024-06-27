@@ -3,7 +3,7 @@ const router = express.Router();
 const { crearDetalleVenta, obtenerTodosLosDetallesVenta, obtenerDetalleVenta, actualizarDetalleVentaPorId, eliminarDetalleVentaPorId } = require('../controllers/detalleVentaController');
 const { checkHeaders, sqlInjectionFilter } = require('../middleware/sqlInjectionFilter');
 // Aplicar el middleware de filtrado de inyecciones SQL
-router.use(sqlInjectionFilter);s
+router.use(sqlInjectionFilter);
 
 
 // Crear un detalle de venta
