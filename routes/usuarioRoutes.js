@@ -9,7 +9,6 @@ router.use(sqlInjectionFilter);
 // Rutas CRUD para Usuarios
 router.get('/', usuarioController.getAll.bind(usuarioController));
 router.get('/:id', usuarioController.getById.bind(usuarioController));
-router.post('/', checkHeaders(['x-nombre', 'x-email', 'x-password', 'x-role']), usuarioController.create.bind(usuarioController));
 router.put('/:id', checkHeaders(['x-nombre', 'x-email', 'x-role']), usuarioController.update.bind(usuarioController));
 router.delete('/:id', usuarioController.delete.bind(usuarioController));
 
