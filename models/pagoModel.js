@@ -133,11 +133,95 @@ async function updatePaymentStatus(buyOrder, estado_pago) {
   }
 }
 
+async function getAllPayments() {
+  const query = 'SELECT * FROM "Pagos"';
+  try {
+      const result = await pool.query(query);
+      return result.rows;
+  } catch (error) {
+      console.error('Error fetching payments:', error);
+      throw error;
+  }
+}
+
+async function getPaymentById(id) {
+  const query = 'SELECT * FROM "Pagos" WHERE id = $1';
+  const values = [id];
+  try {
+      const result = await pool.query(query, values);
+      if (result.rowCount === 0) {
+          throw new Error('Pago not found');
+      }
+      return result.rows[0];
+  } catch (error) {
+      console.error('Error fetching payment:', error);
+      throw error;
+  }
+}
+
+async function createPayment(paymentData) {
+  const { id_venta, monto, metodo_pago, estado_pago } = paymentData;
+  const query = `
+      INSERT INTO "Pagos" (id_venta, monto, metodo_pago, estado_pago)
+      VALUES ($1, $2, $3, $4)
+      RETURNING *;
+  `;
+  const values = [id_venta, monto, metodo_pago, estado_pago];
+  try {
+      const result = await pool.query(query, values);
+      return result.rows[0];
+  } catch (error) {
+      console.error('Error creating payment:', error);
+      throw error;
+  }
+}
+
+async function updatePayment(id, paymentData) {
+  const { id_venta, monto, metodo_pago, estado_pago } = paymentData;
+  const query = `
+      UPDATE "Pagos"
+      SET id_venta = $1, monto = $2, metodo_pago = $3, estado_pago = $4
+      WHERE id = $5
+      RETURNING *;
+  `;
+  const values = [id_venta, monto, metodo_pago, estado_pago, id];
+  try {
+      const result = await pool.query(query, values);
+      if (result.rowCount === 0) {
+          throw new Error('Pago not found');
+      }
+      return result.rows[0];
+  } catch (error) {
+      console.error('Error updating payment:', error);
+      throw error;
+  }
+}
+
+async function deletePayment(id) {
+  const query = 'DELETE FROM "Pagos" WHERE id = $1 RETURNING *';
+  const values = [id];
+  try {
+      const result = await pool.query(query, values);
+      if (result.rowCount === 0) {
+          throw new Error('Pago not found');
+      }
+      return result.rows[0];
+  } catch (error) {
+      console.error('Error deleting payment:', error);
+      throw error;
+  }
+}
+
 module.exports = {
   savePayment,
   getPaymentByToken,
   getUserById,
   getVentaById,
   createVenta,
-  updatePaymentStatus
+  updatePaymentStatus,
+  getAllPayments,
+  getPaymentById,
+  createPayment,
+  updatePayment,
+  deletePayment
 };

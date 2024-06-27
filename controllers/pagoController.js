@@ -88,7 +88,72 @@ const confirmarTransaccion = async (req, res) => {
   }
 };
 
+//CRJD
+const getAllPagos = async (req, res) => {
+  try {
+      const pagos = await getAllPayments();
+      res.status(200).json(pagos);
+  } catch (error) {
+      console.error('Error fetching payments:', error);
+      res.status(500).json({ message: 'Error fetching payments', error: error.message });
+  }
+};
+
+const getPagoById = async (req, res) => {
+  try {
+      const pago = await getPaymentById(req.params.id);
+      if (!pago) {
+          return res.status(404).json({ message: 'Pago not found' });
+      }
+      res.status(200).json(pago);
+  } catch (error) {
+      console.error('Error fetching payment:', error);
+      res.status(500).json({ message: 'Error fetching payment', error: error.message });
+  }
+};
+
+const createPago = async (req, res) => {
+  try {
+      const newPago = await createPayment(req.body);
+      res.status(201).json(newPago);
+  } catch (error) {
+      console.error('Error creating payment:', error);
+      res.status(500).json({ message: 'Error creating payment', error: error.message });
+  }
+};
+
+const updatePago = async (req, res) => {
+  try {
+      const updatedPago = await updatePayment(req.params.id, req.body);
+      if (!updatedPago) {
+          return res.status(404).json({ message: 'Pago not found' });
+      }
+      res.status(200).json(updatedPago);
+  } catch (error) {
+      console.error('Error updating payment:', error);
+      res.status(500).json({ message: 'Error updating payment', error: error.message });
+  }
+};
+
+const deletePago = async (req, res) => {
+  try {
+      const deletedPago = await deletePayment(req.params.id);
+      if (!deletedPago) {
+          return res.status(404).json({ message: 'Pago not found' });
+      }
+      res.status(200).json({ message: 'Pago deleted' });
+  } catch (error) {
+      console.error('Error deleting payment:', error);
+      res.status(500).json({ message: 'Error deleting payment', error: error.message });
+  }
+};
+
 module.exports = {
   iniciarTransaccion,
-  confirmarTransaccion
+  confirmarTransaccion,
+  getAllPagos,
+  getPagoById,
+  createPago,
+  updatePago,
+  deletePago
 };
