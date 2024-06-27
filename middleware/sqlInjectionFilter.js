@@ -1,34 +1,46 @@
+const { check, validationResult } = require('express-validator');
+
+const checkForDangerousChars = (input) => {
+    const dangerousChars = /['";]/;
+    const dangerousSequence = /--/;
+    if (dangerousChars.test(input) || dangerousSequence.test(input)) {
+        return true;
+    }
+    return false;
+};
+
 const sqlInjectionFilter = (req, res, next) => {
     console.log('Request body before filter:', req.body); // Add this line for initial body logging
-    // Exclude OAuth routes from the filter
+
+    // Excluir rutas OAuth del filtro
     const oauthRoutes = ['/auth/google', '/auth/google/callback', '/auth/github', '/auth/github/callback'];
     if (oauthRoutes.includes(req.path) && req.method === 'GET') {
         console.log('OAuth route, skipping SQL injection filter');
         return next();
     }
 
-    // Check req.body
+    // Verificar req.body
     for (let key in req.body) {
         if (checkForDangerousChars(req.body[key])) {
             return res.status(400).send('Caracteres peligrosos detectados. with ❤️ from 🇨🇱 👊👊👊');
         }
     }
 
-    // Check req.params
+    // Verificar req.params
     for (let key in req.params) {
         if (checkForDangerousChars(req.params[key])) {
             return res.status(400).send('Caracteres peligrosos detectados. with ❤️ from 🇨🇱 👊👊👊');
         }
     }
 
-    // Check req.query
+    // Verificar req.query
     for (let key in req.query) {
         if (checkForDangerousChars(req.query[key])) {
             return res.status(400).send('Caracteres peligrosos detectados. with ❤️ from 🇨🇱 👊👊👊');
         }
     }
 
-    // Check req.headers, excluding common headers
+    // Verificar req.headers, excluyendo encabezados comunes
     const excludedHeaders = [
         'user-agent', 'accept', 'accept-encoding', 'cdn-loop', 'referer', 'connection', 'host', 'cf-connecting-ip',
         'cf-ew-via', 'cf-ipcountry', 'cf-ray', 'cf-visitor', 'accept-language', 'cache-control', 'pragma', 'true-client-ip',
@@ -50,4 +62,54 @@ const sqlInjectionFilter = (req, res, next) => {
     next();
 };
 
-module.exports = { sqlInjectionFilter, checkHeaders, checkForDangerousChars };
+const checkHeaders = (fields) => {
+    return [
+        // Verificar si los campos están vacíos
+        (req, res, next) => {
+            const oauthRoutes = ['/auth/google', '/auth/google/callback', '/auth/github', '/auth/github/callback'];
+            if (oauthRoutes.includes(req.path) && req.method === 'GET') {
+                return next();
+            }
+
+            const errors = [];
+            fields.forEach(field => {
+                if (!req.headers[field] || req.headers[field].trim() === '') {
+                    errors.push({ msg: `El campo ${field} es requerido`, path: field, location: 'headers' });
+                }
+            });
+            if (errors.length > 0) {
+                return res.status(400).json({ errors });
+            }
+            next();
+        },
+        // Validaciones específicas para cada campo
+        ...fields.map(field => {
+            switch (field) {
+                case 'x-email':
+                    return check(field).isEmail().withMessage('Debe ser un correo electrónico válido').bail();
+                case 'x-password':
+                    return check(field).isString().withMessage('La contraseña debe ser una cadena').bail();
+                case 'x-nombre':
+                    return check(field).isString().withMessage('El nombre de usuario debe ser una cadena').bail();
+                case 'x-role':
+                    return check(field).isString().withMessage('El rol debe ser una cadena').bail();
+                default:
+                    return check(field).exists().withMessage(`El campo ${field} es requerido`).bail();
+            }
+        }),
+        // Manejar errores de validación
+        (req, res, next) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array().map(err => ({ msg: err.msg, path: err.param, location: 'headers' })) });
+            }
+            next();
+        }
+    ];
+};
+
+module.exports = {
+    sqlInjectionFilter,
+    checkHeaders,
+    checkForDangerousChars
+};
