@@ -130,4 +130,4 @@ Este proyecto se encuentra en constante desarrollo. Siempre estamos buscando for
 - Cristhoper Sanchez
 - Williams Diaz
 
-Profesora: Ana Karina Villagran
+Profesor(a): Ana Karina Villagran
