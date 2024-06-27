@@ -17,60 +17,61 @@ const {
   deletePayment
 } = require('../models/pagoModel');
 
-// Iniciar transacción
+/// Iniciar transacción
 const iniciarTransaccion = async (req, res) => {
-  const { buyOrder, sessionId, amount, returnUrl, metodoPago, userId } = req.body;
+    const { buyOrder, sessionId, amount, returnUrl, metodoPago, userId } = req.body;
 
-  try {
-      console.log('Inicio de transacción con:', req.body);
+    try {
+        console.log('Inicio de transacción con:', req.body);
 
-      // Verificar que el usuario exista
-      const usuario = await getUserById(userId);
-      if (!usuario) {
-          return res.status(400).json({ message: 'Usuario no encontrado' });
-      }
+        // Verificar que el usuario exista
+        const usuario = await getUserById(userId);
+        if (!usuario) {
+            return res.status(400).json({ message: 'Usuario no encontrado' });
+        }
 
-      // Intentar obtener la venta por ID
-      let venta;
-      try {
-          venta = await getVentaById(buyOrder);
-          console.log('Venta encontrada:', venta);
-      } catch (error) {
-          if (error.message === 'Venta no encontrada') {
-              // Crear una nueva venta si no existe
-              venta = await createVenta({ id_usuario: userId, monto: amount });
-              console.log('Venta creada:', venta);
-          } else {
-              throw error;
-          }
-      }
+        // Intentar obtener la venta por ID
+        let venta;
+        try {
+            venta = await getVentaById(buyOrder);
+            console.log('Venta encontrada:', venta);
+        } catch (error) {
+            if (error.message === 'Venta no encontrada') {
+                // Crear una nueva venta si no existe
+                venta = await createVenta({ id_usuario: userId, monto: amount });
+                console.log('Venta creada:', venta);
+            } else {
+                throw error;
+            }
+        }
 
-      const newBuyOrder = venta.id;
+        const newBuyOrder = venta.id;
 
-      // Iniciar transacción con Transbank
-      const transaction = await createTransaction(newBuyOrder, sessionId, amount, returnUrl);
+        // Iniciar transacción con Transbank
+        const transaction = await createTransaction(newBuyOrder, sessionId, amount, returnUrl);
 
-      if (transaction.token) {
-          // Guardar el pago con el token en la base de datos
-          const paymentData = {
-              id_venta: newBuyOrder,
-              monto: amount,
-              metodo_pago: metodoPago,
-              estado_pago: 'iniciado',
-              token: transaction.token,
-          };
-          await savePayment(paymentData);
-          console.log('Pago guardado:', paymentData);
+        if (transaction.token) {
+            // Guardar el pago con el token en la base de datos
+            const paymentData = {
+                id_venta: newBuyOrder,
+                monto: amount,
+                metodo_pago: metodoPago,
+                estado_pago: 'iniciado',
+                token: transaction.token,
+            };
+            await savePayment(paymentData);
+            console.log('Pago guardado:', paymentData);
 
-          res.status(200).json({ token: transaction.token, url: transaction.url, buyOrder: newBuyOrder });
-      } else {
-          res.status(500).json({ message: 'Error iniciando transacción con Transbank' });
-      }
-  } catch (error) {
-      console.error('Error iniciando transacción', error);
-      res.status(500).json({ message: 'Error iniciando transacción', error: error.message });
-  }
+            res.status(200).json({ token: transaction.token, url: transaction.url, buyOrder: newBuyOrder });
+        } else {
+            res.status(500).json({ message: 'Error iniciando transacción con Transbank' });
+        }
+    } catch (error) {
+        console.error('Error iniciando transacción', error);
+        res.status(500).json({ message: 'Error iniciando transacción', error: error.message });
+    }
 };
+
 
 // Confirmar transacción
 const confirmarTransaccion = async (req, res) => {
