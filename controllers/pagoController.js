@@ -114,14 +114,15 @@ const {
   };
   
   const createPago = async (req, res) => {
-      try {
-          const newPago = await createPayment(req.body);
-          res.status(201).json(newPago);
-      } catch (error) {
-          console.error('Error creating payment:', error);
-          res.status(500).json({ message: 'Error creating payment', error: error.message });
-      }
-  };
+    console.log('Received payment data:', req.body); // Log the received data
+    try {
+        const newPago = await createPayment(req.body);
+        res.status(201).json(newPago);
+    } catch (error) {
+        console.error('Error creating payment:', error);
+        res.status(500).json({ message: 'Error creating payment', error: error.message });
+    }
+};
   
   const updatePago = async (req, res) => {
       try {
