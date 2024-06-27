@@ -73,7 +73,7 @@ app.use('/historial-compras', historialesRoutes);
 app.use('/carrito', carritoRouter);
 app.use('/logs', logRoutes); 
 app.use('/pedidos', pedidoRoutes); 
-s
+
 
 
 app.get('/profile', isAuthenticated, (req, res) => {
