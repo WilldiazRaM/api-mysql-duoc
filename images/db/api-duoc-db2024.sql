@@ -1,132 +1,180 @@
+-- Tabla Usuarios
 CREATE TABLE "Usuarios" (
   "id" SERIAL PRIMARY KEY,
-  "nombre" VARCHAR(120),
-  "email" VARCHAR(120) UNIQUE,
-  "password" VARCHAR(120),
-  "role" VARCHAR(120),
-  "created_at" TIMESTAMP DEFAULT (CURRENT_TIMESTAMP)
+  "nombre" VARCHAR(120) NOT NULL,
+  "email" VARCHAR(120) NOT NULL UNIQUE,
+  "password" VARCHAR(120) NOT NULL,
+  "role" VARCHAR(120) NOT NULL,
+  "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE INDEX idx_usuarios_email ON "Usuarios" ("email");
+
+-- Tabla CategoriasProductos
 CREATE TABLE "CategoriasProductos" (
   "id" SERIAL PRIMARY KEY,
-  "nombre" VARCHAR(120)
+  "nombre" VARCHAR(120) NOT NULL
 );
 
+-- Tabla Productos
 CREATE TABLE "Productos" (
   "id" SERIAL PRIMARY KEY,
-  "nombre" VARCHAR(120),
-  "precio" INT,
+  "nombre" VARCHAR(120) NOT NULL,
+  "precio" INT NOT NULL,
   "descripcion" VARCHAR(250),
-  "stock" INT,
-  "categoria_id" INT
+  "stock" INT NOT NULL,
+  "categoria_id" INT NOT NULL,
+  FOREIGN KEY ("categoria_id") REFERENCES "CategoriasProductos" ("id") ON DELETE CASCADE
 );
 
+-- Tabla Ventas
 CREATE TABLE "Ventas" (
   "id" SERIAL PRIMARY KEY,
-  "id_usuario" INT,
-  "monto" INT
+  "id_usuario" INT NOT NULL,
+  "monto" INT NOT NULL,
+  FOREIGN KEY ("id_usuario") REFERENCES "Usuarios" ("id") ON DELETE CASCADE
 );
 
+-- Tabla DetalleVenta
 CREATE TABLE "DetalleVenta" (
   "id" SERIAL PRIMARY KEY,
-  "id_venta" INT,
-  "id_producto" INT,
-  "id_usuario" INT,
-  "cantidad" INT,
-  "precio_unitario" INT
+  "id_venta" INT NOT NULL,
+  "id_producto" INT NOT NULL,
+  "id_usuario" INT NOT NULL,
+  "cantidad" INT NOT NULL,
+  "precio_unitario" INT NOT NULL,
+  FOREIGN KEY ("id_venta") REFERENCES "Ventas" ("id") ON DELETE CASCADE,
+  FOREIGN KEY ("id_producto") REFERENCES "Productos" ("id") ON DELETE CASCADE,
+  FOREIGN KEY ("id_usuario") REFERENCES "Usuarios" ("id") ON DELETE CASCADE
 );
 
+-- Tabla Pagos
 CREATE TABLE "Pagos" (
   "id" SERIAL PRIMARY KEY,
-  "id_venta" INT,
-  "monto" INT,
-  "metodo_pago" VARCHAR(255),
-  "estado_pago" VARCHAR(255),
-  "token" VARCHAR(255)
+  "id_venta" INT NOT NULL,
+  "monto" INT NOT NULL,
+  "metodo_pago" VARCHAR(255) NOT NULL,
+  "estado_pago" VARCHAR(255) NOT NULL,
+  "token" VARCHAR(255) NOT NULL,
+  FOREIGN KEY ("id_venta") REFERENCES "Ventas" ("id") ON DELETE CASCADE
 );
 
+-- Tabla Logs
 CREATE TABLE "Logs" (
   "id" SERIAL PRIMARY KEY,
-  "tipo" VARCHAR(120),
-  "descripcion" VARCHAR(255),
-  "fecha" TIMESTAMP DEFAULT (CURRENT_TIMESTAMP)
+  "tipo" VARCHAR(120) NOT NULL,
+  "descripcion" VARCHAR(255) NOT NULL,
+  "fecha" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Tabla session
 CREATE TABLE "session" (
   "sid" VARCHAR(255) PRIMARY KEY,
-  "sess" JSON,
-  "expire" TIMESTAMP
+  "sess" JSON NOT NULL,
+  "expire" TIMESTAMP NOT NULL
 );
 
+-- Tabla Pedidos
 CREATE TABLE "Pedidos" (
   "id" SERIAL PRIMARY KEY,
-  "id_venta" INT,
-  "metodo_entrega" VARCHAR(50),
+  "id_venta" INT NOT NULL,
+  "metodo_entrega" VARCHAR(50) NOT NULL CHECK (metodo_entrega IN ('retiro', 'envio')),
   "direccion_id" INT,
-  "estado" VARCHAR(50) DEFAULT 'pendiente'
+  "estado" VARCHAR(50) NOT NULL DEFAULT 'pendiente',
+  FOREIGN KEY ("id_venta") REFERENCES "Ventas" ("id") ON DELETE CASCADE,
+  FOREIGN KEY ("direccion_id") REFERENCES "Direcciones" ("id") ON DELETE CASCADE
 );
 
+-- Tabla Direcciones
 CREATE TABLE "Direcciones" (
   "id" SERIAL PRIMARY KEY,
-  "id_usuario" INT,
-  "direccion" VARCHAR(255),
-  "ciudad" VARCHAR(100),
-  "codigo_postal" VARCHAR(20)
+  "id_usuario" INT NOT NULL,
+  "direccion" VARCHAR(255) NOT NULL,
+  "ciudad" VARCHAR(100) NOT NULL,
+  "codigo_postal" VARCHAR(20) NOT NULL,
+  FOREIGN KEY ("id_usuario") REFERENCES "Usuarios" ("id") ON DELETE CASCADE
 );
 
+-- Tabla Reviews
 CREATE TABLE "Reviews" (
   "id" SERIAL PRIMARY KEY,
-  "id_usuario" INT,
-  "id_producto" INT,
-  "rating" INT,
+  "id_usuario" INT NOT NULL,
+  "id_producto" INT NOT NULL,
+  "rating" INT NOT NULL CHECK (rating BETWEEN 1 AND 5),
   "comentario" TEXT,
-  "created_at" TIMESTAMP DEFAULT (CURRENT_TIMESTAMP)
+  "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY ("id_usuario") REFERENCES "Usuarios" ("id") ON DELETE CASCADE,
+  FOREIGN KEY ("id_producto") REFERENCES "Productos" ("id") ON DELETE CASCADE
 );
 
+-- Tabla Wishlists
 CREATE TABLE "Wishlists" (
   "id" SERIAL PRIMARY KEY,
-  "id_usuario" INT,
-  "id_producto" INT,
-  "created_at" TIMESTAMP DEFAULT (CURRENT_TIMESTAMP)
+  "id_usuario" INT NOT NULL,
+  "id_producto" INT NOT NULL,
+  "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY ("id_usuario") REFERENCES "Usuarios" ("id") ON DELETE CASCADE,
+  FOREIGN KEY ("id_producto") REFERENCES "Productos" ("id") ON DELETE CASCADE
 );
 
+
+-- Tabla Coupons
 CREATE TABLE "Coupons" (
   "id" SERIAL PRIMARY KEY,
-  "codigo" VARCHAR(50) UNIQUE,
-  "descuento" DECIMAL(5,2),
-  "fecha_expiracion" TIMESTAMP,
-  "usos_restantes" INT
+  "codigo" VARCHAR(50) NOT NULL UNIQUE,
+  "descuento" DECIMAL(5, 2) NOT NULL,
+  "fecha_expiracion" TIMESTAMP NOT NULL,
+  "usos_restantes" INT NOT NULL,
+  "id_usuario" INT NOT NULL,
+  "id_producto" INT NOT NULL,
+  FOREIGN KEY ("id_usuario") REFERENCES "Usuarios" ("id") ON DELETE CASCADE,
+  FOREIGN KEY ("id_producto") REFERENCES "Productos" ("id") ON DELETE CASCADE
 );
 
-COMMENT ON COLUMN "Pedidos"."metodo_entrega" IS 'CHECK (metodo_entrega IN (''retiro'', ''envio''))';
+-- Añadir las constraints ON DELETE CASCADE
+ALTER TABLE "Productos"
+  DROP CONSTRAINT "Productos_categoria_id_fkey",
+  ADD CONSTRAINT "Productos_categoria_id_fkey" FOREIGN KEY ("categoria_id") REFERENCES "CategoriasProductos" ("id") ON DELETE CASCADE;
 
-COMMENT ON COLUMN "Reviews"."rating" IS 'CHECK (rating BETWEEN 1 AND 5)';
+ALTER TABLE "Ventas"
+  DROP CONSTRAINT "Ventas_id_usuario_fkey",
+  ADD CONSTRAINT "Ventas_id_usuario_fkey" FOREIGN KEY ("id_usuario") REFERENCES "Usuarios" ("id") ON DELETE CASCADE;
 
-ALTER TABLE "Productos" ADD FOREIGN KEY ("categoria_id") REFERENCES "CategoriasProductos" ("id");
+ALTER TABLE "DetalleVenta"
+  DROP CONSTRAINT "DetalleVenta_id_venta_fkey",
+  ADD CONSTRAINT "DetalleVenta_id_venta_fkey" FOREIGN KEY ("id_venta") REFERENCES "Ventas" ("id") ON DELETE CASCADE,
+  DROP CONSTRAINT "DetalleVenta_id_producto_fkey",
+  ADD CONSTRAINT "DetalleVenta_id_producto_fkey" FOREIGN KEY ("id_producto") REFERENCES "Productos" ("id") ON DELETE CASCADE,
+  DROP CONSTRAINT "DetalleVenta_id_usuario_fkey",
+  ADD CONSTRAINT "DetalleVenta_id_usuario_fkey" FOREIGN KEY ("id_usuario") REFERENCES "Usuarios" ("id") ON DELETE CASCADE;
 
-ALTER TABLE "Ventas" ADD FOREIGN KEY ("id_usuario") REFERENCES "Usuarios" ("id");
+ALTER TABLE "Pagos"
+  DROP CONSTRAINT "Pagos_id_venta_fkey",
+  ADD CONSTRAINT "Pagos_id_venta_fkey" FOREIGN KEY ("id_venta") REFERENCES "Ventas" ("id") ON DELETE CASCADE;
 
-ALTER TABLE "DetalleVenta" ADD FOREIGN KEY ("id_venta") REFERENCES "Ventas" ("id");
+ALTER TABLE "Pedidos"
+  DROP CONSTRAINT "Pedidos_id_venta_fkey",
+  ADD CONSTRAINT "Pedidos_id_venta_fkey" FOREIGN KEY ("id_venta") REFERENCES "Ventas" ("id") ON DELETE CASCADE,
+  DROP CONSTRAINT "Pedidos_direccion_id_fkey",
+  ADD CONSTRAINT "Pedidos_direccion_id_fkey" FOREIGN KEY ("direccion_id") REFERENCES "Direcciones" ("id") ON DELETE CASCADE;
 
-ALTER TABLE "DetalleVenta" ADD FOREIGN KEY ("id_producto") REFERENCES "Productos" ("id");
+ALTER TABLE "Direcciones"
+  DROP CONSTRAINT "Direcciones_id_usuario_fkey",
+  ADD CONSTRAINT "Direcciones_id_usuario_fkey" FOREIGN KEY ("id_usuario") REFERENCES "Usuarios" ("id") ON DELETE CASCADE;
 
-ALTER TABLE "DetalleVenta" ADD FOREIGN KEY ("id_usuario") REFERENCES "Usuarios" ("id");
+ALTER TABLE "Reviews"
+  DROP CONSTRAINT "Reviews_id_usuario_fkey",
+  ADD CONSTRAINT "Reviews_id_usuario_fkey" FOREIGN KEY ("id_usuario") REFERENCES "Usuarios" ("id") ON DELETE CASCADE,
+  DROP CONSTRAINT "Reviews_id_producto_fkey",
+  ADD CONSTRAINT "Reviews_id_producto_fkey" FOREIGN KEY ("id_producto") REFERENCES "Productos" ("id") ON DELETE CASCADE;
 
-ALTER TABLE "Pagos" ADD FOREIGN KEY ("id_venta") REFERENCES "Ventas" ("id");
+ALTER TABLE "Wishlists"
+  DROP CONSTRAINT "Wishlists_id_usuario_fkey",
+  ADD CONSTRAINT "Wishlists_id_usuario_fkey" FOREIGN KEY ("id_usuario") REFERENCES "Usuarios" ("id") ON DELETE CASCADE,
+  DROP CONSTRAINT "Wishlists_id_producto_fkey",
+  ADD CONSTRAINT "Wishlists_id_producto_fkey" FOREIGN KEY ("id_producto") REFERENCES "Productos" ("id") ON DELETE CASCADE;
 
-ALTER TABLE "Pedidos" ADD FOREIGN KEY ("id_venta") REFERENCES "Ventas" ("id");
 
-ALTER TABLE "Pedidos" ADD FOREIGN KEY ("direccion_id") REFERENCES "Direcciones" ("id");
-
-ALTER TABLE "Direcciones" ADD FOREIGN KEY ("id_usuario") REFERENCES "Usuarios" ("id");
-
-ALTER TABLE "Reviews" ADD FOREIGN KEY ("id_usuario") REFERENCES "Usuarios" ("id");
-
-ALTER TABLE "Reviews" ADD FOREIGN KEY ("id_producto") REFERENCES "Productos" ("id");
-
-ALTER TABLE "Wishlists" ADD FOREIGN KEY ("id_usuario") REFERENCES "Usuarios" ("id");
-
-ALTER TABLE "Wishlists" ADD FOREIGN KEY ("id_producto") REFERENCES "Productos" ("id");
 
 -- Crear índice para la tabla Usuarios
 CREATE INDEX idx_usuarios_email ON "Usuarios" ("email");
