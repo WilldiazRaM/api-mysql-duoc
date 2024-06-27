@@ -1,5 +1,6 @@
 const Venta = require('../models/ventasModel');
 const pool = require('../database');
+const { createLog } = require('../models/logModel'); // Asegúrate de importar la función createLog
 
 exports.crearVenta = async (req, res) => {
     try {
@@ -12,6 +13,10 @@ exports.crearVenta = async (req, res) => {
         }
         
         const newVenta = await Venta.createVenta(id_usuario, monto);
+
+        // Crear un log para la nueva venta
+        await createLog('Venta', `Nueva venta creada con ID: ${newVenta.id} por el usuario: ${id_usuario}`);
+        
         res.status(201).json(newVenta);
     } catch (err) {
         console.error("Error creating sale:", err.message);
@@ -49,6 +54,10 @@ exports.actualizarVentaPorId = async (req, res) => {
         if (!updatedVenta) {
             return res.status(404).json({ error: "Sale not found" });
         }
+
+        // Crear un log para la actualización de la venta
+        await createLog('Venta', `Venta con ID: ${req.params.id} actualizada por el usuario: ${id_usuario}`);
+
         res.json(updatedVenta);
     } catch (err) {
         console.error("Error updating sale:", err.message);
@@ -59,6 +68,10 @@ exports.actualizarVentaPorId = async (req, res) => {
 exports.eliminarVentaPorId = async (req, res) => {
     try {
         await Venta.eliminarVenta(req.params.id);
+
+        // Crear un log para la eliminación de la venta
+        await createLog('Venta', `Venta con ID: ${req.params.id} eliminada`);
+
         res.status(204).send();
     } catch (err) {
         console.error("Error deleting sale:", err.message);

@@ -75,18 +75,5 @@ router.get('/github/callback', passport.authenticate('github', { failureRedirect
     res.redirect(`/profile?token=${token}`);
 });
 
-// Ruta para comparar contraseñas manualmente
-router.get('/debug/compare', async (req, res) => {
-    const plainPassword = 'password123.';
-    const hashedPassword = '$2b$10$SXrEgwtWnDT/vTsQCqNF/uoCJ2TfdwnK5dLrDQnNo3LP678dJCYae'; // Reemplaza con la contraseña hash de la base de datos
-
-    try {
-        const result = await bcrypt.compare(plainPassword, hashedPassword);
-        res.status(200).json({ isValid: result });
-    } catch (err) {
-        console.error('Error al comparar contraseñas:', err);
-        res.status(500).json({ error: 'Error al comparar contraseñas' });
-    }
-});
 
 module.exports = router;
