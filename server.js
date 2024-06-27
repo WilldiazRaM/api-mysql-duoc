@@ -13,7 +13,6 @@ const jwt = require('jsonwebtoken');
 const securityHeaders = require('./config/securityHeaders');
 const pool = require('./database');
 
-
 const PORT = process.env.PORT || 10000;
 
 // Middleware for serving static files
@@ -26,7 +25,7 @@ app.use(securityHeaders);
 // Logging Middleware
 app.use(morgan('combined'));
 
-// Body Parser Middleware - must be before sqlInjectionFilter
+// Body Parser Middleware 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

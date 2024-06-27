@@ -135,6 +135,7 @@ const createPago = async (req, res) => {
     try {
         console.log('Received payment data:', req.body); // Log the received data
         const newPago = await createPayment(req.body);
+        console.log('Payment created:', newPago); // Log the created payment
         res.status(201).json(newPago);
     } catch (error) {
         console.error('Error creating payment:', error);

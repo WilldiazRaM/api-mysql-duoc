@@ -10,7 +10,9 @@ async function savePayment(paymentData) {
     `;
     const values = [id_venta, monto, metodo_pago, estado_pago, token];
     try {
+        console.log('Saving payment with values:', values); // Log values
         const result = await pool.query(query, values);
+        console.log('Payment saved:', result.rows[0]); // Log result
         return result.rows[0];
     } catch (error) {
         console.error('Error guardando el pago:', error);
@@ -129,7 +131,9 @@ async function createPayment(paymentData) {
     `;
     const values = [id_venta, monto, metodo_pago, estado_pago];
     try {
+        console.log('Query for creating payment:', query); // Log query
         const result = await pool.query(query, values);
+        console.log('Payment created:', result.rows[0]); // Log result
         return result.rows[0];
     } catch (error) {
         console.error('Error creating payment:', error);
