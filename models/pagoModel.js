@@ -5,17 +5,11 @@ const {
 } = require('../utils/pagosUtils');
 
 const { 
-  savePayment, 
-  getVentaById, 
-  createVenta, 
-  getUserById, 
-  getPaymentByToken, 
-  updatePaymentStatus,
-  getAllPayments, // Make sure this is imported
-  getPaymentById, // Make sure this is imported
-  createPayment,  // Make sure this is imported
-  updatePayment,  // Make sure this is imported
-  deletePayment   // Make sure this is imported
+  
+  getAllPayments, 
+  getPaymentById, 
+  createPayment,  
+  deletePayment   
 } = require('../models/pagoModel');
 const { iniciarTransaccion } = require('../controllers/pagoController');
 
