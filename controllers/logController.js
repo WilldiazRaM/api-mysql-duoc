@@ -15,9 +15,6 @@ const getAllLogsController = async (req, res) => {
 const getLogByIdController = async (req, res) => {
     try {
         const log = await getLogById(req.params.id);
-        if (!log) {
-            return res.status(404).json({ message: 'Log no encontrado' });
-        }
         res.status(200).json(log);
     } catch (error) {
         console.error('Error fetching log:', error);
