@@ -63,6 +63,7 @@ const pedidoRoutes = require('./routes/pedidoRoutes');
 const direccionRoutes = require('./routes/direccionRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const wishlistRoutes = require('./routes/wishlistRoutes');
+const couponRoutes = require('./routes/couponRoutes');
 
 app.use('/auth', authRoutes);
 app.use('/usuarios', usuarioRoutes);
@@ -78,6 +79,7 @@ app.use('/pedidos', pedidoRoutes);
 app.use('/direcciones', direccionRoutes);
 app.use('/reviews', reviewRoutes);
 app.use('/wishlists', wishlistRoutes);
+app.use('/coupons', couponRoutes);
 
 
 app.get('/profile', isAuthenticated, (req, res) => {
