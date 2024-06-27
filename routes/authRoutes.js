@@ -8,7 +8,7 @@ const { checkHeaders, sqlInjectionFilter } = require('../middleware/sqlInjection
 const bcrypt = require('bcrypt');
 
 // Aplicar el middleware de filtrado de inyecciones SQL
-//router.use(sqlInjectionFilter);
+router.use(sqlInjectionFilter);
 
 
 // Rutas de autenticación locales

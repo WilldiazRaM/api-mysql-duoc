@@ -1,6 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const { crearVenta, obtenerTodasLasVentas, obtenerVenta, actualizarVentaPorId, eliminarVentaPorId } = require('../controllers/ventasController');
+const { checkHeaders, sqlInjectionFilter } = require('../middleware/sqlInjectionFilter');
+
+// Aplicar el middleware de filtrado de inyecciones SQL
+router.use(sqlInjectionFilter);
+
 
 // Crear una venta
 router.post('/', crearVenta);
