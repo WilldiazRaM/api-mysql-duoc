@@ -44,7 +44,7 @@ La base de datos utilizada en esta aplicación cuenta con las siguientes tablas:
 - **Wishlists**: Guarda los productos que los usuarios desean comprar en el futuro.
 - **Coupons**: Almacena los cupones de descuento disponibles.
 
-![Modelo de Base de Datos:](images/basedatos27-06-2024.svg)
+![Modelo de Base de Datos:](images/basedatos27-06-2024actualizada.svg)
 
 ## Script de la Base de Datos
 
