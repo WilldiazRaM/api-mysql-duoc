@@ -195,5 +195,10 @@ module.exports = {
   getPagoById,
   createPago,
   updatePago,
-  deletePago
+  deletePago,
+  savePayment,
+  getPaymentByToken,
+  getUserById,
+  getVentaById,
+  createVenta
 };
