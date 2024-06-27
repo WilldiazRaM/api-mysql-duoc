@@ -14,7 +14,7 @@ async function login(req, res) {
     try {
         const user = await authenticateUser(email, password);
         if (user) {
-            const token = jwt.sign({ email: user.email }, JWT_SECRET, { expiresIn: '1h' });
+            const token = jwt.sign({ email: user.email, role: user.role }, JWT_SECRET, { expiresIn: '1h' });
             res.status(200).json({ message: "Autenticación exitosa", token });
         } else {
             res.status(401).json({ error: "Credenciales incorrectas" });

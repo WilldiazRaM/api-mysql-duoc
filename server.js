@@ -8,7 +8,7 @@ const session = require('express-session');
 const pgSession = require('connect-pg-simple')(session);
 const passport = require('./config/passportConfig');
 const { sqlInjectionFilter } = require('./middleware/sqlInjectionFilter');
-const { isAuthenticated } = require('./utils/authUtils');
+const { isAuthenticated, isAdmin } = require('./utils/authUtils');
 const jwt = require('jsonwebtoken');
 const securityHeaders = require('./config/securityHeaders');
 const pool = require('./database');
@@ -66,21 +66,20 @@ const wishlistRoutes = require('./routes/wishlistRoutes');
 const couponRoutes = require('./routes/couponRoutes');
 
 app.use('/auth', authRoutes);
-app.use('/usuarios', usuarioRoutes);
-app.use('/categorias-productos', categoriasProductosRoutes);
-app.use('/productos', productosRoutes);
-app.use('/ventas', ventasRoutes);
-app.use('/detalle-venta', detalleVentaRoutes);
-app.use('/api/pagos', pagosRouter);
-app.use('/historial-compras', historialesRoutes);
-app.use('/carrito', carritoRouter);
-app.use('/logs', logRoutes); 
-app.use('/pedidos', pedidoRoutes); 
-app.use('/direcciones', direccionRoutes);
-app.use('/reviews', reviewRoutes);
-app.use('/wishlists', wishlistRoutes);
-app.use('/coupons', couponRoutes);
-
+app.use('/usuarios', isAuthenticated, usuarioRoutes);
+app.use('/categorias-productos', isAuthenticated, categoriasProductosRoutes);
+app.use('/productos', isAuthenticated, productosRoutes);
+app.use('/ventas', isAuthenticated, ventasRoutes);
+app.use('/detalle-venta', isAuthenticated, detalleVentaRoutes);
+app.use('/api/pagos', isAuthenticated, pagosRouter);
+app.use('/historial-compras', isAuthenticated, historialesRoutes);
+app.use('/carrito', isAuthenticated, carritoRouter);
+app.use('/logs', isAuthenticated, isAdmin, logRoutes); // RUTA PROTEGIDA SOLO ADMINISTRADORES
+app.use('/pedidos', isAuthenticated, isAdmin, pedidoRoutes); // RUTA PROTEGIDA SOLO ADMINISTRADORES
+app.use('/direcciones', isAuthenticated, isAdmin, direccionRoutes); // RUTA PROTEGIX|DA SOLO ADMINISTRADORES
+app.use('/reviews', isAuthenticated, reviewRoutes);
+app.use('/wishlists', isAuthenticated, wishlistRoutes);
+app.use('/coupons', isAuthenticated, couponRoutes);
 
 app.get('/profile', isAuthenticated, (req, res) => {
     const token = req.query.token;
