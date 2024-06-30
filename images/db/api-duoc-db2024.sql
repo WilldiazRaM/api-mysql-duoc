@@ -2,9 +2,9 @@
 CREATE TABLE "Usuarios" (
   "id" SERIAL PRIMARY KEY,
   "nombre" VARCHAR(120) NOT NULL,
-  "email" VARCHAR(120) NOT NULL UNIQUE,
+  "email" VARCHAR(120) NOT NULL UNIQUE CHECK (email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'),
   "password" VARCHAR(120) NOT NULL,
-  "role" VARCHAR(120) NOT NULL,
+  "role" VARCHAR(120) NOT NULL CHECK (role IN ('admin', 'user')),
   "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -20,9 +20,9 @@ CREATE TABLE "CategoriasProductos" (
 CREATE TABLE "Productos" (
   "id" SERIAL PRIMARY KEY,
   "nombre" VARCHAR(120) NOT NULL,
-  "precio" INT NOT NULL,
+  "precio" INT NOT NULL CHECK (precio > 0),
   "descripcion" VARCHAR(250),
-  "stock" INT NOT NULL,
+  "stock" INT NOT NULL CHECK (stock >= 0),
   "categoria_id" INT NOT NULL,
   FOREIGN KEY ("categoria_id") REFERENCES "CategoriasProductos" ("id") ON DELETE CASCADE
 );
@@ -31,7 +31,7 @@ CREATE TABLE "Productos" (
 CREATE TABLE "Ventas" (
   "id" SERIAL PRIMARY KEY,
   "id_usuario" INT NOT NULL,
-  "monto" INT NOT NULL,
+  "monto" INT NOT NULL CHECK (monto > 0),
   FOREIGN KEY ("id_usuario") REFERENCES "Usuarios" ("id") ON DELETE CASCADE
 );
 
@@ -41,8 +41,8 @@ CREATE TABLE "DetalleVenta" (
   "id_venta" INT NOT NULL,
   "id_producto" INT NOT NULL,
   "id_usuario" INT NOT NULL,
-  "cantidad" INT NOT NULL,
-  "precio_unitario" INT NOT NULL,
+  "cantidad" INT NOT NULL CHECK (cantidad > 0),
+  "precio_unitario" INT NOT NULL CHECK (precio_unitario > 0),
   FOREIGN KEY ("id_venta") REFERENCES "Ventas" ("id") ON DELETE CASCADE,
   FOREIGN KEY ("id_producto") REFERENCES "Productos" ("id") ON DELETE CASCADE,
   FOREIGN KEY ("id_usuario") REFERENCES "Usuarios" ("id") ON DELETE CASCADE
@@ -52,9 +52,9 @@ CREATE TABLE "DetalleVenta" (
 CREATE TABLE "Pagos" (
   "id" SERIAL PRIMARY KEY,
   "id_venta" INT NOT NULL,
-  "monto" INT NOT NULL,
+  "monto" INT NOT NULL CHECK (monto > 0),
   "metodo_pago" VARCHAR(255) NOT NULL,
-  "estado_pago" VARCHAR(255) NOT NULL,
+  "estado_pago" VARCHAR(255) NOT NULL CHECK (estado_pago IN ('pendiente', 'completado', 'fallido')),
   "token" VARCHAR(255) NOT NULL,
   FOREIGN KEY ("id_venta") REFERENCES "Ventas" ("id") ON DELETE CASCADE
 );
@@ -80,7 +80,7 @@ CREATE TABLE "Pedidos" (
   "id_venta" INT NOT NULL,
   "metodo_entrega" VARCHAR(50) NOT NULL CHECK (metodo_entrega IN ('retiro', 'envio')),
   "direccion_id" INT,
-  "estado" VARCHAR(50) NOT NULL DEFAULT 'pendiente',
+  "estado" VARCHAR(50) NOT NULL DEFAULT 'pendiente' CHECK (estado IN ('pendiente', 'enviado', 'entregado')),
   FOREIGN KEY ("id_venta") REFERENCES "Ventas" ("id") ON DELETE CASCADE,
   FOREIGN KEY ("direccion_id") REFERENCES "Direcciones" ("id") ON DELETE CASCADE
 );
@@ -117,14 +117,13 @@ CREATE TABLE "Wishlists" (
   FOREIGN KEY ("id_producto") REFERENCES "Productos" ("id") ON DELETE CASCADE
 );
 
-
 -- Tabla Coupons
 CREATE TABLE "Coupons" (
   "id" SERIAL PRIMARY KEY,
   "codigo" VARCHAR(50) NOT NULL UNIQUE,
-  "descuento" DECIMAL(5, 2) NOT NULL,
+  "descuento" DECIMAL(5, 2) NOT NULL CHECK (descuento BETWEEN 0 AND 100),
   "fecha_expiracion" TIMESTAMP NOT NULL,
-  "usos_restantes" INT NOT NULL,
+  "usos_restantes" INT NOT NULL CHECK (usos_restantes >= 0),
   "id_usuario" INT NOT NULL,
   "id_producto" INT NOT NULL,
   FOREIGN KEY ("id_usuario") REFERENCES "Usuarios" ("id") ON DELETE CASCADE,
@@ -173,57 +172,6 @@ ALTER TABLE "Wishlists"
   ADD CONSTRAINT "Wishlists_id_usuario_fkey" FOREIGN KEY ("id_usuario") REFERENCES "Usuarios" ("id") ON DELETE CASCADE,
   DROP CONSTRAINT "Wishlists_id_producto_fkey",
   ADD CONSTRAINT "Wishlists_id_producto_fkey" FOREIGN KEY ("id_producto") REFERENCES "Productos" ("id") ON DELETE CASCADE;
-
--- Agregar CHECK a la columna email en la tabla Usuarios
-ALTER TABLE "Usuarios"
-ADD CONSTRAINT check_email_format CHECK (email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$');
-
--- Agregar CHECK a la columna role en la tabla Usuarios
-ALTER TABLE "Usuarios"
-ADD CONSTRAINT check_role_values CHECK (role IN ('admin', 'user'));
-
--- Agregar CHECK a la columna precio en la tabla Productos
-ALTER TABLE "Productos"
-ADD CONSTRAINT check_precio_positive CHECK (precio > 0);
-
--- Agregar CHECK a la columna stock en la tabla Productos
-ALTER TABLE "Productos"
-ADD CONSTRAINT check_stock_non_negative CHECK (stock >= 0);
-
--- Agregar CHECK a la columna monto en la tabla Ventas
-ALTER TABLE "Ventas"
-ADD CONSTRAINT check_monto_positive CHECK (monto > 0);
-
--- Agregar CHECK a la columna cantidad en la tabla DetalleVenta
-ALTER TABLE "DetalleVenta"
-ADD CONSTRAINT check_cantidad_positive CHECK (cantidad > 0);
-
--- Agregar CHECK a la columna precio_unitario en la tabla DetalleVenta
-ALTER TABLE "DetalleVenta"
-ADD CONSTRAINT check_precio_unitario_positive CHECK (precio_unitario > 0);
-
--- Agregar CHECK a la columna monto en la tabla Pagos
-ALTER TABLE "Pagos"
-ADD CONSTRAINT check_monto_positive CHECK (monto > 0);
-
--- Agregar CHECK a la columna estado_pago en la tabla Pagos
-ALTER TABLE "Pagos"
-ADD CONSTRAINT check_estado_pago_values CHECK (estado_pago IN ('pendiente', 'completado', 'fallido'));
-
--- Agregar CHECK a la columna estado en la tabla Pedidos
-ALTER TABLE "Pedidos"
-ADD CONSTRAINT check_estado_values CHECK (estado IN ('pendiente', 'enviado', 'entregado'));
-
--- Agregar CHECK a la columna descuento en la tabla Coupons
-ALTER TABLE "Coupons"
-ADD CONSTRAINT check_descuento_range CHECK (descuento BETWEEN 0 AND 100);
-
--- Agregar CHECK a la columna usos_restantes en la tabla Coupons
-ALTER TABLE "Coupons"
-ADD CONSTRAINT check_usos_restantes_non_negative CHECK (usos_restantes >= 0);
-
-
-
 
 -- Crear índice para la tabla Usuarios
 CREATE INDEX idx_usuarios_email ON "Usuarios" ("email");
