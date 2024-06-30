@@ -174,6 +174,55 @@ ALTER TABLE "Wishlists"
   DROP CONSTRAINT "Wishlists_id_producto_fkey",
   ADD CONSTRAINT "Wishlists_id_producto_fkey" FOREIGN KEY ("id_producto") REFERENCES "Productos" ("id") ON DELETE CASCADE;
 
+-- Agregar CHECK a la columna email en la tabla Usuarios
+ALTER TABLE "Usuarios"
+ADD CONSTRAINT check_email_format CHECK (email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$');
+
+-- Agregar CHECK a la columna role en la tabla Usuarios
+ALTER TABLE "Usuarios"
+ADD CONSTRAINT check_role_values CHECK (role IN ('admin', 'user'));
+
+-- Agregar CHECK a la columna precio en la tabla Productos
+ALTER TABLE "Productos"
+ADD CONSTRAINT check_precio_positive CHECK (precio > 0);
+
+-- Agregar CHECK a la columna stock en la tabla Productos
+ALTER TABLE "Productos"
+ADD CONSTRAINT check_stock_non_negative CHECK (stock >= 0);
+
+-- Agregar CHECK a la columna monto en la tabla Ventas
+ALTER TABLE "Ventas"
+ADD CONSTRAINT check_monto_positive CHECK (monto > 0);
+
+-- Agregar CHECK a la columna cantidad en la tabla DetalleVenta
+ALTER TABLE "DetalleVenta"
+ADD CONSTRAINT check_cantidad_positive CHECK (cantidad > 0);
+
+-- Agregar CHECK a la columna precio_unitario en la tabla DetalleVenta
+ALTER TABLE "DetalleVenta"
+ADD CONSTRAINT check_precio_unitario_positive CHECK (precio_unitario > 0);
+
+-- Agregar CHECK a la columna monto en la tabla Pagos
+ALTER TABLE "Pagos"
+ADD CONSTRAINT check_monto_positive CHECK (monto > 0);
+
+-- Agregar CHECK a la columna estado_pago en la tabla Pagos
+ALTER TABLE "Pagos"
+ADD CONSTRAINT check_estado_pago_values CHECK (estado_pago IN ('pendiente', 'completado', 'fallido'));
+
+-- Agregar CHECK a la columna estado en la tabla Pedidos
+ALTER TABLE "Pedidos"
+ADD CONSTRAINT check_estado_values CHECK (estado IN ('pendiente', 'enviado', 'entregado'));
+
+-- Agregar CHECK a la columna descuento en la tabla Coupons
+ALTER TABLE "Coupons"
+ADD CONSTRAINT check_descuento_range CHECK (descuento BETWEEN 0 AND 100);
+
+-- Agregar CHECK a la columna usos_restantes en la tabla Coupons
+ALTER TABLE "Coupons"
+ADD CONSTRAINT check_usos_restantes_non_negative CHECK (usos_restantes >= 0);
+
+
 
 
 -- Crear índice para la tabla Usuarios
