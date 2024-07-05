@@ -1,4 +1,4 @@
-# Aplicación Web Node.js Express con Base de Datos MySQL
+# Aplicación Web Node.js Express con Base de Datos SQL
 
 Este repositorio contiene una aplicación web desarrollada con Node.js y Express, utilizando una base de datos SQL alojada en Cloud. La aplicación proporciona servicios para gestionar usuarios, productos, ventas, pagos, historial de compras y carrito de compras. y otras rutas para gestionar un e-commerce.
 
