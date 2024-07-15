@@ -13,7 +13,8 @@ const jwt = require('jsonwebtoken');
 const securityHeaders = require('./config/securityHeaders');
 const pool = require('./database');
 const enforce = require('express-sslify');
-
+const swaggerUi = require('swagger-ui-express');
+const swaggerJsdoc = require('swagger-jsdoc');
 
 const PORT = process.env.PORT || 10000;
 
@@ -21,8 +22,6 @@ const PORT = process.env.PORT || 10000;
 if (process.env.NODE_ENV === 'production') {
     app.use(enforce.HTTPS({ trustProtoHeader: true }));
 }
-
-
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -58,6 +57,27 @@ app.use(passport.session());
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+// Swagger configuration
+const options = {
+    definition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'API Documentation',
+            version: '1.0.0',
+        },
+        servers: [
+            {
+                url: 'https://api-mysql-duoc.onrender.com', 
+            },
+        ],
+    },
+    apis: ['./routes/*.js'], 
+};
+
+const specs = swaggerJsdoc(options);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+
+// Import routes
 const usuarioRoutes = require('./routes/usuarioRoutes');
 const authRoutes = require('./routes/authRoutes');
 const productosRoutes = require('./routes/productosRoutes');
@@ -74,6 +94,7 @@ const reviewRoutes = require('./routes/reviewRoutes');
 const wishlistRoutes = require('./routes/wishlistRoutes');
 const couponRoutes = require('./routes/couponRoutes');
 
+// Use routes
 app.use('/auth', authRoutes);
 app.use('/usuarios', isAuthenticated, usuarioRoutes);
 app.use('/categorias-productos', isAuthenticated, categoriasProductosRoutes);
