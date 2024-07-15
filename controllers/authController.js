@@ -60,7 +60,7 @@ async function logout(req, res) {
             return res.status(500).json({ error: 'Ocurrió un error al cerrar sesión' });
         }
         res.redirect('/auth/login');
-        return res.status(200).son({ msg: 'Sesión Cerrada Correctamente'});
+        return res.status(200).json({ msg: 'Sesión Cerrada Correctamente'});
     });
 }
 
