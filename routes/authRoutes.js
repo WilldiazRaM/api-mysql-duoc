@@ -90,12 +90,31 @@ router.post('/login', checkHeaders(['x-email', 'x-password']), login);
  *   post:
  *     summary: Registrar un nuevo usuario
  *     tags: [Auth]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Register'
+ *     parameters:
+ *       - in: header
+ *         name: x-nombre
+ *         required: true
+ *         description: Nombre del usuario
+ *         schema:
+ *           type: string
+ *       - in: header
+ *         name: x-email
+ *         required: true
+ *         description: Email del usuario
+ *         schema:
+ *           type: string
+ *       - in: header
+ *         name: x-password
+ *         required: true
+ *         description: Contraseña del usuario
+ *         schema:
+ *           type: string
+ *       - in: header
+ *         name: x-role
+ *         required: true
+ *         description: Rol del usuario
+ *         schema:
+ *           type: string
  *     responses:
  *       201:
  *         description: Usuario registrado exitosamente
@@ -104,6 +123,7 @@ router.post('/login', checkHeaders(['x-email', 'x-password']), login);
  *       409:
  *         description: El correo electrónico ya está en uso
  */
+
 
 router.post('/registrar', (req, res, next) => {
     const nombre = req.headers['x-nombre'];
