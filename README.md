@@ -13,7 +13,7 @@ Este repositorio contiene una aplicación web desarrollada con Node.js y Express
 **URL**
 
 Integración Google y GitHub
-  "La aplicación está configurada para soportar la autenticación OAuth2.0 con Google y GitHub."
+  -La aplicación está configurada para soportar la autenticación OAuth2.0 con Google y GitHub.
 ```
 https://api-mysql-duoc.onrender.com/auth/login
 
