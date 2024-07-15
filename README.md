@@ -22,7 +22,7 @@ https://api-mysql-duoc.onrender.com/auth/login
 
 ## Documentación con Swagger
 
-Esta aplicación utiliza Swagger para la documentación de la API. Puedes acceder a la documentación generada por Swagger en la siguiente URL:
+Esta aplicación utiliza Swagger para la documentación de "Auth" de la API. Puedes acceder a la documentación generada por Swagger en la siguiente URL:
 
 - [Documentación Swagger](https://api-mysql-duoc.onrender.com/api-docs/)
 
