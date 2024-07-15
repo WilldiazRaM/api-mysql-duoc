@@ -45,30 +45,6 @@
             margin-top: 20px;
         }
     </style>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const logoutButton = document.querySelector('.btn-logout');
-            logoutButton.addEventListener('click', (event) => {
-                event.preventDefault();
-                fetch('/auth/logout', {
-                    method: 'POST', // Método adecuado para cerrar sesión
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.redirectUrl) {
-                        alert(data.message); // Muestra el mensaje
-                        window.location.href = data.redirectUrl; // Redirige al login
-                    } else {
-                        console.error('Redirección no encontrada en la respuesta');
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-            });
-        });
-    </script>
 </head>
 <body>
     <div class="container">
@@ -82,7 +58,7 @@
             <div class="card-body">
                 <p>Bienvenido!</p>
                 <span role="img" aria-label="Bandera de Chile">🇨🇱</span>
-                <a href="#" class="btn btn-primary btn-logout" role="button">Logout</a>
+                <a href="/auth/logout" class="btn btn-primary btn-logout" role="button">Logout</a>
             </div>
         </div>
     </div>
