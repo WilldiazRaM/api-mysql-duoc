@@ -12,12 +12,22 @@ Este repositorio contiene una aplicación web desarrollada con Node.js y Express
 
 **URL**
 
-Integración OAuth2.0 con Google y GitHub
+Integración Google y GitHub
+  "La aplicación está configurada para soportar la autenticación OAuth2.0 con Google y GitHub."
 ```
 https://api-mysql-duoc.onrender.com/auth/login
 
 
 ```
+
+## Documentación con Swagger
+
+Esta aplicación utiliza Swagger para la documentación de la API. Puedes acceder a la documentación generada por Swagger en la siguiente URL:
+
+- [Documentación Swagger](https://api-mysql-duoc.onrender.com/api-docs/)
+
+
+
 Nota: Por estar utilizando la capa gratuita en Render, el tiempo de carga puede ser de hasta 60 segundos después de un período de inactividad.
 
 ![Imagen : Login](images/login.jpg)
