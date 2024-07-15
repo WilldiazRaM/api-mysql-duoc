@@ -1,7 +1,7 @@
-const pool = require('../database'); // Asegúrate de que esta ruta sea correcta
+const pool = require('../database');
 const LogModel = require('../models/logModel');
 
-jest.mock('../database'); // Mockear el módulo de la base de datos
+jest.mock('../database'); 
 
 describe('Log Model', () => {
     beforeEach(() => {
