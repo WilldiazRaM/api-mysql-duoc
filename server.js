@@ -96,20 +96,20 @@ const couponRoutes = require('./routes/couponRoutes');
 
 // Use routes
 app.use('/auth', authRoutes);
-app.use('/usuarios', isAuthenticated, usuarioRoutes);
-app.use('/categorias-productos', isAuthenticated, categoriasProductosRoutes);
-app.use('/productos', isAuthenticated, productosRoutes);
-app.use('/ventas', isAuthenticated, ventasRoutes);
-app.use('/detalle-venta', isAuthenticated, detalleVentaRoutes);
-app.use('/api/pagos', isAuthenticated, pagosRouter);
-app.use('/historial-compras', isAuthenticated, historialesRoutes);
-app.use('/carrito', isAuthenticated, carritoRouter);
-app.use('/logs', isAuthenticated, isAdmin, logRoutes); // RUTA PROTEGIDA SOLO ADMINISTRADORES
-app.use('/pedidos', isAuthenticated, isAdmin, pedidoRoutes); // RUTA PROTEGIDA SOLO ADMINISTRADORES
-app.use('/direcciones', isAuthenticated, isAdmin, direccionRoutes); // RUTA PROTEGIDA SOLO ADMINISTRADORES
-app.use('/reviews', isAuthenticated, reviewRoutes);
-app.use('/wishlists', isAuthenticated, wishlistRoutes);
-app.use('/coupons', isAuthenticated, couponRoutes);
+app.use('/usuarios',  usuarioRoutes);
+app.use('/categorias-productos',  categoriasProductosRoutes);
+app.use('/productos',  productosRoutes);
+app.use('/ventas',  ventasRoutes);
+app.use('/detalle-venta',  detalleVentaRoutes);
+app.use('/api/pagos', pagosRouter);
+app.use('/historial-compras',  historialesRoutes);
+app.use('/carrito',  carritoRouter);
+app.use('/logs',  logRoutes); // RUTA PROTEGIDA SOLO ADMINISTRADORES
+app.use('/pedidos', pedidoRoutes); // RUTA PROTEGIDA SOLO ADMINISTRADORES
+app.use('/direcciones', direccionRoutes); // RUTA PROTEGIDA SOLO ADMINISTRADORES
+app.use('/reviews', reviewRoutes);
+app.use('/wishlists', wishlistRoutes);
+app.use('/coupons', couponRoutes);
 
 app.get('/profile', isAuthenticated, (req, res) => {
     const token = req.query.token;
