@@ -6,9 +6,9 @@ const options = {
     definition: {
         openapi: '3.0.0',
         info: {
-            title: 'API Documentation',
+            title: 'Documentación Api-FerreMax-DuocUC',
             version: '1.0.0',
-            description: 'Documentación de la API de tu proyecto',
+            description: 'Sistema de mejora para ferreterias ferreMax, en pocas palabras implementacion de e-commerce integrado con pagos transbank',
         },
         servers: [
             {
