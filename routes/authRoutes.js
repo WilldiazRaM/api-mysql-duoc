@@ -10,9 +10,100 @@ const bcrypt = require('bcrypt');
 // Aplicar el middleware de filtrado de inyecciones SQL
 router.use(sqlInjectionFilter);
 
+/**
+ * @swagger
+ * components:
+ *   securitySchemes:
+ *     BearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ *   schemas:
+ *     Login:
+ *       type: object
+ *       required:
+ *         - email
+ *         - password
+ *       properties:
+ *         email:
+ *           type: string
+ *           description: Email del usuario
+ *         password:
+ *           type: string
+ *           description: Contraseña del usuario
+ *       example:
+ *         email: user@example.com
+ *         password: userpassword
+ *     Register:
+ *       type: object
+ *       required:
+ *         - nombre
+ *         - email
+ *         - password
+ *         - role
+ *       properties:
+ *         nombre:
+ *           type: string
+ *           description: Nombre del usuario
+ *         email:
+ *           type: string
+ *           description: Email del usuario
+ *         password:
+ *           type: string
+ *           description: Contraseña del usuario
+ *         role:
+ *           type: string
+ *           description: Rol del usuario
+ *       example:
+ *         nombre: Juan Perez
+ *         email: juan@example.com
+ *         password: securepassword
+ *         role: admin
+ */
 
+/**
+ * @swagger
+ * /auth/login:
+ *   post:
+ *     summary: Iniciar sesión
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Login'
+ *     responses:
+ *       200:
+ *         description: Autenticación exitosa
+ *       400:
+ *         description: Email y contraseña son requeridos
+ *       401:
+ *         description: Credenciales incorrectas
+ */
 // Rutas de autenticación locales
 router.post('/login', checkHeaders(['x-email', 'x-password']), login);
+
+/**
+ * @swagger
+ * /auth/registrar:
+ *   post:
+ *     summary: Registrar un nuevo usuario
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Register'
+ *     responses:
+ *       201:
+ *         description: Usuario registrado exitosamente
+ *       400:
+ *         description: Nombre, email, contraseña y rol son requeridos
+ *       409:
+ *         description: El correo electrónico ya está en uso
+ */
 
 router.post('/registrar', (req, res, next) => {
     const nombre = req.headers['x-nombre'];
@@ -44,7 +135,29 @@ router.post('/registrar', (req, res, next) => {
     next();
 }, register);
 
+/**
+ * @swagger
+ * /auth/logout:
+ *   get:
+ *     summary: Cerrar sesión
+ *     tags: [Auth]
+ *     responses:
+ *       200:
+ *         description: Sesión cerrada exitosamente
+ */
+
 router.get('/logout', logout);
+
+/**
+ * @swagger
+ * /auth/login:
+ *   get:
+ *     summary: Cargar la página de inicio de sesión
+ *     tags: [Auth]
+ *     responses:
+ *       200:
+ *         description: Página de inicio de sesión cargada
+ */
 
 // Ruta para cargar la página de inicio de sesión
 router.get('/login', (req, res) => {
